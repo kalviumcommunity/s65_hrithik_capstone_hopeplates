@@ -60,7 +60,7 @@
 ```sh
 cd backend
 npm install
-npm rub dev
+npm run dev
 ```
 ### Frontend Setup
 ```sh
