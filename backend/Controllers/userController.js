@@ -1,13 +1,12 @@
 const User = require("../models/userModel")
 const bcrypt = require("bcryptjs")
+const {generateToken} = require('../utils/jwt')
 
 exports.registerUser = async (req, res) => {
     try {
         const { name, email, password, location, role } = req.body
-
         const existingUser = await User.findOne({ email })
-        if (existingUser) return res.status(400).json({ message: "Email already exists" })
-
+        if (existingUser) return res.status(400).json({ message: "User already exists" })
         const user = new User({
             name,
             email,
@@ -15,7 +14,6 @@ exports.registerUser = async (req, res) => {
             location,
             role
         })
-
         await user.save()
         res.status(201).json({ message: "User registered successfully", user })
     } catch (err) {
@@ -26,17 +24,25 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
-
         const user = await User.findOne({ email })
         if (!user) {
             return res.status(404).json({ message: "User not found" })
         }
-
         const isMatch = await bcrypt.compare(password, user.password)
-
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" })
+        const token = generateToken(user)
 
-        res.status(200).json({ message: "Login successful", user })
+        res.status(200).json({
+            message: "Login successful",
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                location: user.location
+            }
+        })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
