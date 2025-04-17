@@ -10,6 +10,14 @@ const eventManagerRoutes = require("./routes/eventManagerRoutes")
 
 dotenv.config()
 
+const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "JWT_EXPIRES_IN", "PORT"]
+requiredEnvVars.forEach((key) => {
+    if (!process.env[key]) {
+        console.error(`${key} is not defined in the environment variables.`)
+        process.exit(1)
+    }
+})
+
 const app = express()
 
 app.use(express.json())
