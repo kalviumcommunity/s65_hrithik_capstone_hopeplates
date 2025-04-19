@@ -7,9 +7,8 @@ const UserSchema = new mongoose.Schema({
     password: String,
     role: { type: String, enum: ["donor", "volunteer", "ngo", "restaurant", "event_manager", "admin"], default: "donor" },
     location: { type: String, required: true },
-    verificationStatus: { type: String, enum: ["pending", "verified"], default: "verified" } 
+    verificationStatus: { type: String, enum: ["pending", "verified"], default: "pending" }
 }, { timestamps: true })
-
 
 UserSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next()
