@@ -1,5 +1,6 @@
 const express = require("express")
 const dotenv = require("dotenv")
+const cors = require("cors") // Import cors
 const connectDB = require("./config/db")
 const adminRoutes = require("./routes/adminRoutes")
 const userRoutes = require("./routes/userRoutes")
@@ -19,6 +20,12 @@ requiredEnvVars.forEach((key) => {
 })
 
 const app = express()
+
+app.use(cors({
+    origin: "http://localhost:5173", 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true 
+}))
 
 app.use(express.json())
 

@@ -1,42 +1,626 @@
-#root {
-  max-width: 1280px;
+/* Base styles */
+:root {
+  --primary-color: #5c9d7d;
+  --secondary-color: #f9a826;
+  --accent-color: #e74c3c;
+  --text-color: #333;
+  --light-text: #fff;
+  --background-color: #f5f5f5;
+  --card-background: #fff;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  --transition: all 0.3s ease;
+  
+  /* Animation durations */
+  --fast-anim: 0.2s;
+  --medium-anim: 0.5s;
+  --slow-anim: 1s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Add smooth scrolling to the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
+  animation: fadeIn var(--medium-anim) ease-in;
+}
+
+/* Typography with animations */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin: 10px 0;
+  color: var(--primary-color);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: slideDown var(--medium-anim) ease-out;
+}
+
+h2 {
+  font-size: 2rem;
+  animation: fadeIn var(--medium-anim) ease-in;
+}
+
+h3 {
+  font-size: 1.5rem;
+  animation: fadeIn var(--medium-anim) ease-in;
+}
+
+p {
+  margin: 10px 0;
+}
+
+/* Navigation with animations */
+nav {
+  background-color: var(--primary-color);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  animation: slideDown var(--fast-anim) ease-out;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  margin: 0;
+}
+
+nav ul li a {
+  color: var(--light-text);
+  text-decoration: none;
+  padding: 1rem 1.5rem;
+  display: block;
+  transition: var(--transition);
+  font-weight: 500;
+  position: relative;
+}
+
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: 0;
+  left: 50%;
+  background-color: var(--light-text);
+  transition: all var(--fast-anim) ease;
+  transform: translateX(-50%);
+}
+
+nav ul li a:hover::after {
+  width: 70%;
+}
+
+nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Footer with animation */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  margin-top: 2rem;
+  animation: fadeIn var(--slow-anim) ease-in;
+}
+
+/* Card Components with enhanced animations */
+.card {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: transform var(--medium-anim) ease, box-shadow var(--medium-anim) ease;
+  animation: fadeInUp var(--medium-anim) ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: linear-gradient(to bottom, rgba(92, 157, 125, 0.1), transparent);
+  transition: height var(--medium-anim) ease;
+  z-index: 0;
+}
+
+.card:hover::before {
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.card p {
+  margin: 0.5rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Specific Card Styles */
+.donation-card, .ngo-card, .restaurant-card, .event-manager-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+.status-pending {
+  background-color: #ffeaa7;
+  color: #d35400;
+}
+
+.status-verified {
+  background-color: #d5f5e3;
+  color: #27ae60;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+/* Forms with animations */
+form {
+  background-color: var(--card-background);
   padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  max-width: 500px;
+  margin: 2rem auto;
+  animation: fadeIn var(--medium-anim) ease-in;
+  transition: transform var(--medium-anim) ease, box-shadow var(--medium-anim) ease;
+}
+
+form:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color var(--fast-anim) ease, box-shadow var(--fast-anim) ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(92, 157, 125, 0.2);
+  animation: focusGlow 1.5s infinite alternate;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all var(--fast-anim) ease;
+  display: block;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+button:hover::after {
+  left: 100%;
+}
+
+button:hover {
+  background-color: #4a8b6c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(92, 157, 125, 0.4);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Home Page with animations */
+.hero {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #3a6b54 100%);
+  color: var(--light-text);
+  padding: 4rem 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 50% 50% / 20px;
+  position: relative;
+  overflow: hidden;
+  animation: gradientShift 10s ease infinite;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  bottom: -50px;
+  left: -25%;
+  border-radius: 50%;
+  animation: wave 8s linear infinite;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--light-text);
+  animation: fadeInDown var(--medium-anim) ease-out;
+  position: relative;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeInUp var(--medium-anim) ease-out;
+  position: relative;
+}
+
+
+.profile-container {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  animation: fadeIn var(--medium-anim) ease-in;
+  transition: transform var(--medium-anim) ease, box-shadow var(--medium-anim) ease;
+}
+
+.profile-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeInDown var(--medium-anim) ease-out;
+}
+
+.profile-details {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  animation: fadeInUp var(--medium-anim) ease-out;
+}
+
+.profile-details strong {
+  color: var(--primary-color);
+}
+
+
+.admin-dashboard {
+  padding: 2rem;
+  animation: fadeIn var(--medium-anim) ease-in;
+}
+
+.admin-dashboard h1 {
+  color: var(--primary-color);
+  animation: fadeInDown var(--medium-anim) ease-out;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.stat-card {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  text-align: center;
+  animation: fadeInUp var(--medium-anim) ease-out;
+  transition: transform var(--medium-anim) ease, box-shadow var(--medium-anim) ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card .number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  animation: countUp 2s ease-out;
+}
+
+.stat-card .label {
+  font-size: 1rem;
+  color: #777;
+}
+
+
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+  }
+  
+  nav ul li a {
+    padding: 0.75rem 1rem;
+  }
+  
+  .hero {
+    padding: 3rem 1rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  form {
+    padding: 1.5rem;
+  }
+}
+
+
+.text-center {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.mt-2 {
+  margin-top: 2rem;
 }
 
-@keyframes logo-spin {
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+
+.donation-card {
+  border-left: 4px solid var(--secondary-color);
+  animation: slideBorderLeft var(--fast-anim) ease-out;
+}
+
+
+.ngo-card {
+  border-left: 4px solid var(--primary-color);
+  animation: slideBorderLeft var(--fast-anim) ease-out;
+}
+
+.restaurant-card {
+  border-left: 4px solid var(--accent-color);
+  animation: slideBorderLeft var(--fast-anim) ease-out;
+}
+
+
+.event-manager-card {
+  border-left: 4px solid #3498db;
+  animation: slideBorderLeft var(--fast-anim) ease-out;
+}
+
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  position: relative;
+}
+
+.loading::after {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border: 5px solid var(--primary-color);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spinner 1.5s linear infinite;
+  margin-left: 10px;
+}
+
+/* Button styles */
+.action-button {
+  width: 80px;
+  padding: 5px;
+  font-size: 12px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.action-button.verify {
+  background-color: #5c9d7d; 
+}
+
+.action-button.verify:hover {
+  background-color: #4a8b6c; 
+}
+
+.action-button.reject {
+  background-color: #f94449; 
+  margin-left: 10px; /* Add spacing between buttons */
+}
+
+.action-button.reject:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.card {
-  padding: 2em;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.read-the-docs {
-  color: #888;
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes focusGlow {
+  from { box-shadow: 0 0 5px rgba(92, 157, 125, 0.2); }
+  to { box-shadow: 0 0 8px rgba(92, 157, 125, 0.5); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes wave {
+  0% { transform: translateX(-100%) rotate(0); }
+  50% { transform: translateX(0) rotate(0); }
+  100% { transform: translateX(100%) rotate(0); }
+}
+
+@keyframes slideBorderLeft {
+  from { border-left-width: 0; }
+  to { border-left-width: 4px; }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes loading {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
