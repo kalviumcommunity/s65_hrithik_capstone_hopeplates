@@ -14,9 +14,9 @@ const Navbar = () => {
     }, [])
 
     const handleLogout = () => {
-        localStorage.removeItem("token") 
-        setRole(null) 
-        navigate("/login") 
+        localStorage.removeItem("token")
+        setRole(null)
+        navigate("/login")
     }
 
     return (
@@ -27,35 +27,15 @@ const Navbar = () => {
                     <li><Link to="/donations">Donations</Link></li>
                     <li><Link to="/profile">Profile</Link></li>
 
-                    
                     {role === "admin" && (
-                        <>
-                            <li><Link to="/pending-verifications">Pending Verifications</Link></li>
-                        </>
+                        <li><Link to="/pending-verifications">Pending Verifications</Link></li>
                     )}
 
                     
-                    {role === "event_manager" && (
-                        <>
-                            <li><Link to="/manage-events">Manage Events</Link></li>
-                        </>
+                    {role !== "admin" && role !== "ngo" && (
+                        <li><Link to="/make-donation">Make Donation</Link></li>
                     )}
 
-                    
-                    {role === "restaurant" && (
-                        <>
-                            <li><Link to="/manage-donations">Manage Donations</Link></li>
-                        </>
-                    )}
-
-                    
-                    {role === "ngo" && (
-                        <>
-                            <li><Link to="/view-donations">View Donations</Link></li>
-                        </>
-                    )}
-
-                    
                     <li style={{ marginLeft: "auto" }}>
                         {role ? (
                             <Link to="#" onClick={handleLogout}>

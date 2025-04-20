@@ -6,10 +6,16 @@ exports.registerUser = async (req, res) => {
     try {
         const { name, email, password, location, role } = req.body
 
+        if (role === "admin") {
+            const existingAdmin = await User.findOne({ role: "admin" })
+            if (existingAdmin) {
+                return res.status(403).json({ message: "An admin account already exists. Only one admin is allowed." })
+            }
+        }
+
         const existingUser = await User.findOne({ email })
         if (existingUser) return res.status(400).json({ message: "User already exists" })
-
-        const verificationStatus = ["ngo", "restaurant", "event_manager"].includes(role) ? "pending" : "verified"
+        const verificationStatus = role === "admin" ? "verified" : ["ngo", "restaurant", "event_manager"].includes(role) ? "pending" : "verified"
 
         const user = new User({
             name,

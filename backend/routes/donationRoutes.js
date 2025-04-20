@@ -6,13 +6,14 @@ const {
     updateDonationStatus,
     deleteDonation
 } = require("../Controllers/donationController")
+const{protect} = require("../middlewares/authMiddleware")
 
 const router = express.Router()
 
-router.post("/", createDonation)
-router.get("/", getAllDonations)
-router.get("/:id", getDonationById)
-router.put("/:id", updateDonationStatus)
-router.delete("/:id", deleteDonation)
+router.post("/", protect,createDonation)
+router.get("/", protect, getAllDonations);
+router.get("/:id",protect, getDonationById)
+router.put("/:id/status",protect, updateDonationStatus)
+router.delete("/:id",protect, deleteDonation)
 
 module.exports = router

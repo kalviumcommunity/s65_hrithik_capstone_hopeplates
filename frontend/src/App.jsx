@@ -11,6 +11,7 @@ import Restaurants from "./pages/Restaurants"
 import EventManagers from "./pages/EventManagers"
 import AdminDashboard from "./pages/AdminDashboard"
 import ProtectedRoute from "./components/ProtectedRoute"
+import MakeDonation from "./pages/MakeDonation"
 import "./App.css"
 
 const App = () => {
@@ -35,6 +36,11 @@ const App = () => {
             <Route path="/pending-verifications" element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/make-donation" element={
+              <ProtectedRoute>
+                <MakeDonation />
               </ProtectedRoute>
             } />
           </Routes>

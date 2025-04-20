@@ -526,6 +526,23 @@ button:active {
 .action-button.reject:hover {
   background-color: #d32f2f; /* Darker red on hover */
 }
+.action-button.claim {
+  background-color: #3498db; /* Blue for claim */
+  color: white;
+}
+
+.action-button.claim:hover {
+  background-color: #2980b9;
+}
+
+.action-button.complete {
+  background-color: #27ae60; /* Green for complete */
+  color: white;
+}
+
+.action-button.complete:hover {
+  background-color: #1e8449;
+}
 
 /* Animation Keyframes */
 @keyframes fadeIn {
