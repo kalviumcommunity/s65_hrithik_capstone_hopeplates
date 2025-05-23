@@ -6,6 +6,7 @@ const DonationSchema = new mongoose.Schema({
     description: String,
     pickupLocation: String,
     status: { type: String, enum: ["pending", "claimed", "completed"], default: "pending" },
-}, { timestamps: true });
+    claimedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+}, { timestamps: true })
 
 module.exports = mongoose.model("Donation", DonationSchema)

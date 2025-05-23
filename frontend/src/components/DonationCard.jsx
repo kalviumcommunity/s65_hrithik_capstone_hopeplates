@@ -1,4 +1,5 @@
 const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, userRole }) => {
+    const isDonor = donation.donor?._id === userId
     return (
         <div className="card donation-card">
             <h3>{donation.type}</h3>
@@ -8,32 +9,10 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
             <p>Donor Name: {donation.donor?.name || "Unknown"}</p>
             <p>Donor Role: {donation.donor?.role || "Unknown"}</p>
 
-            {/* Show Update and Delete buttons for all roles except NGO */}
-            {userRole !== "ngo" && (
-                <>
-                    <button
-                        className="action-button delete"
-                        onClick={() => onDelete(donation._id)}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        className="action-button update"
-                        onClick={() => onUpdate(donation)}
-                    >
-                        Update
-                    </button>
-                </>
-            )}
-
-            {/* Show Delete button for NGO who claimed the donation after it is completed */}
-            {userRole === "ngo" && donation.status === "completed" && donation.claimedBy === userId && (
-                <button
-                    className="action-button delete"
-                    onClick={() => onDelete(donation._id)}
-                >
-                    Delete
-                </button>
+            {isDonor && donation.status === "claimed" && donation.claimedBy && (
+                <p>
+                    Claimed By: <strong>{donation.claimedBy.name}</strong> ({donation.claimedBy.role})
+                </p>
             )}
 
             {userRole === "ngo" && donation.status === "pending" && (
@@ -44,7 +23,7 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                     Claim
                 </button>
             )}
-            {userRole === "ngo" && donation.status === "claimed" && (
+            {userRole === "ngo" && donation.status === "claimed" && donation.claimedBy?._id === userId && (
                 <button
                     className="action-button complete"
                     onClick={() => onStatusChange(donation._id, "completed")}
@@ -53,7 +32,7 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                 </button>
             )}
         </div>
-    );
-};
+    )
+}
 
 export default DonationCard;
