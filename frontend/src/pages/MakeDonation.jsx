@@ -7,19 +7,25 @@ const MakeDonation = () => {
         description: "",
         pickupLocation: "",
     })
+    const [images, setImages] = useState([]) // <-- Add this line
     const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         const token = localStorage.getItem("token")
         try {
+            const form = new FormData()
+            form.append("type", formData.type)
+            form.append("description", formData.description)
+            form.append("pickupLocation", formData.pickupLocation)
+            images.forEach(img => form.append("images", img))
+
             const response = await fetch("http://localhost:5000/api/donations", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(formData), 
+                body: form
             })
             if (!response.ok) {
                 const errorData = await response.json()
@@ -65,6 +71,24 @@ const MakeDonation = () => {
                         required
                     />
                 </label>
+                <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={e => setImages([...e.target.files])}
+                />
+                {images.length > 0 && (
+                    <div style={{ display: "flex", gap: 10, margin: "10px 0", flexWrap: "wrap" }}>
+                        {Array.from(images).map((img, idx) => (
+                            <img
+                                key={idx}
+                                src={URL.createObjectURL(img)}
+                                alt="preview"
+                                style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 6, border: "1px solid #ccc" }}
+                            />
+                        ))}
+                    </div>
+                )}
                 <button type="submit">Submit</button>
             </form>
         </div>

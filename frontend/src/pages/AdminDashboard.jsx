@@ -16,7 +16,6 @@ const AdminDashboard = () => {
                     throw new Error(errorData.message)
                 }
                 const data = await response.json()
-                console.log("Pending Verifications:", data)
                 setPendingUsers(data.pendingUsers)
             } catch (err) {
                 console.error("Error fetching pending verifications:", err.message)
@@ -78,11 +77,23 @@ const AdminDashboard = () => {
             ) : (
                 <ul>
                     {pendingUsers.map((user) => (
-                        <li key={user._id}>
+                        <li key={user._id} style={{ marginBottom: 30 }}>
                             <strong>Name:</strong> {user.name} <br />
                             <strong>Role:</strong> {user.role} <br />
                             <strong>Email:</strong> {user.email} <br />
                             <strong>Location:</strong> {user.location} <br />
+                            {user.images && user.images.length > 0 && (
+                            <div style={{ display: "flex", gap: 10, margin: "10px 0" }}>
+                                {user.images.map((img, idx) => (
+                                <img
+                                    key={idx}
+                                    src={`http://localhost:5000/${img}`}
+                                    alt="user"
+                                    style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8, border: "1px solid #ccc" }}
+                                />
+                                ))}
+                            </div>
+                            )}
                             <button
                                 onClick={() => handleVerify(user._id)}
                                 className="action-button verify"
