@@ -37,6 +37,7 @@ app.use("/api/donations", donationRoutes)
 app.use("/api/ngos", ngoRoutes)
 app.use("/api/restaurants", restaurantRoutes)
 app.use("/api/event-managers", eventManagerRoutes)
+app.use("/uploads", express.static("uploads"))
 
 const PORT = process.env.PORT
 if (!PORT) {

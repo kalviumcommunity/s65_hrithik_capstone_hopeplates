@@ -9,6 +9,7 @@ const Register = () => {
         location: "",
         role: "donor",
     })
+    const [images, setImages] = useState([])
 
     const handleRegister = async (e) => {
         e.preventDefault()
@@ -19,11 +20,34 @@ const Register = () => {
                 body: JSON.stringify(formData),
             })
             const data = await response.json()
-            if (response.ok) {
-                alert("Registration successful!")
-            } else {
+            if (!response.ok) {
                 alert(data.message)
+                return
             }
+
+            const loginRes = await fetch("http://localhost:5000/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: formData.email, password: formData.password })
+            })
+            const loginData = await loginRes.json()
+            if (!loginRes.ok) {
+                alert(loginData.message)
+                return
+            }
+            const token = loginData.token
+
+            if (images.length > 0) {
+                const formImg = new FormData()
+                images.forEach(img => formImg.append("images", img))
+                await fetch("http://localhost:5000/api/users/upload-images", {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formImg
+                })
+            }
+
+            alert("Registration successful!")
         } catch (error) {
             console.error("Registration error:", error)
             alert("An error occurred during registration")
@@ -62,6 +86,12 @@ const Register = () => {
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })} 
                     required 
                 />
+                <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={e => setImages(prev => [...prev, ...Array.from(e.target.files)])}
+                />
                 <select 
                     value={formData.role} 
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
@@ -71,6 +101,19 @@ const Register = () => {
                     <option value="restaurant">Restaurant</option>
                     <option value="event_manager">Event Manager</option>
                 </select>
+
+                {images.length > 0 && (
+                    <div style={{ display: "flex", gap: 10, margin: "10px 0", flexWrap: "wrap" }}>
+                        {images.map((img, idx) => (
+                        <img
+                            key={idx}
+                            src={URL.createObjectURL(img)}
+                            alt="preview"
+                            style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 6, border: "1px solid #ccc" }}
+                        />
+                        ))}
+                    </div>
+                )}
                 <button type="submit">Register</button>
                 <p className="text-center mt-2">
                     Already have an account? <Link to="/login">Login</Link>

@@ -26,6 +26,18 @@ const Profile = () => {
         }
         fetchProfile()
     }, [])
+    const handleImageUpload = async (e) => {
+        const files = Array.from(e.target.files)
+        const formData = new FormData()
+        files.forEach(file => formData.append("images", file))
+        const token = localStorage.getItem("token")
+        await fetch("http://localhost:5000/api/users/upload-images", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData
+        })
+        window.location.reload()
+    }
 
     if (loading) return <div className="container"><div className="loading">Loading profile</div></div>
 
@@ -44,6 +56,12 @@ const Profile = () => {
                     
                     <strong>Role:</strong>
                     <span>{user.role}</span>
+                    <input type="file" multiple accept="image/*" onChange={handleImageUpload} />
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                        {user.images && user.images.map((img, idx) => (
+                            <img key={idx} src={`http://localhost:5000/${img}`} alt="profile" style={{ width: 100, borderRadius: 8 }} />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

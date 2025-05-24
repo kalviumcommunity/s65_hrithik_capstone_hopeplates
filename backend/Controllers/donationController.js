@@ -3,12 +3,14 @@ const Donation = require("../models/Donation")
 exports.createDonation = async (req, res) => {
     try {
         const { type, description, pickupLocation } = req.body
+        const imagePaths = req.files ? req.files.map(file => file.path) : []
 
         const donation = new Donation({
-            donor: req.user.id, 
+            donor: req.user.id,
             type,
             description,
             pickupLocation,
+            images: imagePaths
         })
 
         await donation.save()

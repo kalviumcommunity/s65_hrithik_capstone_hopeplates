@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
     password: String,
     role: { type: String, enum: ["donor", "volunteer", "ngo", "restaurant", "event_manager", "admin"], default: "donor" },
     location: { type: String, required: true },
-    verificationStatus: { type: String, enum: ["pending", "verified"], default: "pending" }
+    verificationStatus: { type: String, enum: ["pending", "verified"], default: "pending" },
+    images: [{ type: String }]
 }, { timestamps: true })
 
 UserSchema.pre("save", async function (next) {

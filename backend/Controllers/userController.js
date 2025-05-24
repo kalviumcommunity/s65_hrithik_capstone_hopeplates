@@ -41,15 +41,11 @@ exports.loginUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" })
         }
 
-        if (user.verificationStatus === "pending") {
-            return res.status(403).json({ message: "Your account is pending admin verification." })
-        }
-
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" })
 
         const token = generateToken(user)
-
+        
         res.status(200).json({
             message: "Login successful",
             token,
@@ -58,7 +54,8 @@ exports.loginUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                location: user.location
+                location: user.location,
+                verificationStatus: user.verificationStatus // send this to frontend
             }
         })
     } catch (err) {
@@ -78,6 +75,7 @@ exports.getUserProfile = async (req, res) => {
             email: user.email,
             role: user.role,
             location: user.location,
+            images: user.images 
         })
     } catch (err) {
         console.error("Error fetching user profile:", err.message)
@@ -114,6 +112,21 @@ exports.getPendingVerifications = async (req, res) => {
         res.status(200).json({ pendingUsers })
     } catch (err) {
         console.error("Error in getPendingVerifications:", err.message)
+        res.status(500).json({ error: err.message })
+    }
+}
+
+exports.uploadUserImages = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        const imagePaths = req.files.map(file => file.path)
+        user.images = user.images.concat(imagePaths)
+        await user.save()
+
+        res.status(200).json({ message: "Images uploaded", images: user.images })
+    } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
