@@ -6,7 +6,9 @@ const {
     loginUser,
     getUserProfile,
     updateUserProfile,
-    uploadUserImages
+    uploadUserImages,
+    uploadProfilePhoto,
+    deleteAboutImage
 } = require("../Controllers/userController")
 const { protect } = require("../middlewares/authMiddleware")
 
@@ -22,6 +24,8 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
+router.delete("/delete-about-image", protect, deleteAboutImage)
+router.post("/upload-profile-photo", protect, upload.single("profilePhoto"), uploadProfilePhoto)
 router.post("/upload-images", protect, upload.array("images", 10), uploadUserImages)
 router.post("/register", registerUser)
 router.post("/login", loginUser)

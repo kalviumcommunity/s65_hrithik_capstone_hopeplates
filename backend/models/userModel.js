@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     role: { type: String, enum: ["donor", "volunteer", "ngo", "restaurant", "event_manager", "admin"], default: "donor" },
     location: { type: String, required: true },
     verificationStatus: { type: String, enum: ["pending", "verified"], default: "pending" },
+    profilePhoto: { type: String },
     images: [{ type: String }]
 }, { timestamps: true })
 

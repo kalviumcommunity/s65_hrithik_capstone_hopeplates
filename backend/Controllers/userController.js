@@ -75,7 +75,8 @@ exports.getUserProfile = async (req, res) => {
             email: user.email,
             role: user.role,
             location: user.location,
-            images: user.images 
+            images: user.images,
+            profilePhoto: user.profilePhoto 
         })
     } catch (err) {
         console.error("Error fetching user profile:", err.message)
@@ -126,6 +127,31 @@ exports.uploadUserImages = async (req, res) => {
         await user.save()
 
         res.status(200).json({ message: "Images uploaded", images: user.images })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+exports.uploadProfilePhoto = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
+        user.profilePhoto = req.file.path
+        await user.save()
+        res.status(200).json({ message: "Profile photo uploaded", profilePhoto: user.profilePhoto })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+exports.deleteAboutImage = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
+        const { imagePath } = req.body
+        user.images = user.images.filter(img => img !== imagePath)
+        await user.save()
+        res.status(200).json({ message: "Image deleted" })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
