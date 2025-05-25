@@ -9,11 +9,13 @@ const Register = () => {
         location: "",
         role: "donor",
     })
-    const [images, setImages] = useState([])
+    const [profilePhoto, setProfilePhoto] = useState(null)
+    const [aboutImages, setAboutImages] = useState([])
 
     const handleRegister = async (e) => {
         e.preventDefault()
         try {
+
             const response = await fetch("http://localhost:5000/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -37,9 +39,19 @@ const Register = () => {
             }
             const token = loginData.token
 
-            if (images.length > 0) {
+            if (profilePhoto) {
                 const formImg = new FormData()
-                images.forEach(img => formImg.append("images", img))
+                formImg.append("profilePhoto", profilePhoto)
+                await fetch("http://localhost:5000/api/users/upload-profile-photo", {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formImg
+                })
+            }
+
+            if (aboutImages.length > 0) {
+                const formImg = new FormData()
+                aboutImages.forEach(img => formImg.append("images", img))
                 await fetch("http://localhost:5000/api/users/upload-images", {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
@@ -86,12 +98,6 @@ const Register = () => {
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })} 
                     required 
                 />
-                <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={e => setImages(prev => [...prev, ...Array.from(e.target.files)])}
-                />
                 <select 
                     value={formData.role} 
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
@@ -102,15 +108,38 @@ const Register = () => {
                     <option value="event_manager">Event Manager</option>
                 </select>
 
-                {images.length > 0 && (
-                    <div style={{ display: "flex", gap: 10, margin: "10px 0", flexWrap: "wrap" }}>
-                        {images.map((img, idx) => (
+                <label>Profile Photo (required):</label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    required
+                    onChange={e => setProfilePhoto(e.target.files[0])}
+                />
+                {profilePhoto && (
+                    <div style={{ margin: "10px 0" }}>
                         <img
-                            key={idx}
-                            src={URL.createObjectURL(img)}
-                            alt="preview"
+                            src={URL.createObjectURL(profilePhoto)}
+                            alt="profile preview"
                             style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 6, border: "1px solid #ccc" }}
                         />
+                    </div>
+                )}
+                <label>About Images (you can select multiple):</label>
+                <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={e => setAboutImages(prev => [...prev, ...Array.from(e.target.files)])}
+                />
+                {aboutImages.length > 0 && (
+                    <div style={{ display: "flex", gap: 10, margin: "10px 0", flexWrap: "wrap" }}>
+                        {aboutImages.map((img, idx) => (
+                            <img
+                                key={idx}
+                                src={URL.createObjectURL(img)}
+                                alt="about preview"
+                                style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 6, border: "1px solid #ccc" }}
+                            />
                         ))}
                     </div>
                 )}
