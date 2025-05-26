@@ -1,6 +1,6 @@
 const express = require("express")
 const dotenv = require("dotenv")
-const cors = require("cors") // Import cors
+const cors = require("cors")
 const connectDB = require("./config/db")
 const adminRoutes = require("./routes/adminRoutes")
 const userRoutes = require("./routes/userRoutes")
@@ -22,7 +22,10 @@ requiredEnvVars.forEach((key) => {
 const app = express()
 
 app.use(cors({
-    origin: "http://localhost:5173", 
+    origin: [
+        "http://localhost:5173",
+        "https://your-frontend-domain.onrender.com" // Add your deployed frontend URL here
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true 
 }))
@@ -38,6 +41,10 @@ app.use("/api/ngos", ngoRoutes)
 app.use("/api/restaurants", restaurantRoutes)
 app.use("/api/event-managers", eventManagerRoutes)
 app.use("/uploads", express.static("uploads"))
+
+app.get("/", (req, res) => {
+    res.send("Hope Plates API is running!");
+});
 
 const PORT = process.env.PORT
 if (!PORT) {
