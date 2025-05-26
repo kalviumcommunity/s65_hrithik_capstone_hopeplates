@@ -10,7 +10,7 @@ const Profile = () => {
         location: ""
     })
     const [profilePhotoFile, setProfilePhotoFile] = useState(null)
-    const [aboutImages, setAboutImages] = useState([]) 
+    const [aboutImages, setAboutImages] = useState([])
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -51,7 +51,6 @@ const Profile = () => {
         e.preventDefault()
         const token = localStorage.getItem("token")
         try {
-
             const response = await fetch(`http://localhost:5000/api/users/${user.id}`, {
                 method: "PUT",
                 headers: {
@@ -91,7 +90,6 @@ const Profile = () => {
             alert(err.message)
         }
     }
-
 
     const handleDeleteProfilePhoto = async () => {
         const token = localStorage.getItem("token")
@@ -200,14 +198,13 @@ const Profile = () => {
                                 accept="image/*"
                                 onChange={e => setAboutImages(Array.from(e.target.files))}
                             />
-                            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 10 }}>
-                                
+                            <div style={{ display: "flex", gap: 20, flexWrap: "wrap", marginTop: 10 }}>
                                 {user.images && user.images.map((img, idx) => (
                                     <div key={idx} style={{ position: "relative", display: "inline-block" }}>
                                         <img
                                             src={`http://localhost:5000/${img}`}
                                             alt="about"
-                                            style={{ width: 60, height: 60, borderRadius: 8, border: "1px solid #ccc" }}
+                                            style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover" }}
                                         />
                                         <span
                                             onClick={() => handleDeleteAboutImage(img)}
@@ -221,23 +218,23 @@ const Profile = () => {
                                                 cursor: "pointer",
                                                 fontWeight: "bold",
                                                 color: "#d00",
-                                                width: 20,
-                                                height: 20,
+                                                width: 28,
+                                                height: 28,
                                                 display: "flex",
                                                 alignItems: "center",
-                                                justifyContent: "center"
+                                                justifyContent: "center",
+                                                fontSize: 20
                                             }}
                                             title="Delete image"
                                         >✖</span>
                                     </div>
                                 ))}
-
                                 {aboutImages.length > 0 && aboutImages.map((img, idx) => (
                                     <img
                                         key={idx}
                                         src={URL.createObjectURL(img)}
                                         alt="about preview"
-                                        style={{ width: 60, height: 60, borderRadius: 8, border: "1px solid #ccc" }}
+                                        style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover" }}
                                     />
                                 ))}
                             </div>
@@ -253,9 +250,14 @@ const Profile = () => {
                             <strong>Role:</strong>
                             <span>{user.role}</span>
                             <button onClick={handleEdit} style={{ marginTop: 10 }}>Edit Profile</button>
-                            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 10 }}>
+                            <div style={{ display: "flex", gap: 20, flexWrap: "wrap", marginTop: 10 }}>
                                 {user.images && user.images.map((img, idx) => (
-                                    <img key={idx} src={`http://localhost:5000/${img}`} alt="about" style={{ width: 100, borderRadius: 8 }} />
+                                    <img
+                                        key={idx}
+                                        src={`http://localhost:5000/${img}`}
+                                        alt="about"
+                                        style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover" }}
+                                    />
                                 ))}
                             </div>
                         </>

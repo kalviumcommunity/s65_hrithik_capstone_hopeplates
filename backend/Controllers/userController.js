@@ -44,6 +44,13 @@ exports.loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" })
 
+        if (
+            user.role !== "donor" &&
+            user.verificationStatus !== "verified"
+        ) {
+            return res.status(403).json({ message: "Your account is pending admin verification." })
+        }
+
         const token = generateToken(user)
         
         res.status(200).json({
@@ -55,7 +62,7 @@ exports.loginUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 location: user.location,
-                verificationStatus: user.verificationStatus // send this to frontend
+                verificationStatus: user.verificationStatus
             }
         })
     } catch (err) {
