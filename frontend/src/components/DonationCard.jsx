@@ -43,7 +43,7 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                 </button>
             )}
 
-            {isDonor && (
+            {isDonor && donation.status === "pending" && (
                 <div style={{ marginTop: 10 }}>
                     <button
                         className="action-button"

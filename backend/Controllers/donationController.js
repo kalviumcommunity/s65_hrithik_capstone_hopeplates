@@ -75,7 +75,9 @@ exports.updateDonationStatus = async (req, res) => {
 
         donation.status = status
         await donation.save()
-        await donation.populate("claimedBy", "name email role")
+
+        await donation.populate("donor", "name role _id")
+        await donation.populate("claimedBy", "name email role _id")
 
         res.status(200).json({ message: "Donation status updated successfully", donation })
     } catch (err) {

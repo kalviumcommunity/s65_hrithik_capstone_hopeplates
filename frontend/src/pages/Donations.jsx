@@ -17,7 +17,6 @@ const Donations = () => {
                 const data = await response.json();
                 setDonations(data);
 
-                // Decode the token to get the user's ID and role
                 const user = JSON.parse(atob(token.split(".")[1]));
                 setUserId(user.id);
                 setUserRole(user.role);
@@ -76,6 +75,11 @@ const Donations = () => {
         }
     };
 
+
+    const handleUpdate = (donation) => {
+        alert(`Update donation: ${donation._id}`);
+    };
+
     return (
         <div className="container">
             <h1>Your Donations</h1>
@@ -87,7 +91,8 @@ const Donations = () => {
                         <DonationCard
                             key={donation._id}
                             donation={donation}
-                            onDelete={handleDelete} 
+                            onDelete={handleDelete}
+                            onUpdate={handleUpdate}  
                             onStatusChange={handleStatusChange}
                             userId={userId}
                             userRole={userRole}
