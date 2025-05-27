@@ -5,6 +5,16 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
             <h3>{donation.type}</h3>
             <p>{donation.description}</p>
             <p>Pickup Location: {donation.pickupLocation}</p>
+            {donation.pickupLocation && (
+                <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(donation.pickupLocation)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "#007bff"}}
+                >
+                    View on Map
+                </a>
+            )}
             <p>Status: <span className={`status-badge ${donation.status.toLowerCase()}`}>{donation.status}</span></p>
             <p>Donor Name: {donation.donor?.name }</p>
             <p>Type : {donation.donor?.role}</p>
