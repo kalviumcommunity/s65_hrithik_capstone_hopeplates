@@ -24,7 +24,7 @@ const app = express()
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://your-frontend-domain.onrender.com" // Add your deployed frontend URL here
+        "https://your-frontend-domain.onrender.com" 
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true 

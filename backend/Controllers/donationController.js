@@ -25,7 +25,7 @@ exports.getAllDonations = async (req, res) => {
     try {
         let donations
         if (req.user.role === "ngo") {
-            donations = await Donation.find({ pickupLocation: req.user.location })
+            donations = await Donation.find()
                 .populate("donor", "name role _id")
                 .populate("claimedBy", "name role _id")
         } else {

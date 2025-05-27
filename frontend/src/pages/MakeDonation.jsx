@@ -7,8 +7,39 @@ const MakeDonation = () => {
         description: "",
         pickupLocation: "",
     })
-    const [images, setImages] = useState([]) // <-- Add this line
+    const [images, setImages] = useState([])
+    const [locLoading, setLocLoading] = useState(false)
     const navigate = useNavigate()
+
+
+    const handleGetLocation = async () => {
+        setLocLoading(true)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const { latitude, longitude } = position.coords
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                    const data = await res.json()
+                    setFormData(f => ({
+                        ...f,
+                        pickupLocation: data.display_name || `${latitude},${longitude}`
+                    }))
+                } catch (err) {
+                    setFormData(f => ({
+                        ...f,
+                        pickupLocation: `${latitude},${longitude}`
+                    }))
+                }
+                setLocLoading(false)
+            }, (err) => {
+                alert("Location access denied or unavailable.")
+                setLocLoading(false)
+            })
+        } else {
+            alert("Geolocation is not supported by this browser.")
+            setLocLoading(false)
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -69,7 +100,16 @@ const MakeDonation = () => {
                         value={formData.pickupLocation}
                         onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
                         required
+                        style={{ width: "80%" }}
                     />
+                    <button
+                        type="button"
+                        onClick={handleGetLocation}
+                        disabled={locLoading}
+                        style={{ marginLeft: 10 }}
+                    >
+                        {locLoading ? "Getting..." : "Use My Location"}
+                    </button>
                 </label>
                 <input
                     type="file"
