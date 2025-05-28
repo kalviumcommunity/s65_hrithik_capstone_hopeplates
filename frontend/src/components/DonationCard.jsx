@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, userRole }) => {
     const isDonor = donation.donor?._id === userId
     return (
@@ -16,7 +18,19 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                 </a>
             )}
             <p>Status: <span className={`status-badge ${donation.status.toLowerCase()}`}>{donation.status}</span></p>
-            <p>Donor Name: {donation.donor?.name }</p>
+            <p>
+                Donor Name:{" "}
+                {donation.donor?._id ? (
+                    <Link
+                        to={`/users/${donation.donor._id}`}
+                        style={{ color: "#007bff", textDecoration: "underline", cursor: "pointer" }}
+                    >
+                        {donation.donor.name}
+                    </Link>
+                ) : (
+                    donation.donor?.name
+                )}
+            </p>
             <p>Type : {donation.donor?.role}</p>
             {donation.images && donation.images.length > 0 && (
                 <div style={{ display: "flex", gap: 10, margin: "10px 0", flexWrap: "wrap" }}>

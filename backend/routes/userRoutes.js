@@ -8,7 +8,8 @@ const {
     updateUserProfile,
     uploadUserImages,
     uploadProfilePhoto,
-    deleteAboutImage
+    deleteAboutImage,
+    getUserById
 } = require("../Controllers/userController")
 const { protect } = require("../middlewares/authMiddleware")
 
@@ -30,7 +31,7 @@ router.post("/upload-images", protect, upload.array("images", 10), uploadUserIma
 router.post("/register", registerUser)
 router.post("/login", loginUser)
 router.get("/profile", protect, getUserProfile) 
-router.get("/:id", protect, getUserProfile) 
 router.put("/:id", protect, updateUserProfile)
+router.get("/:id", protect, getUserById);
 
 module.exports = router
