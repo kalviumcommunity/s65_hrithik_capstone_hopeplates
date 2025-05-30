@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, userRole }) => {
-    const isDonor = donation.donor?._id === userId
+    const isDonor = donation.donor?._id === userId;
     return (
         <div className="card donation-card">
             <h3>{donation.type}</h3>
@@ -22,8 +22,8 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                 Donor Name:{" "}
                 {donation.donor?._id ? (
                     <Link
-                        to={`/users/${donation.donor._id}`}
-                        style={{ color: "#007bff", textDecoration: "underline", cursor: "pointer" }}
+                        to={donation.donor._id === userId ? "/profile" : `/users/${donation.donor._id}`}
+                        style={{ color: "#007bff", cursor: "pointer" }}
                     >
                         {donation.donor.name}
                     </Link>
@@ -44,9 +44,20 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                     ))}
                 </div>
             )}
-            {isDonor && donation.status === "claimed" && donation.claimedBy && (
+            {["claimed", "completed"].includes(donation.status) && donation.claimedBy && (
                 <p>
-                    Claimed By: <strong>{donation.claimedBy.name}</strong> ({donation.claimedBy.role})
+                    Claimed By:{" "}
+                    {donation.claimedBy._id ? (
+                        <Link
+                            to={donation.claimedBy._id === userId ? "/profile" : `/users/${donation.claimedBy._id}`}
+                            style={{ color: "#007bff", cursor: "pointer" }}
+                        >
+                            {donation.claimedBy.name}
+                        </Link>
+                    ) : (
+                        donation.claimedBy.name
+                    )}{" "}
+                    ({donation.claimedBy.role})
                 </p>
             )}
 
