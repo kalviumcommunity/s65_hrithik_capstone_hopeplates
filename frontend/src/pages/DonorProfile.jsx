@@ -6,6 +6,9 @@ const DonorProfile = () => {
     const [donor, setDonor] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const [modalOpen, setModalOpen] = useState(false);
+    const [currentImgIdx, setCurrentImgIdx] = useState(0);
+
     useEffect(() => {
         const fetchDonor = async () => {
             try {
@@ -26,6 +29,23 @@ const DonorProfile = () => {
 
     if (loading) return <div className="container"><div className="loading">Loading profile...</div></div>;
     if (!donor) return <div className="container"><div className="loading">Donor not found.</div></div>;
+
+    const handleImageClick = (idx) => {
+        setCurrentImgIdx(idx);
+        setModalOpen(true);
+    };
+
+    const handlePrev = (e) => {
+        e.stopPropagation();
+        setCurrentImgIdx((prev) => (prev === 0 ? donor.images.length - 1 : prev - 1));
+    };
+
+    const handleNext = (e) => {
+        e.stopPropagation();
+        setCurrentImgIdx((prev) => (prev === donor.images.length - 1 ? 0 : prev + 1));
+    };
+
+    const handleClose = () => setModalOpen(false);
 
     return (
         <div className="container">
@@ -82,12 +102,58 @@ const DonorProfile = () => {
                                 key={idx}
                                 src={`http://localhost:5000/${img}`}
                                 alt="about"
-                                style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover" }}
+                                style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover", cursor: "pointer" }}
+                                onClick={() => handleImageClick(idx)}
                             />
                         ))}
                     </div>
                 </div>
             </div>
+            {modalOpen && donor.images && (
+                <div
+                    style={{
+                        position: "fixed",
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        background: "rgba(0,0,0,0.8)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 1000
+                    }}
+                    onClick={handleClose}
+                >
+                    <button
+                        onClick={handlePrev}
+                        style={{
+                            position: "absolute", left: 40, top: "50%",
+                            fontSize: 40, color: "#fff", background: "none", border: "none", cursor: "pointer"
+                        }}
+                        aria-label="Previous"
+                    >&#8592;</button>
+                    <img
+                        src={`http://localhost:5000/${donor.images[currentImgIdx]}`}
+                        alt="about large"
+                        style={{ maxHeight: "80vh", maxWidth: "80vw", borderRadius: 16, border: "4px solid #fff", boxShadow: "0 0 40px #000" }}
+                        onClick={e => e.stopPropagation()}
+                    />
+                    <button
+                        onClick={handleNext}
+                        style={{
+                            position: "absolute", right: 40, top: "50%",
+                            fontSize: 40, color: "#fff", background: "none", border: "none", cursor: "pointer"
+                        }}
+                        aria-label="Next"
+                    >&#8594;</button>
+                    <button
+                        onClick={handleClose}
+                        style={{
+                            position: "absolute", top: 30, right: 30,
+                            fontSize: 30, color: "#fff", background: "none", border: "none", cursor: "pointer"
+                        }}
+                        aria-label="Close"
+                    >&#10006;</button>
+                </div>
+            )}
         </div>
     );
 };
