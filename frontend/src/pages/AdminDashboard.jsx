@@ -8,7 +8,7 @@ const AdminDashboard = () => {
         const fetchPendingVerifications = async () => {
             const token = localStorage.getItem("token")
             try {
-                const response = await fetch("http://localhost:5000/api/admin/pending-verifications", {
+                const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/admin/pending-verifications", {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 if (!response.ok) {
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
     const handleVerify = async (id) => {
         const token = localStorage.getItem("token")
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/verify/user/${id}`, {
+            const response = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/admin/verify/user/${id}`, {
                 method: "PUT",
                 headers: { Authorization: `Bearer ${token}` },
             })
@@ -49,7 +49,7 @@ const AdminDashboard = () => {
     const handleReject = async (id) => {
         const token = localStorage.getItem("token")
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/reject/user/${id}`, {
+            const response = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/admin/reject/user/${id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             })
@@ -87,7 +87,7 @@ const AdminDashboard = () => {
                                 {user.images.map((img, idx) => (
                                 <img
                                     key={idx}
-                                    src={`http://localhost:5000/${img}`}
+                                    src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${img}`}
                                     alt="user"
                                     style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8, border: "1px solid #ccc" }}
                                 />

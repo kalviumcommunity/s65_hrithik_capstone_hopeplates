@@ -11,7 +11,7 @@ const Donations = () => {
         const fetchDonations = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch("http://localhost:5000/api/donations", {
+                const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/donations", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const data = await response.json();
@@ -32,7 +32,7 @@ const Donations = () => {
     const handleStatusChange = async (id, status) => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:5000/api/donations/${id}/status`, {
+            const response = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/donations/${id}/status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const Donations = () => {
     const handleDelete = async (id) => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:5000/api/donations/${id}`, {
+            const response = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/donations/${id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });

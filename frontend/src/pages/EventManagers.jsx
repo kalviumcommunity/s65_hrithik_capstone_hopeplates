@@ -8,7 +8,7 @@ const EventManagers = () => {
     useEffect(() => {
         const fetchEventManagers = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/event-managers")
+                const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/event-managers")
                 const data = await response.json()
                 setEventManagers(data)
             } catch (error) {

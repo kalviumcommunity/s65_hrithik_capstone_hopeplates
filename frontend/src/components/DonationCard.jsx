@@ -37,7 +37,7 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                     {donation.images.map((img, idx) => (
                         <img
                             key={idx}
-                            src={`http://localhost:5000/${img}`}
+                            src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${img}`}
                             alt="donation"
                             style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 6, border: "1px solid #ccc" }}
                         />

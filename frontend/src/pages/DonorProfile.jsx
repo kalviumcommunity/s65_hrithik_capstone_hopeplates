@@ -13,7 +13,7 @@ const DonorProfile = () => {
         const fetchDonor = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await fetch(`http://localhost:5000/api/users/${id}`, {
+                const res = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const data = await res.json();
@@ -55,7 +55,7 @@ const DonorProfile = () => {
                     {donor.profilePhoto && (
                         <div style={{ position: "relative", display: "inline-block" }}>
                             <img
-                                src={`http://localhost:5000/${donor.profilePhoto}`}
+                                src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${donor.profilePhoto}`}
                                 alt="profile"
                                 style={{
                                     width: 60,
@@ -100,7 +100,7 @@ const DonorProfile = () => {
                         {donor.images && donor.images.length > 0 && donor.images.map((img, idx) => (
                             <img
                                 key={idx}
-                                src={`http://localhost:5000/${img}`}
+                                src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${img}`}
                                 alt="about"
                                 style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover", cursor: "pointer" }}
                                 onClick={() => handleImageClick(idx)}
@@ -131,7 +131,7 @@ const DonorProfile = () => {
                         aria-label="Previous"
                     >&#8592;</button>
                     <img
-                        src={`http://localhost:5000/${donor.images[currentImgIdx]}`}
+                        src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${donor.images[currentImgIdx]}`}
                         alt="about large"
                         style={{ maxHeight: "80vh", maxWidth: "80vw", borderRadius: 16, border: "4px solid #fff", boxShadow: "0 0 40px #000" }}
                         onClick={e => e.stopPropagation()}

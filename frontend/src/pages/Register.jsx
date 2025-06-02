@@ -16,7 +16,7 @@ const Register = () => {
         e.preventDefault()
         try {
 
-            const response = await fetch("http://localhost:5000/api/users/register", {
+            const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
@@ -27,7 +27,7 @@ const Register = () => {
                 return
             }
 
-            const loginRes = await fetch("http://localhost:5000/api/users/login", {
+            const loginRes = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: formData.email, password: formData.password })
@@ -42,7 +42,7 @@ const Register = () => {
             if (profilePhoto) {
                 const formImg = new FormData()
                 formImg.append("profilePhoto", profilePhoto)
-                await fetch("http://localhost:5000/api/users/upload-profile-photo", {
+                await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/upload-profile-photo", {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formImg
@@ -52,7 +52,7 @@ const Register = () => {
             if (aboutImages.length > 0) {
                 const formImg = new FormData()
                 aboutImages.forEach(img => formImg.append("images", img))
-                await fetch("http://localhost:5000/api/users/upload-images", {
+                await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/upload-images", {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formImg
