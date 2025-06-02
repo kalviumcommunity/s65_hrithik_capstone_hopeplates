@@ -16,7 +16,7 @@ const Profile = () => {
         const fetchProfile = async () => {
             const token = localStorage.getItem("token")
             try {
-                const response = await fetch("http://localhost:5000/api/users/profile", {
+                const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/profile", {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 if (!response.ok) {
@@ -51,7 +51,7 @@ const Profile = () => {
         e.preventDefault()
         const token = localStorage.getItem("token")
         try {
-            const response = await fetch(`http://localhost:5000/api/users/${user.id}`, {
+            const response = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/${user.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const Profile = () => {
             if (profilePhotoFile) {
                 const formData = new FormData()
                 formData.append("profilePhoto", profilePhotoFile)
-                await fetch("http://localhost:5000/api/users/upload-profile-photo", {
+                await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/upload-profile-photo", {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formData
@@ -77,7 +77,7 @@ const Profile = () => {
             if (aboutImages.length > 0) {
                 const formData = new FormData()
                 aboutImages.forEach(file => formData.append("images", file))
-                await fetch("http://localhost:5000/api/users/upload-images", {
+                await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/upload-images", {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formData
@@ -93,7 +93,7 @@ const Profile = () => {
 
     const handleDeleteProfilePhoto = async () => {
         const token = localStorage.getItem("token")
-        await fetch("http://localhost:5000/api/users/delete-profile-photo", {
+        await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/delete-profile-photo", {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -102,7 +102,7 @@ const Profile = () => {
 
     const handleDeleteAboutImage = async (imgPath) => {
         const token = localStorage.getItem("token")
-        await fetch("http://localhost:5000/api/users/delete-about-image", {
+        await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/delete-about-image", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const Profile = () => {
                     {user.profilePhoto && (
                         <div style={{ position: "relative", display: "inline-block" }}>
                             <img
-                                src={`http://localhost:5000/${user.profilePhoto}`}
+                                src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${user.profilePhoto}`}
                                 alt="profile"
                                 style={{
                                     width: 60,
@@ -202,7 +202,7 @@ const Profile = () => {
                                 {user.images && user.images.map((img, idx) => (
                                     <div key={idx} style={{ position: "relative", display: "inline-block" }}>
                                         <img
-                                            src={`http://localhost:5000/${img}`}
+                                            src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${img}`}
                                             alt="about"
                                             style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover" }}
                                         />
@@ -254,7 +254,7 @@ const Profile = () => {
                                 {user.images && user.images.map((img, idx) => (
                                     <img
                                         key={idx}
-                                        src={`http://localhost:5000/${img}`}
+                                        src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${img}`}
                                         alt="about"
                                         style={{ width: 220, height: 220, borderRadius: 16, border: "2px solid #ccc", objectFit: "cover" }}
                                     />

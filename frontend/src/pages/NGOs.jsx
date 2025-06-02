@@ -8,7 +8,7 @@ const NGOs = () => {
     useEffect(() => {
         const fetchNGOs = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/ngos")
+                const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/ngos")
                 const data = await response.json()
                 setNgos(data)
             } catch (error) {

@@ -9,7 +9,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
-            const response = await fetch("http://localhost:5000/api/users/login", {
+            const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),

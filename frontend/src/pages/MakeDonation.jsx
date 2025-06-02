@@ -51,7 +51,7 @@ const MakeDonation = () => {
             form.append("pickupLocation", formData.pickupLocation)
             images.forEach(img => form.append("images", img))
 
-            const response = await fetch("http://localhost:5000/api/donations", {
+            const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/donations", {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
