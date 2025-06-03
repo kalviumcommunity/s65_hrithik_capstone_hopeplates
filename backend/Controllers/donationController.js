@@ -95,3 +95,13 @@ exports.deleteDonation = async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 }
+
+exports.getDonationCountByUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const count = await Donation.countDocuments({ donor: userId });
+        res.json({ count });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

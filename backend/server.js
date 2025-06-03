@@ -40,6 +40,7 @@ app.use("/api/donations", donationRoutes)
 app.use("/api/ngos", ngoRoutes)
 app.use("/api/restaurants", restaurantRoutes)
 app.use("/api/event-managers", eventManagerRoutes)
+app.use("/api/donations", donationRoutes)
 app.use("/uploads", express.static("uploads"))
 
 app.get("/", (req, res) => {

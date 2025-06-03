@@ -1,5 +1,21 @@
 import { useEffect, useState } from "react"
 
+const badgeMilestones = [
+    { min: 1500, img: "/src/images/1500.png" },
+    { min: 1000, img: "/src/images/1000.png" },
+    { min: 900, img: "/src/images/900.png" },
+    { min: 800, img: "/src/images/800.png" },
+    { min: 700, img: "/src/images/700.png" },
+    { min: 600, img: "/src/images/600.png" },
+    { min: 500, img: "/src/images/500.png" },
+    { min: 400, img: "/src/images/400.png" },
+    { min: 300, img: "/src/images/300.png" },
+    { min: 200, img: "/src/images/200.png" },
+    { min: 100, img: "/src/images/100.png" },
+    { min: 50, img: "/src/images/50.png" },
+    { min: 10, img: "/src/images/10.png" }
+];
+
 const Profile = () => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -11,6 +27,7 @@ const Profile = () => {
     })
     const [profilePhotoFile, setProfilePhotoFile] = useState(null)
     const [aboutImages, setAboutImages] = useState([])
+    const [donationCount, setDonationCount] = useState(0)
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -30,6 +47,10 @@ const Profile = () => {
                     email: data.email,
                     location: data.location
                 })
+                // Fetch donation count for this user
+                const countRes = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/donations/count/${data.id}`)
+                const countData = await countRes.json()
+                setDonationCount(countData.count || 0)
             } catch (err) {
                 console.error("Error fetching profile:", err.message)
                 alert(err.message)
@@ -118,6 +139,9 @@ const Profile = () => {
 
     if (loading) return <div className="container"><div className="loading">Loading profile</div></div>
 
+    // Find the highest badge the user qualifies for
+    const badge = badgeMilestones.find(b => donationCount >= b.min);
+
     return (
         <div className="container">
             <div className="profile-container">
@@ -160,6 +184,17 @@ const Profile = () => {
                             )}
                         </div>
                     )}
+                    {badge && (
+                        <img
+                            src={badge.img}
+                            alt={`Badge for ${badge.min}+ donations`}
+                            title={`Badge for ${badge.min}+ donations`}
+                            style={{ width: 60, height: 60, marginLeft: 16 }}
+                        />
+                    )}
+                </div>
+                <div style={{ marginTop: 8 }}>
+                    <strong>Donations:</strong> {donationCount}
                 </div>
                 <div className="profile-details">
                     {editMode ? (
