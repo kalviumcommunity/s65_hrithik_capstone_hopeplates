@@ -5,7 +5,8 @@ const {
     getAllDonations,
     getDonationById,
     updateDonationStatus,
-    deleteDonation
+    deleteDonation,
+    getDonationCountByUser
 } = require("../Controllers/donationController")
 const { protect } = require("../middlewares/authMiddleware")
 
@@ -26,5 +27,16 @@ router.get("/", protect, getAllDonations)
 router.get("/:id", protect, getDonationById)
 router.put("/:id/status", protect, updateDonationStatus)
 router.delete("/:id", protect, deleteDonation)
+router.get("/count/:userId", getDonationCountByUser)
+router.get("/count/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const count = await Donation.countDocuments({ donor: userId });
+        res.json({ count });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 
 module.exports = router

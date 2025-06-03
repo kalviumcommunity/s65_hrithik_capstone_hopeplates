@@ -1,10 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+const badgeMilestones = [
+    { min: 1500, img: "/src/images/1500.png" },
+    { min: 1000, img: "/src/images/1000.png" },
+    { min: 900, img: "/src/images/900.png" },
+    { min: 800, img: "/src/images/800.png" },
+    { min: 700, img: "/src/images/700.png" },
+    { min: 600, img: "/src/images/600.png" },
+    { min: 500, img: "/src/images/500.png" },
+    { min: 400, img: "/src/images/400.png" },
+    { min: 300, img: "/src/images/300.png" },
+    { min: 200, img: "/src/images/200.png" },
+    { min: 100, img: "/src/images/100.png" },
+    { min: 50, img: "/src/images/50.png" },
+    { min: 10, img: "/src/images/10.png" }
+];
+
 const DonorProfile = () => {
     const { id } = useParams();
     const [donor, setDonor] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const [donationCount, setDonationCount] = useState(0);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [currentImgIdx, setCurrentImgIdx] = useState(0);
@@ -27,6 +45,19 @@ const DonorProfile = () => {
         fetchDonor();
     }, [id]);
 
+    useEffect(() => {
+        const fetchDonationCount = async () => {
+            try {
+                const res = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/donations/count/${id}`);
+                const data = await res.json();
+                setDonationCount(data.count || 0);
+            } catch (err) {
+                setDonationCount(0);
+            }
+        };
+        fetchDonationCount();
+    }, [id]);
+
     if (loading) return <div className="container"><div className="loading">Loading profile...</div></div>;
     if (!donor) return <div className="container"><div className="loading">Donor not found.</div></div>;
 
@@ -46,6 +77,8 @@ const DonorProfile = () => {
     };
 
     const handleClose = () => setModalOpen(false);
+
+    const badge = badgeMilestones.find(b => donationCount >= b.min);
 
     return (
         <div className="container">
@@ -67,6 +100,17 @@ const DonorProfile = () => {
                             />
                         </div>
                     )}
+                    {badge && (
+                        <img
+                            src={badge.img}
+                            alt={`Badge for ${badge.min}+ donations`}
+                            title={`Badge for ${badge.min}+ donations`}
+                            style={{ width: 60, height: 60, marginLeft: 16 }}
+                        />
+                    )}
+                </div>
+                <div style={{ marginTop: 8 }}>
+                    <strong>Donations:</strong> {donationCount}
                 </div>
                 <div className="profile-details" style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16 }}>
                     <div>
@@ -156,6 +200,6 @@ const DonorProfile = () => {
             )}
         </div>
     );
-};
+}
 
 export default DonorProfile;
