@@ -17,8 +17,7 @@ const Donations = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 const data = await response.json();
-                setDonations(data);
-
+                setDonations(data.filter(d => d.status === "pending"));
                 const user = JSON.parse(atob(token.split(".")[1]));
                 setUserId(user.id);
                 setUserRole(user.role);
@@ -46,11 +45,8 @@ const Donations = () => {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
             }
-            const updatedDonation = await response.json();
             setDonations((prev) =>
-                prev.map((donation) =>
-                    donation._id === id ? updatedDonation.donation : donation
-                )
+                prev.filter((donation) => donation._id !== id)
             );
         } catch (err) {
             console.error("Error updating donation status:", err.message);
@@ -81,7 +77,6 @@ const Donations = () => {
         alert(`Update donation: ${donation._id}`);
     };
 
-    // Add Donation History button
     const handleGoToHistory = () => {
         navigate("/donation-history");
     };
