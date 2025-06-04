@@ -12,7 +12,8 @@ import EventManagers from "./pages/EventManagers"
 import AdminDashboard from "./pages/AdminDashboard"
 import ProtectedRoute from "./components/ProtectedRoute"
 import MakeDonation from "./pages/MakeDonation"
-import DonorProfile from "./pages/DonorProfile"; 
+import DonorProfile from "./pages/DonorProfile"
+import DonationHistory from "./pages/DonationHistory"
 import "./App.css"
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
                 <Profile />
               </ProtectedRoute>
             } />
+            <Route path="/donation-history" element={<DonationHistory />} />
             <Route path="/donations" element={<Donations />} />
             <Route path="/ngos" element={<NGOs />} />
             <Route path="/restaurants" element={<Restaurants />} />
