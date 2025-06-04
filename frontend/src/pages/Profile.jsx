@@ -189,7 +189,7 @@ const Profile = () => {
                             src={badge.img}
                             alt={`Badge for ${badge.min}+ donations`}
                             title={`Badge for ${badge.min}+ donations`}
-                            style={{ width: 60, height: 60, marginLeft: 16 }}
+                            style={{ width: 80, height: 80, marginLeft: 16 }}
                         />
                     )}
                 </div>

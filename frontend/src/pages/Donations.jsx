@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DonationCard from "../components/DonationCard";
 
 const Donations = () => {
@@ -6,6 +7,7 @@ const Donations = () => {
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState(null);
     const [userRole, setUserRole] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDonations = async () => {
@@ -75,14 +77,21 @@ const Donations = () => {
         }
     };
 
-
     const handleUpdate = (donation) => {
         alert(`Update donation: ${donation._id}`);
+    };
+
+    // Add Donation History button
+    const handleGoToHistory = () => {
+        navigate("/donation-history");
     };
 
     return (
         <div className="container">
             <h1>Your Donations</h1>
+            <button onClick={handleGoToHistory} style={{ marginBottom: 16 }}>
+                View Donation History
+            </button>
             {loading ? (
                 <div className="loading">Loading donations...</div>
             ) : donations.length > 0 ? (
@@ -92,7 +101,7 @@ const Donations = () => {
                             key={donation._id}
                             donation={donation}
                             onDelete={handleDelete}
-                            onUpdate={handleUpdate}  
+                            onUpdate={handleUpdate}
                             onStatusChange={handleStatusChange}
                             userId={userId}
                             userRole={userRole}

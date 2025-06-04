@@ -22,6 +22,24 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
+router.get("/history", protect, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const donations = await Donation.find({
+            status: "claimed",
+            $or: [
+                { donor: userId },
+                { claimedBy: userId }
+            ]
+        })
+        .populate("donor", "name")
+        .populate("claimedBy", "name");
+        res.json(donations);
+    } catch (err) {
+        console.error("Donation history error:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
 router.post("/", protect, upload.array("images", 5), createDonation)
 router.get("/", protect, getAllDonations)
 router.get("/:id", protect, getDonationById)
@@ -37,6 +55,5 @@ router.get("/count/:userId", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
 
 module.exports = router
