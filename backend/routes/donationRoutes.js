@@ -1,5 +1,6 @@
 const express = require("express")
 const multer = require("multer")
+const Donation = require("../models/Donation")
 const {
     createDonation,
     getAllDonations,
@@ -40,20 +41,12 @@ router.get("/history", protect, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 router.post("/", protect, upload.array("images", 5), createDonation)
 router.get("/", protect, getAllDonations)
+router.get("/count/:userId", getDonationCountByUser)
 router.get("/:id", protect, getDonationById)
 router.put("/:id/status", protect, updateDonationStatus)
 router.delete("/:id", protect, deleteDonation)
-router.get("/count/:userId", getDonationCountByUser)
-router.get("/count/:userId", async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const count = await Donation.countDocuments({ donor: userId });
-        res.json({ count });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
 
 module.exports = router
