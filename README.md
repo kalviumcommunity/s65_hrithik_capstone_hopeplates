@@ -6,7 +6,7 @@
 **Frontend:https://s65-hrithik-capstone-hopeplates-1.onrender.com/**
 
 
-**Backend:https://s65-hrithik-capstone-hopeplates.onrender.com**
+**Backend:https://s65-hrithik-capstone-hopeplates.onrender.com/**
 
 ## Overview
 **HopePlates** is a social impact platform designed to reduce food waste and provide essential resources to those in need. It connects donors (restaurants, event organizers, households) with NGOs and volunteers to distribute surplus food, books, and clothes to underprivileged communities. Additionally, HopePlates enables monetary donations to verified NGOs via UPI.
