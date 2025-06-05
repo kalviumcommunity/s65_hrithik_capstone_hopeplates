@@ -3,7 +3,7 @@
 ## Capstone Project Title
 **HopePlates: A Food & Essentials Redistribution Platform**
 
-**Frontend:https://s65-hrithik-capstone-hopeplates-e6wm.onrender.com**
+**Frontend:https://s65-hrithik-capstone-hopeplates-1.onrender.com/**
 
 
 **Backend:https://s65-hrithik-capstone-hopeplates.onrender.com**
