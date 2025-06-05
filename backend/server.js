@@ -1,7 +1,6 @@
 const express = require("express")
 const dotenv = require("dotenv")
 const cors = require("cors")
-const path = require("path")
 const connectDB = require("./config/db")
 const adminRoutes = require("./routes/adminRoutes")
 const userRoutes = require("./routes/userRoutes")
@@ -41,14 +40,13 @@ app.use("/api/donations", donationRoutes)
 app.use("/api/ngos", ngoRoutes)
 app.use("/api/restaurants", restaurantRoutes)
 app.use("/api/event-managers", eventManagerRoutes)
+app.use("/api/donations", donationRoutes)
 app.use("/uploads", express.static("uploads"))
 
-const frontendDistPath = path.join(__dirname, "../frontend/dist")
-app.use(express.static(frontendDistPath))
+app.get("/", (req, res) => {
+    res.send("Hope Plates API is running!");
+});
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(frontendDistPath, "index.html"))
-})
 const PORT = process.env.PORT
 if (!PORT) {
     console.error("PORT is not defined in the environment variables.")
