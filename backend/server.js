@@ -24,7 +24,7 @@ const app = express()
 app.use(cors({
     origin: [
         "http://localhost:5173",
-        "https://s65-hrithik-capstone-hopeplates-e6wm.onrender.com"
+        "https://s65-hrithik-capstone-hopeplates-1.onrender.com"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true 
