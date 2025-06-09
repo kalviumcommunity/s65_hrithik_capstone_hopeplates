@@ -74,14 +74,6 @@ npm install
 npm run dev
 ```
 
-## API Endpoints
-- `POST /api/donate/food` – Add a food donation listing
-- `POST /api/donate/books` – Add a book donation listing
-- `POST /api/donate/clothes` – Add a clothes donation listing
-- `POST /api/donate/money` – Donate money to an NGO via UPI
-- `GET /api/ngos` – Fetch list of verified NGOs
-- `POST /api/ngo/verify` – Admin verifies an NGO
-
 ## Contributing
 We welcome contributions! Feel free to open issues and pull requests to improve HopePlates.
 
