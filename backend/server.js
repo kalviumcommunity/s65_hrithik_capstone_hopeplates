@@ -27,9 +27,8 @@ app.use(cors({
         "http://localhost:5173",
         "https://s65-hrithik-capstone-hopeplates-1.onrender.com"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true 
-}))
+    credentials: true
+}));
 
 app.use(express.json())
 
