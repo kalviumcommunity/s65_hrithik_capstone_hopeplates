@@ -9,18 +9,6 @@ router.post("/", protect, async (req, res) => {
     res.json(message);
 });
 
-
-router.get("/:userId", protect, async (req, res) => {
-    const userId = req.params.userId;
-    const messages = await Message.find({
-        $or: [
-        { from: req.user.id, to: userId },
-        { from: userId, to: req.user.id }
-        ]
-    }).sort({ timestamp: 1 });
-    res.json(messages);
-});
-
 router.get("/conversations", protect, async (req, res) => {
     const userId = req.user.id;
     const messages = await Message.find({
@@ -48,5 +36,17 @@ router.get("/conversations", protect, async (req, res) => {
 
     res.json(result);
 });
+
+router.get("/:userId", protect, async (req, res) => {
+    const userId = req.params.userId;
+    const messages = await Message.find({
+        $or: [
+        { from: req.user.id, to: userId },
+        { from: userId, to: req.user.id }
+        ]
+    }).sort({ timestamp: 1 });
+    res.json(messages);
+});
+
 
 module.exports = router;
