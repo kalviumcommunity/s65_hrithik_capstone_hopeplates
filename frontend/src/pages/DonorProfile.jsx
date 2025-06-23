@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const badgeMilestones = [
     { min: 1500, img: "/src/images/1500.png" },
@@ -21,13 +21,18 @@ const DonorProfile = () => {
     const { id } = useParams();
     const [donor, setDonor] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const [userId, setUserId] = useState(null);
     const [donationCount, setDonationCount] = useState(0);
-
     const [modalOpen, setModalOpen] = useState(false);
     const [currentImgIdx, setCurrentImgIdx] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            const user = JSON.parse(atob(token.split(".")[1]));
+            setUserId(user.id);
+        }
         const fetchDonor = async () => {
             try {
                 const token = localStorage.getItem("token");
@@ -58,9 +63,6 @@ const DonorProfile = () => {
         fetchDonationCount();
     }, [id]);
 
-    if (loading) return <div className="container"><div className="loading">Loading profile...</div></div>;
-    if (!donor) return <div className="container"><div className="loading">Donor not found.</div></div>;
-
     const handleImageClick = (idx) => {
         setCurrentImgIdx(idx);
         setModalOpen(true);
@@ -78,7 +80,14 @@ const DonorProfile = () => {
 
     const handleClose = () => setModalOpen(false);
 
+    const handleChat = () => {
+        navigate(`/chat/${id}`);
+    };
+
     const badge = badgeMilestones.find(b => donationCount >= b.min);
+
+    if (loading) return <div className="container"><div className="loading">Loading profile...</div></div>;
+    if (!donor) return <div className="container"><div className="loading">Donor not found.</div></div>;
 
     return (
         <div className="container">
@@ -152,6 +161,22 @@ const DonorProfile = () => {
                         ))}
                     </div>
                 </div>
+                {userId && donor && userId !== donor._id && (
+                    <button
+                        style={{
+                            marginTop: 16,
+                            padding: "8px 24px",
+                            background: "#007bff",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: 6,
+                            cursor: "pointer"
+                        }}
+                        onClick={handleChat}
+                    >
+                        Chat with {donor.name}
+                    </button>
+                )}
             </div>
             {modalOpen && donor.images && (
                 <div
@@ -200,6 +225,6 @@ const DonorProfile = () => {
             )}
         </div>
     );
-}
+};
 
 export default DonorProfile;

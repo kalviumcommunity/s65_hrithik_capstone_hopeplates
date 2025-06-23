@@ -8,6 +8,7 @@ const donationRoutes = require("./routes/donationRoutes")
 const ngoRoutes = require("./routes/ngoRoutes")
 const restaurantRoutes = require("./routes/restaurantRoutes")
 const eventManagerRoutes = require("./routes/eventManagerRoutes")
+const messageRoutes = require("./routes/messageRoutes");
 
 dotenv.config()
 
@@ -42,6 +43,7 @@ app.use("/api/restaurants", restaurantRoutes)
 app.use("/api/event-managers", eventManagerRoutes)
 app.use("/api/donations", donationRoutes)
 app.use("/uploads", express.static("uploads"))
+app.use("/api/messages", messageRoutes)
 
 app.get("/", (req, res) => {
     res.send("Hope Plates API is running!");
