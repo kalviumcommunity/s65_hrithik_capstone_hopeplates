@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Message = require("../models/Message");
+const User =  require("../models/userModel")
 const { protect } = require("../middlewares/authMiddleware");
 
 router.post("/", protect, async (req, res) => {
