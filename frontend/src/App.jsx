@@ -14,6 +14,8 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import MakeDonation from "./pages/MakeDonation"
 import DonorProfile from "./pages/DonorProfile"
 import DonationHistory from "./pages/DonationHistory"
+import Chat from "./pages/Chat"
+import Messages from "./pages/Messages"
 import "./App.css"
 
 const App = () => {
@@ -47,6 +49,8 @@ const App = () => {
               </ProtectedRoute>
             } />
             <Route path="/users/:id" element={<DonorProfile />} /> 
+            <Route path="/chat/:id" element={<Chat />} />
+            <Route path="/messages" element={<Messages />} />
           </Routes>
         </main>
         <Footer />
