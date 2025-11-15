@@ -1,41 +1,90 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom"
+import { useEffect, useState, useRef } from "react"
+import "../App.css"
 
 const Chat = () => {
-    const { id } = useParams();
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState("");
-    const [loading, setLoading] = useState(true);
-    const [oppositeUser, setOppositeUser] = useState(null);
+    const { id } = useParams()
+    const navigate = useNavigate()
+    const [messages, setMessages] = useState([])
+    const [input, setInput] = useState("")
+    const [loading, setLoading] = useState(true)
+    const [oppositeUser, setOppositeUser] = useState(null)
+    const [currentUserId, setCurrentUserId] = useState(null)
+    const [isUserScrolling, setIsUserScrolling] = useState(false)
+
+    const messagesEndRef = useRef(null)
+    const messagesContainerRef = useRef(null)
+    const previousScrollHeight = useRef(0)
+    const isInitialLoad = useRef(true)
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            const token = localStorage.getItem("token");
-            const res = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/messages/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            const data = await res.json();
-            setMessages(data);
-            setLoading(false);
-        };
-        fetchMessages();
-    }, [id]);
+        const token = localStorage.getItem("token")
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]))
+                setCurrentUserId(payload.userId || payload.id)
+            } catch (e) {
+                console.error("Error parsing token:", e)
+            }
+        }
+    }, [])
+
+    const fetchMessages = async () => {
+        const token = localStorage.getItem("token")
+        const res = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/messages/${id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+        const data = await res.json()
+        setMessages(data)
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        fetchMessages()
+        const interval = setInterval(fetchMessages, 2000)
+        return () => clearInterval(interval)
+    }, [id])
 
     useEffect(() => {
         const fetchUser = async () => {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token")
             const res = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
-            });
-            const data = await res.json();
-            setOppositeUser(data);
-        };
-        fetchUser();
-    }, [id]);
+            })
+            const data = await res.json()
+            setOppositeUser(data)
+        }
+        fetchUser()
+    }, [id])
+
+    useEffect(() => {
+        if (isInitialLoad.current && messages.length > 0) {
+            messagesEndRef.current?.scrollIntoView({ behavior: "auto" })
+            isInitialLoad.current = false
+        } else if (!isUserScrolling && messagesContainerRef.current) {
+            const container = messagesContainerRef.current
+            const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100
+            
+            if (isNearBottom) {
+                messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+            }
+        }
+    }, [messages])
+
+    const handleScroll = () => {
+        if (!messagesContainerRef.current) return
+        
+        const container = messagesContainerRef.current
+        const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 10
+        
+        setIsUserScrolling(!isAtBottom)
+    }
 
     const handleSend = async (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem("token");
+        e.preventDefault()
+        if (!input.trim()) return
+
+        const token = localStorage.getItem("token")
         const res = await fetch(`https://s65-hrithik-capstone-hopeplates.onrender.com/api/messages`, {
             method: "POST",
             headers: {
@@ -43,57 +92,96 @@ const Chat = () => {
                 Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({ to: id, content: input })
-        });
-        const newMsg = await res.json();
-        setMessages((prev) => [...prev, newMsg]);
-        setInput("");
-    };
+        })
+        const newMsg = await res.json()
+        setMessages(prev => [...prev, newMsg])
+        setInput("")
+        setIsUserScrolling(false)
+        setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+        }, 100)
+    }
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSend(e)
+        }
+    }
 
     return (
-        <div className="container">
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                {oppositeUser && oppositeUser.profilePhoto && (
-                    <img
-                        src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${oppositeUser.profilePhoto}`}
-                        alt="profile"
-                        style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: "50%",
-                            border: "2px solid #ccc",
-                            objectFit: "cover"
-                        }}
-                    />
-                )}
-                <h2 style={{ margin: 0, fontSize: 22 }}>
-                    {oppositeUser ? oppositeUser.name : "Chat"}
-                </h2>
-            </div>
-            <div style={{ border: "1px solid #ccc", padding: 16, minHeight: 200, maxHeight: 400, overflowY: "auto" }}>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : (
-                    messages.map((msg, idx) => (
-                        <div key={idx} style={{ margin: "8px 0", textAlign: msg.from === id ? "left" : "right" }}>
-                            <span style={{ background: "#f1f1f1", padding: 8, borderRadius: 8 }}>
-                                {msg.content}
-                            </span>
-                        </div>
-                    ))
-                )}
-            </div>
-            <form onSubmit={handleSend} style={{ marginTop: 16, display: "flex", gap: 8 }}>
-                <input
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                    placeholder="Type a message..."
-                    style={{ flex: 1, padding: 8 }}
-                    required
-                />
-                <button type="submit" style={{ padding: "8px 16px" }}>Send</button>
-            </form>
-        </div>
-    );
-};
+        <div className="chat-page-wrapper">
+            <div className="chat-container">
+                <div className="chat-header">
+                    {oppositeUser?.profilePhoto && (
+                        <img
+                            src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${oppositeUser.profilePhoto}`}
+                            alt="profile"
+                            className="chat-avatar"
+                        />
+                    )}
+                    <div className="chat-header-info">
+                        <h2
+                            className="chat-title"
+                            onClick={() => navigate(`/users/${id}`)}
+                            title={`View ${oppositeUser?.name}'s profile`}
+                        >
+                            {oppositeUser ? oppositeUser.name : "Chat"}
+                        </h2>
+                        <span className="chat-status">Online</span>
+                    </div>
+                </div>
 
-export default Chat;
+                <div className="messages-wrapper">
+                    <div 
+                        className="messages-container" 
+                        ref={messagesContainerRef}
+                        onScroll={handleScroll}
+                    >
+                        {loading ? (
+                            <div className="chat-loading">Loading messages...</div>
+                        ) : messages.length === 0 ? (
+                            <div className="chat-empty">
+                                <p>No messages yet. Start the conversation!</p>
+                            </div>
+                        ) : (
+                            <>
+                                {messages.map((msg, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`message-bubble ${
+                                            msg.from === currentUserId ? "outgoing" : "incoming"
+                                        }`}
+                                    >
+                                        <div className="message-content">
+                                            {msg.content}
+                                        </div>
+                                    </div>
+                                ))}
+                                <div ref={messagesEndRef} />
+                            </>
+                        )}
+                    </div>
+                </div>
+
+                <form onSubmit={handleSend} className="chat-input-form">
+                    <div className="message-input-container">
+                        <textarea
+                            className="message-input"
+                            value={input}
+                            onChange={e => setInput(e.target.value)}
+                            onKeyDown={handleKeyPress}
+                            placeholder="Type the message...."
+                            rows={1}
+                        />
+                    </div>
+                    <button type="submit" className="send-button" disabled={!input.trim()}>
+                        Send
+                    </button>
+                </form>
+            </div>
+        </div>
+    )
+}
+
+export default Chat
