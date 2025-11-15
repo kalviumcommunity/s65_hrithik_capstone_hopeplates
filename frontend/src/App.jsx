@@ -25,19 +25,30 @@ const App = () => {
         <Navbar />
         <main className="main-content">
           <Routes>
+            {/* Public routes */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/ngos" element={<NGOs />} />
+            <Route path="/restaurants" element={<Restaurants />} />
+            <Route path="/event-managers" element={<EventManagers />} />
+            
+            {/* Protected routes - require login */}
             <Route path="/profile" element={
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
             } />
-            <Route path="/donation-history" element={<DonationHistory />} />
-            <Route path="/donations" element={<Donations />} />
-            <Route path="/ngos" element={<NGOs />} />
-            <Route path="/restaurants" element={<Restaurants />} />
-            <Route path="/event-managers" element={<EventManagers />} />
+            <Route path="/donation-history" element={
+              <ProtectedRoute>
+                <DonationHistory />
+              </ProtectedRoute>
+            } />
+            <Route path="/donations" element={
+              <ProtectedRoute>
+                <Donations />
+              </ProtectedRoute>
+            } />
             <Route path="/pending-verifications" element={
               <ProtectedRoute>
                 <AdminDashboard />
@@ -48,9 +59,21 @@ const App = () => {
                 <MakeDonation />
               </ProtectedRoute>
             } />
-            <Route path="/users/:id" element={<DonorProfile />} /> 
-            <Route path="/chat/:id" element={<Chat />} />
-            <Route path="/messages" element={<Messages />} />
+            <Route path="/users/:id" element={
+              <ProtectedRoute>
+                <DonorProfile />
+              </ProtectedRoute>
+            } />
+            <Route path="/chat/:id" element={
+              <ProtectedRoute>
+                <Chat />
+              </ProtectedRoute>
+            } />
+            <Route path="/messages" element={
+              <ProtectedRoute>
+                <Messages />
+              </ProtectedRoute>
+            } />
           </Routes>
         </main>
         <Footer />
