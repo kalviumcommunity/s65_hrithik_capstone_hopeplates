@@ -10,11 +10,9 @@ const Chat = () => {
     const [loading, setLoading] = useState(true)
     const [oppositeUser, setOppositeUser] = useState(null)
     const [currentUserId, setCurrentUserId] = useState(null)
-    const [isUserScrolling, setIsUserScrolling] = useState(false)
 
     const messagesEndRef = useRef(null)
     const messagesContainerRef = useRef(null)
-    const previousScrollHeight = useRef(0)
     const isInitialLoad = useRef(true)
 
     useEffect(() => {
@@ -58,27 +56,11 @@ const Chat = () => {
     }, [id])
 
     useEffect(() => {
-        if (isInitialLoad.current && messages.length > 0) {
+        if (isInitialLoad.current && messages.length > 0 && !loading) {
             messagesEndRef.current?.scrollIntoView({ behavior: "auto" })
             isInitialLoad.current = false
-        } else if (!isUserScrolling && messagesContainerRef.current) {
-            const container = messagesContainerRef.current
-            const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100
-            
-            if (isNearBottom) {
-                messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-            }
         }
-    }, [messages])
-
-    const handleScroll = () => {
-        if (!messagesContainerRef.current) return
-        
-        const container = messagesContainerRef.current
-        const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 10
-        
-        setIsUserScrolling(!isAtBottom)
-    }
+    }, [messages, loading])
 
     const handleSend = async (e) => {
         e.preventDefault()
@@ -96,7 +78,7 @@ const Chat = () => {
         const newMsg = await res.json()
         setMessages(prev => [...prev, newMsg])
         setInput("")
-        setIsUserScrolling(false)
+        
         setTimeout(() => {
             messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
         }, 100)
@@ -136,7 +118,6 @@ const Chat = () => {
                     <div 
                         className="messages-container" 
                         ref={messagesContainerRef}
-                        onScroll={handleScroll}
                     >
                         {loading ? (
                             <div className="chat-loading">Loading messages...</div>
@@ -171,7 +152,7 @@ const Chat = () => {
                             value={input}
                             onChange={e => setInput(e.target.value)}
                             onKeyDown={handleKeyPress}
-                            placeholder="Type the message...."
+                            placeholder="Type...."
                             rows={1}
                         />
                     </div>
