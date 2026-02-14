@@ -57,20 +57,19 @@ const MainLayout = () => {
                             { name: 'Stories', path: '/' },
                             { name: 'Community', path: '/' }
                         ].map((item) => {
-                        ].map((item) => {
                             const isActive = activeSection === item.name.toLowerCase() && isHome;
-                        return (
-                        <a
-                            key={item.name}
-                            href={`/#${item.name.toLowerCase()}`}
-                            className={`relative px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${isActive
-                                ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
-                                : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                                }`}
-                        >
-                            {item.name}
-                        </a>
-                        )
+                            return (
+                                <a
+                                    key={item.name}
+                                    href={`/#${item.name.toLowerCase()}`}
+                                    className={`relative px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${isActive
+                                        ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
+                                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                                        }`}
+                                >
+                                    {item.name}
+                                </a>
+                            )
                         })}
                     </div>
 
