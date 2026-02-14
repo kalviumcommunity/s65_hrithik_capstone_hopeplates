@@ -97,13 +97,19 @@ const Donations = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* Make Donation CTA Card */}
-                        <Link to="/make-donation" className="group bg-white/5 backdrop-blur-md rounded-[32px] p-8 border border-dashed border-white/10 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all flex flex-col items-center justify-center text-center cursor-pointer min-h-[400px]">
+                        <div onClick={() => {
+                            if (currentUser) {
+                                navigate("/make-donation");
+                            } else {
+                                navigate("/login");
+                            }
+                        }} className="group bg-white/5 backdrop-blur-md rounded-[32px] p-8 border border-dashed border-white/10 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all flex flex-col items-center justify-center text-center cursor-pointer min-h-[400px]">
                             <div className="w-20 h-20 rounded-full bg-blue-600/20 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                                 <span className="material-symbols-outlined text-4xl">add</span>
                             </div>
                             <h3 className="text-2xl font-bold text-white mb-2">Create Listing</h3>
                             <p className="text-neutral-400 max-w-xs">Have surplus food or items? Share it now.</p>
-                        </Link>
+                        </div>
 
                         {donations.length === 0 ? (
                             <div className="col-span-full text-center text-neutral-500 py-20">
