@@ -74,34 +74,41 @@ body {
   }
 
   .glass-input {
-    .section-title {
-      @apply text-4xl md:text-5xl font-semibold tracking-tight leading-tight;
-    }
-
-    .body-text {
-      @apply text-lg md:text-xl text-[#86868B] font-medium leading-relaxed;
-    }
-
-    /* Buttons - Pill Shape */
-    .btn-apple {
-      @apply px-6 py-2 rounded-full font-medium transition-all duration-300 active:scale-95;
-    }
-
-    .btn-primary {
-      @apply bg-[#0071E3] text-white hover:bg-[#0077ED];
-    }
-
-    .btn-secondary {
-      @apply bg-[#E8E8ED] text-[#1D1D1F] hover:bg-[#D2D2D7];
-      /* Subtle grey */
-    }
-
-    /* Bento Grid Layout */
-    .bento-grid {
-      @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
-    }
-
-    .bento-card {
-      @apply bg-[#F5F5F7] rounded-3xl p-8 overflow-hidden relative transition-transform duration-500 hover:scale-[1.02];
-    }
+    @apply bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:bg-white/10 focus:border-white/20 outline-none backdrop-blur-sm transition-all;
   }
+
+  /* Typography - Large & Clean */
+  .display-title {
+    @apply text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05];
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl font-semibold tracking-tight leading-tight;
+  }
+
+  .body-text {
+    @apply text-lg md:text-xl text-[#86868B] font-medium leading-relaxed;
+  }
+
+  /* Buttons - Pill Shape */
+  .btn-apple {
+    @apply px-6 py-2 rounded-full font-medium transition-all duration-300 active:scale-95;
+  }
+
+  .btn-primary {
+    @apply bg-[#0071E3] text-white hover:bg-[#0077ED];
+  }
+
+  .btn-secondary {
+    @apply bg-[#E8E8ED] text-[#1D1D1F] hover:bg-[#D2D2D7];
+  }
+
+  /* Bento Grid Layout */
+  .bento-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .bento-card {
+    @apply bg-[#F5F5F7] rounded-3xl p-8 overflow-hidden relative transition-transform duration-500 hover:scale-[1.02];
+  }
+}
