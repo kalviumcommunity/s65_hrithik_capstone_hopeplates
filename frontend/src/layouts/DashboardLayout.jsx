@@ -12,7 +12,6 @@ const DashboardLayout = () => {
     ];
 
     return (
-    return (
         <div className="min-h-screen bg-black text-white flex font-sans overflow-hidden">
             {/* Ambient Background */}
             <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-black to-black pointer-events-none"></div>
