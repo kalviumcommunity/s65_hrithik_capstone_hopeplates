@@ -15,7 +15,7 @@ const MainLayout = ({ children }) => {
     return (
         <div className="font-sans antialiased text-[#1D1D1F]">
             {/* Navbar - Apple Style: Sticky, Blur, Minimal */}
-            <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-md border-b border-[#D2D2D7]/30' : 'bg-transparent text-white'}`}>
+            <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-md border-b border-[#D2D2D7]/30' : 'bg-black/20 backdrop-blur-sm'}`}>
                 <div className="max-w-[1080px] mx-auto px-6 h-[52px] flex items-center justify-between text-sm font-medium">
                     <Link to="/" className="flex items-center gap-2 group">
                         <span className={`material-symbols-outlined text-[20px] ${scrolled ? 'text-[#1D1D1F]' : 'text-white'}`}>favorite</span>

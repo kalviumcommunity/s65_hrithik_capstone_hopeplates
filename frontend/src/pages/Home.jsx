@@ -7,7 +7,7 @@ const Home = () => {
     return (
         <div className="bg-white">
             {/* Hero Section - Full Screen Image Background (Apple Style) */}
-            <section className="relative h-screen w-full flex flex-col items-center justify-center text-center px-6 overflow-hidden bg-black">
+            <section className="relative w-full flex flex-col items-center justify-center text-center px-6 overflow-hidden" style={{ backgroundColor: 'black', minHeight: '100vh' }}>
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -18,7 +18,7 @@ const Home = () => {
                     <div className="absolute inset-0 bg-black/40"></div>
                 </div>
 
-                <div className="relative z-10 max-w-4xl pt-20 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+                <div className="relative z-10 max-w-4xl pt-20">
                     <h1 className="text-6xl md:text-8xl font-semibold text-white tracking-tight mb-6 drop-shadow-lg">
                         Giving. <br />
                         <span className="text-white/80">Reimagined.</span>
