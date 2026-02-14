@@ -53,7 +53,7 @@ const Donations = () => {
     }, [location.search]);
 
     return (
-        <div className="min-h-screen pt-24 pb-20 px-6 bg-black text-white">
+        <div className="min-h-screen pt-24 pb-20 px-6 bg-transparent text-white">
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                     <div>
@@ -67,9 +67,9 @@ const Donations = () => {
                             <button
                                 key={type}
                                 onClick={() => setFilter(type)}
-                                className={`px-6 py-2.5 rounded-full text-sm font-medium capitalize transition-all whitespace-nowrap ${filter === type
+                                className={`px-6 py-2.5 rounded-full text-sm font-medium capitalize transition-all whitespace-nowrap backdrop-blur-md ${filter === type
                                         ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
-                                        : 'bg-zinc-900 text-neutral-400 hover:bg-zinc-800 border border-white/5'
+                                        : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
                                     }`}
                             >
                                 {type}
@@ -81,13 +81,13 @@ const Donations = () => {
                 {loading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="h-[400px] bg-zinc-900 rounded-[32px] border border-white/5"></div>
+                            <div key={i} className="h-[400px] bg-white/5 rounded-[32px] border border-white/5"></div>
                         ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {/* Make Donation CTA Card */}
-                        <Link to="/make-donation" className="group bg-zinc-900/50 rounded-[32px] p-8 border border-dashed border-white/10 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all flex flex-col items-center justify-center text-center cursor-pointer min-h-[400px]">
+                        <Link to="/make-donation" className="group bg-white/5 backdrop-blur-md rounded-[32px] p-8 border border-dashed border-white/10 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all flex flex-col items-center justify-center text-center cursor-pointer min-h-[400px]">
                             <div className="w-20 h-20 rounded-full bg-blue-600/20 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                                 <span className="material-symbols-outlined text-4xl">add</span>
                             </div>
@@ -96,7 +96,7 @@ const Donations = () => {
                         </Link>
 
                         {donations.map(donation => (
-                            <div key={donation._id} className="bg-zinc-900 rounded-[32px] overflow-hidden border border-white/5 hover:border-white/10 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col group h-full">
+                            <div key={donation._id} className="glass-dark rounded-[32px] overflow-hidden hover:scale-[1.02] transition-all duration-300 flex flex-col group h-full">
                                 <div className="h-48 overflow-hidden relative">
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 transition-opacity group-hover:opacity-80"></div>
                                     <img src={donation.image} alt={donation.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
