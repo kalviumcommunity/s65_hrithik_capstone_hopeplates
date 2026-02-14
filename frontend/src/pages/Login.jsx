@@ -22,7 +22,7 @@ const Login = () => {
             const data = await response.json()
             localStorage.setItem("token", data.token)
             localStorage.setItem("user", JSON.stringify(data)) // Store user info
-            navigate("/donations")
+            navigate("/dashboard")
         } catch (err) {
             console.error(err.message)
             alert(err.message)
@@ -34,11 +34,11 @@ const Login = () => {
             {/* Immersive Background - Dynamic */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?q=80&w=2070&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"
                     alt="Background"
-                    className="w-full h-full object-cover animate-slow-zoom"
+                    className="w-full h-full object-cover animate-slow-zoom filter blur-sm scale-110"
                 />
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]"></div>
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-md"></div>
             </div>
 
             {/* Floating Glass Card - Dark Mode */}

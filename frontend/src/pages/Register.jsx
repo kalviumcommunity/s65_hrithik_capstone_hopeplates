@@ -155,8 +155,8 @@ const Register = () => {
             </div>
             <style>{`
                 @keyframes slowZoom {
-                    0% { transform: scale(1); }
-                    100% { transform: scale(1.1); }
+                    0% { transform: scale(1.1); }
+                    100% { transform: scale(1.2); }
                 }
                 .animate-slow-zoom {
                     animation: slowZoom 20s infinite alternate linear;
