@@ -71,10 +71,10 @@ const Register = () => {
             </div>
 
             {/* Glass Card */}
-            <div className="relative z-10 w-full max-w-5xl grid grid-cols-1 md:grid-cols-5 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-[40px] shadow-2xl overflow-hidden m-4">
+            <div className="relative z-10 w-full max-w-5xl grid grid-cols-1 md:grid-cols-5 glass-dark rounded-[40px] overflow-hidden m-4">
 
                 {/* Visual Side (Left) */}
-                <div className="hidden md:flex md:col-span-2 flex-col justify-end p-12 bg-black/40 text-white relative border-r border-white/5">
+                <div className="hidden md:flex md:col-span-2 flex-col justify-end p-12 bg-white/5 text-white relative border-r border-white/5">
                     <div className="absolute top-8 left-8 flex items-center gap-2">
                         <span className="material-symbols-outlined text-blue-500">favorite</span>
                         <span className="font-semibold tracking-tight text-lg">HopePlates</span>
@@ -84,7 +84,7 @@ const Register = () => {
                 </div>
 
                 {/* Form Side */}
-                <div className="md:col-span-3 p-10 bg-[#121212]/90 backdrop-blur-md overflow-y-auto max-h-[90vh]">
+                <div className="md:col-span-3 p-10 bg-transparent backdrop-blur-md overflow-y-auto max-h-[90vh]">
                     <div className="mb-8">
                         <h3 className="text-3xl font-bold text-white mb-1">Create Account</h3>
                         <p className="text-zinc-400">Fill in your details to get started.</p>
@@ -94,28 +94,28 @@ const Register = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Full Name</label>
-                                <input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="John Doe" />
+                                <input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500" required placeholder="John Doe" />
                             </div>
                             <div>
                                 <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Location</label>
-                                <input type="text" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="City, Country" />
+                                <input type="text" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500" required placeholder="City, Country" />
                             </div>
                         </div>
 
                         <div>
                             <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Email</label>
-                            <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="you@example.com" />
+                            <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500" required placeholder="you@example.com" />
                         </div>
 
                         <div>
                             <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Password</label>
-                            <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="••••••••" />
+                            <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500" required placeholder="••••••••" />
                         </div>
 
                         <div>
                             <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">I am a...</label>
                             <div className="relative">
-                                <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer">
+                                <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer">
                                     <option value="donor">Donor (Individual)</option>
                                     <option value="ngo">NGO (Organization)</option>
                                     <option value="restaurant">Restaurant/Business</option>

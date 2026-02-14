@@ -42,10 +42,10 @@ const Login = () => {
             </div>
 
             {/* Floating Glass Card - Dark Mode */}
-            <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-[#121212]/80 backdrop-blur-2xl border border-white/10 rounded-[40px] shadow-2xl overflow-hidden m-4">
+            <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 glass-dark rounded-[40px] overflow-hidden m-4">
 
                 {/* Visual Side (Left in Box) */}
-                <div className="hidden md:flex flex-col justify-center p-12 bg-black/40 text-white relative border-r border-white/5">
+                <div className="hidden md:flex flex-col justify-center p-12 bg-white/5 text-white relative border-r border-white/5">
                     <div className="absolute top-8 left-8 flex items-center gap-2">
                         <span className="material-symbols-outlined text-blue-500">favorite</span>
                         <span className="font-semibold tracking-tight text-lg">HopePlates</span>
@@ -55,7 +55,7 @@ const Login = () => {
                 </div>
 
                 {/* Form Side */}
-                <div className="p-10 md:p-14 bg-black/50 backdrop-blur-md">
+                <div className="p-10 md:p-14 bg-transparent backdrop-blur-md">
                     <div className="mb-10">
                         <h3 className="text-3xl font-bold text-white mb-2">Sign In</h3>
                         <p className="text-zinc-400">Enter your credentials to access your dashboard.</p>
@@ -68,7 +68,7 @@ const Login = () => {
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 transition-all outline-none placeholder:text-zinc-600"
+                                className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500"
                                 placeholder="name@example.com"
                                 required
                             />
@@ -79,7 +79,7 @@ const Login = () => {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 transition-all outline-none placeholder:text-zinc-600"
+                                className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500"
                                 placeholder="••••••••"
                                 required
                             />
