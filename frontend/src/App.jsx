@@ -8,6 +8,7 @@ import Donations from "./pages/Donations"
 import Profile from "./pages/Profile"
 import DonationHistory from "./pages/DonationHistory"
 import Messages from "./pages/Messages"
+import Dashboard from "./pages/Dashboard"
 
 const App = () => {
   return (
@@ -18,6 +19,11 @@ const App = () => {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/donations" element={<Donations />} />
+        </Route>
+
+        {/* Dashboard Routes (Protected) - Apple Glass Sidebar */}
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/donation-history" element={<DonationHistory />} />
           <Route path="/messages" element={<Messages />} />
