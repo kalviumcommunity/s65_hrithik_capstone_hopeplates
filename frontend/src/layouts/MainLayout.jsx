@@ -33,9 +33,10 @@ const MainLayout = () => {
     const isHome = location.pathname === "/";
 
     return (
-        <div className="font-sans antialiased text-white bg-black min-h-screen">
+    return (
+        <div className="font-sans antialiased text-white bg-transparent min-h-screen flex flex-col">
             {/* Navbar - Fixed & Dynamic Dark Mode */}
-            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-black/70 backdrop-blur-xl border-b border-white/10 shadow-lg' : 'bg-transparent'}`}>
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-dark border-b-0' : 'bg-transparent'}`}>
                 <div className="max-w-[1280px] mx-auto px-6 h-[64px] flex items-center justify-between">
 
                     {/* Fixed Logo Area - Left Side */}
@@ -51,21 +52,29 @@ const MainLayout = () => {
                     {/* Centered Navigation Tabs - "Sliding Effect" */}
                     <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center bg-white/5 backdrop-blur-[2px] rounded-full p-1.5 border border-white/5">
                         {/* Pill Background for Active State */}
-                        {['Mission', 'Impact', 'Stories', 'Community'].map((item) => {
-                            const isActive = activeSection === item.toLowerCase() && isHome;
+                        {[
+                            { name: 'Mission', path: '/' }, 
+                            { name: 'Impact', path: '/' },
+                            { name: 'Stories', path: '/' },
+                            { name: 'Community', path: '/' }
+                        ].map((item) => {
+                            const isActive = activeSection === item.name.toLowerCase() && isHome;
                             return (
                                 <a
-                                    key={item}
-                                    href={`/#${item.toLowerCase()}`}
+                                    key={item.name}
+                                    href={`/#${item.name.toLowerCase()}`}
                                     className={`relative px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${isActive
                                             ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
                                             : 'text-neutral-400 hover:text-white hover:bg-white/5'
                                         }`}
                                 >
-                                    {item}
+                                    {item.name}
                                 </a>
                             )
                         })}
+                        <Link to="/donations" className="relative px-5 py-1.5 text-sm font-medium rounded-full text-neutral-400 hover:text-white hover:bg-white/5 transition-all duration-300">
+                            Donations
+                        </Link>
                     </div>
 
                     {/* Right Side Actions */}
@@ -81,36 +90,36 @@ const MainLayout = () => {
                 </div>
             </nav>
 
-            <main className="pt-0">
+            <main className="pt-0 flex-grow">
                 <Outlet />
             </main>
 
-            {/* Minimal Footer */}
-            <footer className="bg-[#F5F5F7] text-[#86868B] text-xs py-10 mt-20 border-t border-[#D2D2D7]">
+            {/* Minimal Footer - Dark Mode */}
+            <footer className="bg-black/40 backdrop-blur-md text-neutral-400 text-xs py-10 mt-auto border-t border-white/5">
                 <div className="max-w-[1080px] mx-auto px-6">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
                         <div>
-                            <h5 className="font-semibold text-[#1D1D1F] mb-3">Shop and Learn</h5>
+                            <h5 className="font-semibold text-white mb-3">Shop and Learn</h5>
                             <ul className="space-y-2">
-                                <li><a href="#" className="hover:underline">Food Donation</a></li>
-                                <li><a href="#" className="hover:underline">Clothing Drive</a></li>
-                                <li><a href="#" className="hover:underline">Book Exchange</a></li>
+                                <li><a href="#" className="hover:text-white transition-colors">Food Donation</a></li>
+                                <li><a href="#" className="hover:text-white transition-colors">Clothing Drive</a></li>
+                                <li><a href="#" className="hover:text-white transition-colors">Book Exchange</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h5 className="font-semibold text-[#1D1D1F] mb-3">Community</h5>
+                            <h5 className="font-semibold text-white mb-3">Community</h5>
                             <ul className="space-y-2">
-                                <li><a href="#" className="hover:underline">Events</a></li>
-                                <li><a href="#" className="hover:underline">Top Donors</a></li>
-                                <li><a href="#" className="hover:underline">Volunteer</a></li>
+                                <li><a href="#" className="hover:text-white transition-colors">Events</a></li>
+                                <li><a href="#" className="hover:text-white transition-colors">Top Donors</a></li>
+                                <li><a href="#" className="hover:text-white transition-colors">Volunteer</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div className="pt-8 border-t border-[#D2D2D7] flex justify-between items-center">
+                    <div className="pt-8 border-t border-white/5 flex justify-between items-center">
                         <p>Copyright © 2024 HopePlates Inc. All rights reserved.</p>
                         <div className="flex gap-4">
-                            <a href="#" className="hover:underline">Privacy Policy</a>
-                            <a href="#" className="hover:underline">Terms of Use</a>
+                            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+                            <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
                         </div>
                     </div>
                 </div>
