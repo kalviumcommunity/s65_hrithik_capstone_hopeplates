@@ -1,95 +1,101 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Card, Badge } from "../components/ui";
-import { Link } from "react-router-dom";
 
-// Mock Data for UI Dev
 const MOCK_DONATIONS = [
-    { id: 1, type: 'Food', title: 'Surplus Rice & Curry', status: 'Pending', date: '2 mins ago', quantity: '10kg', icon: 'restaurant' },
-    { id: 2, type: 'Clothes', title: 'Winter Jackets', status: 'Verified', date: '2 hours ago', quantity: '5 items', icon: 'checkroom' },
-    { id: 3, type: 'Money', title: 'School Fees Fund', status: 'Completed', date: '1 day ago', quantity: '$50', icon: 'payments' },
+    { id: 1, type: 'Food', title: 'Rice Bags', status: 'Pending', quantity: '10kg', icon: 'restaurant' },
+    { id: 2, type: 'Clothes', title: 'Winter Jackets', status: 'Verified', quantity: '5 items', icon: 'checkroom' },
+    { id: 3, type: 'Money', title: 'Fundraiser', status: 'Completed', quantity: '$50', icon: 'payments' },
+    { id: 4, type: 'Books', title: 'Science Textbooks', status: 'Pending', quantity: '12 books', icon: 'menu_book' },
 ];
 
 const Donations = () => {
-    // In real app, fetch from API. For UI overhaul, using mock first to show the design.
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const typeFilter = queryParams.get('type'); // auto-filter based on Home page click
+
+    // In real app, fetch from API.
     const [donations, setDonations] = useState(MOCK_DONATIONS);
+    const [activeTab, setActiveTab] = useState(typeFilter || 'all');
 
     return (
-        <div className="space-y-8">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-display font-bold text-[#181311]">Dashboard Overview</h1>
-                    <p className="text-sm text-[#546E7A]">Welcome back! Here's your impact summary.</p>
-                </div>
-                <div className="flex gap-3">
-                    <Button variant="outline" size="sm" className="hidden sm:flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[18px]">download</span>
-                        Export Report
-                    </Button>
-                </div>
-            </div>
+        <div className="min-h-screen bg-[#F5F5F7] pt-24 pb-20">
+            <div className="max-w-[1080px] mx-auto px-6">
 
-            {/* Impact Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                    { label: 'Total Donations', value: '12', trend: '+2 this week', color: 'bg-orange-50 text-orange-600', icon: 'volunteer_activism' },
-                    { label: 'Families Helped', value: '45', trend: 'High Impact', color: 'bg-green-50 text-green-600', icon: 'diversity_1' },
-                    { label: 'Active Requests', value: '3', trend: 'Action needed', color: 'bg-blue-50 text-blue-600', icon: 'notifications_active' },
-                ].map((stat, idx) => (
-                    <Card key={idx} className="p-6 border-none shadow-sm flex items-center justify-between">
-                        <div>
-                            <p className="text-sm font-medium text-gray-500 mb-1">{stat.label}</p>
-                            <h3 className="text-3xl font-bold text-[#181311]">{stat.value}</h3>
-                            <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full mt-2 inline-block">{stat.trend}</span>
+                {/* Header - Apple Style */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                    <div>
+                        <h1 className="text-4xl font-semibold text-[#1D1D1F] tracking-tight">Donations.</h1>
+                        <p className="text-[#86868B] text-lg mt-2">Manage your contributions and make new ones.</p>
+                    </div>
+                    <Link to="/make-donation">
+                        <Button className="bg-[#0071E3] text-white hover:bg-[#0077ED] px-6 py-3 rounded-full shadow-lg shadow-blue-500/20 flex items-center gap-2">
+                            <span className="material-symbols-outlined text-sm">add</span>
+                            New Donation
+                        </Button>
+                    </Link>
+                </div>
+
+                {/* Filter Tabs - Pill Style */}
+                <div className="flex overflow-x-auto pb-4 gap-3 mb-10 no-scrollbar">
+                    {['all', 'food', 'clothes', 'books', 'money'].map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab)}
+                            className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${activeTab === tab
+                                    ? 'bg-[#1D1D1F] text-white shadow-md'
+                                    : 'bg-white text-[#86868B] hover:bg-[#E8E8ED]'
+                                }`}
+                        >
+                            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                        </button>
+                    ))}
+                </div>
+
+                {/* Grid Content */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Add New Card (Always visible) */}
+                    <Link to="/make-donation" className="group bg-white rounded-[24px] p-8 border border-dashed border-[#D2D2D7] hover:border-[#0071E3] hover:bg-[#F5F9FF] transition-all flex flex-col items-center justify-center text-center cursor-pointer min-h-[280px]">
+                        <div className="w-16 h-16 rounded-full bg-[#F5F5F7] group-hover:bg-[#E1F0FF] text-[#0071E3] flex items-center justify-center mb-4 transition-colors">
+                            <span className="material-symbols-outlined text-3xl">add</span>
                         </div>
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${stat.color}`}>
-                            <span className="material-symbols-outlined text-xl">{stat.icon}</span>
-                        </div>
-                    </Card>
-                ))}
-            </div>
+                        <h3 className="text-xl font-semibold text-[#1D1D1F] mb-1">New Donation</h3>
+                        <p className="text-[#86868B] text-sm">Select a category to start.</p>
+                    </Link>
 
-            {/* Recent Donations List */}
-            <div>
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-lg font-bold text-[#181311]">Recent Activity</h2>
-                    <Link to="/donation-history" className="text-sm font-semibold text-[#FF7043] hover:text-[#F4511E]">View All</Link>
-                </div>
+                    {/* Donation Cards */}
+                    {donations
+                        .filter(d => activeTab === 'all' || d.type.toLowerCase() === activeTab)
+                        .map((donation) => (
+                            <div key={donation.id} className="bg-white rounded-[24px] p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[280px] group">
+                                <div>
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${donation.type === 'Food' ? 'bg-orange-100 text-orange-600' :
+                                                donation.type === 'Clothes' ? 'bg-blue-100 text-blue-600' :
+                                                    donation.type === 'Money' ? 'bg-green-100 text-green-600' :
+                                                        'bg-yellow-100 text-yellow-600'
+                                            }`}>
+                                            <span className="material-symbols-outlined">{donation.icon}</span>
+                                        </div>
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${donation.status === 'Verified' ? 'bg-blue-50 text-blue-600' :
+                                                donation.status === 'Completed' ? 'bg-green-50 text-green-600' :
+                                                    'bg-gray-100 text-gray-600'
+                                            }`}>
+                                            {donation.status}
+                                        </span>
+                                    </div>
+                                    <h3 className="text-2xl font-semibold text-[#1D1D1F] mb-2">{donation.title}</h3>
+                                    <p className="text-[#86868B] font-medium">{donation.quantity}</p>
+                                </div>
 
-                <div className="space-y-4">
-                    {donations.map((donation) => (
-                        <Card key={donation.id} className="p-4 flex flex-col sm:flex-row items-center gap-4 hover:bg-gray-50 transition-colors border border-gray-100">
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center bg-gray-100 text-gray-600 shrink-0`}>
-                                <span className="material-symbols-outlined">{donation.icon}</span>
-                            </div>
-                            <div className="flex-1 min-w-0 text-center sm:text-left">
-                                <h4 className="font-bold text-[#181311] truncate">{donation.title}</h4>
-                                <div className="flex items-center justify-center sm:justify-start gap-2 text-xs text-gray-500 mt-1">
-                                    <span>{donation.type}</span>
-                                    <span>•</span>
-                                    <span>{donation.quantity}</span>
-                                    <span>•</span>
-                                    <span>{donation.date}</span>
+                                <div className="pt-6 mt-auto border-t border-[#F5F5F7] flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span className="text-xs text-[#86868B]">Tap to view details</span>
+                                    <button className="w-8 h-8 rounded-full bg-[#F5F5F7] flex items-center justify-center text-[#1D1D1F]">
+                                        <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                                    </button>
                                 </div>
                             </div>
-                            <Badge color={donation.status === 'Completed' ? 'green' : donation.status === 'Verified' ? 'blue' : 'orange'}>
-                                {donation.status}
-                            </Badge>
-                            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-[#181311]">
-                                <span className="material-symbols-outlined">more_vert</span>
-                            </Button>
-                        </Card>
-                    ))}
-                    {/* Add New CTA */}
-                    <Link to="/make-donation">
-                        <div className="w-full border-2 border-dashed border-gray-200 rounded-2xl p-6 flex flex-col items-center justify-center text-center hover:border-[#FF7043] hover:bg-orange-50/50 transition-all cursor-pointer group">
-                            <div className="w-10 h-10 rounded-full bg-orange-100 text-[#FF7043] flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                                <span className="material-symbols-outlined">add</span>
-                            </div>
-                            <p className="font-bold text-[#181311]">Make a New Donation</p>
-                            <p className="text-xs text-gray-500">Food, Clothes, Books, or Money</p>
-                        </div>
-                    </Link>
+                        ))}
                 </div>
             </div>
         </div>

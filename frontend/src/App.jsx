@@ -14,21 +14,18 @@ const App = () => {
     <Router>
       <Routes>
         {/* Public Routes wrapped in MainLayout */}
+        {/* All Routes wrapped in Apple-Style MainLayout for consistency */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-        </Route>
-
-        {/* Auth Routes (Standalone) */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
-        {/* Protected Dashboard Routes */}
-        <Route element={<DashboardLayout />}>
           <Route path="/donations" element={<Donations />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/donation-history" element={<DonationHistory />} />
           <Route path="/messages" element={<Messages />} />
         </Route>
+
+        {/* Auth Routes (Standalone) */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

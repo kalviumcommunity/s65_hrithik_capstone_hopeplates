@@ -1,112 +1,177 @@
-import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Button, Card, Badge } from "../components/ui";
 
-const Home = () => {
-    // Parallax or scroll reveal effect could be implemented here
+// Apple-style Slideshow Component
+const HeroSlideshow = () => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const slides = [
+        {
+            image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop",
+            title: "Share Hope.",
+            subtitle: "One plate at a time."
+        },
+        {
+            image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2070&auto=format&fit=crop",
+            title: "Give Warmth.",
+            subtitle: "More than just clothes."
+        },
+        {
+            image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?q=80&w=2070&auto=format&fit=crop", // Books/Learning
+            title: "Empower.",
+            subtitle: "Knowledge for everyone."
+        }
+    ];
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, []);
 
     return (
-        <div className="bg-white">
-            {/* Hero Section - Full Screen Image Background (Apple Style) */}
-            <section className="relative w-full flex flex-col items-center justify-center text-center px-6 overflow-hidden" style={{ backgroundColor: 'black', minHeight: '100vh' }}>
-                {/* Background Image with Overlay */}
-                <div className="absolute inset-0 z-0">
+        <section className="relative h-screen w-full overflow-hidden bg-black">
+            {slides.map((slide, index) => (
+                <div
+                    key={index}
+                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+                >
                     <img
-                        src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"
-                        alt="Hand reaching out"
-                        className="w-full h-full object-cover opacity-60"
+                        src={slide.image}
+                        alt={slide.title}
+                        className="w-full h-full object-cover opacity-60 scale-105 animate-ken-burns" // Added simple scale generic, assumes Tailwind config or custom class
+                        style={{ animation: index === currentSlide ? 'kenBurns 20s infinite alternate' : 'none' }}
                     />
-                    <div className="absolute inset-0 bg-black/40"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 </div>
+            ))}
 
-                <div className="relative z-10 max-w-4xl pt-20">
-                    <h1 className="text-6xl md:text-8xl font-semibold text-white tracking-tight mb-6 drop-shadow-lg">
-                        Giving. <br />
-                        <span className="text-white/80">Reimagined.</span>
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
+                <div className="max-w-4xl space-y-6">
+                    <h1 className="text-6xl md:text-8xl font-semibold text-white tracking-tight drop-shadow-2xl">
+                        {slides[currentSlide].title} <br />
+                        <span className="text-[#2997FF]">{slides[currentSlide].subtitle}</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-[#F5F5F7] max-w-2xl mx-auto font-medium mb-10 leading-relaxed drop-shadow-md">
-                        The simplest way to make a difference. Donate food, clothes, books, or funds in seconds.
+                    <p className="text-xl md:text-2xl text-[#F5F5F7] max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-md">
+                        Join the movement. Connect directly with those in need using our unified platform.
                     </p>
-                    <div className="flex items-center justify-center gap-4">
-                        <Link to="/donations" className="bg-[#0071E3] text-white hover:bg-[#0077ED] px-8 py-3 rounded-full text-lg font-medium transition-all hover:scale-105 active:scale-95 shadow-lg shadow-blue-500/30">
-                            Start Donating
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+                        <Link to="/donations">
+                            <Button className="bg-white text-black hover:bg-[#F5F5F7] text-lg px-8 py-4 rounded-full font-medium transition-all hover:scale-105 active:scale-95 shadow-xl">
+                                Start Giving
+                            </Button>
                         </Link>
-                        <Link to="/about" className="text-[#2997FF] hover:text-[#70B0FF] text-lg font-medium flex items-center gap-1 group">
-                            Learn more <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+                        <Link to="/about">
+                            <Button variant="ghost" className="text-white hover:bg-white/10 text-lg px-8 py-4 rounded-full border border-white/30 backdrop-blur-md">
+                                How it Works
+                            </Button>
                         </Link>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            {/* Bento Grid Features Section */}
+            {/* Slide Indicators */}
+            <div className="absolute bottom-10 left-0 right-0 flex justify-center gap-3 z-20">
+                {slides.map((_, idx) => (
+                    <button
+                        key={idx}
+                        onClick={() => setCurrentSlide(idx)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === currentSlide ? 'bg-white w-8' : 'bg-white/40 hover:bg-white/60'}`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                    />
+                ))}
+            </div>
+
+            <style>{`
+                @keyframes kenBurns {
+                    0% { transform: scale(1); }
+                    100% { transform: scale(1.1); }
+                }
+            `}</style>
+        </section>
+    );
+};
+
+const Home = () => {
+    return (
+        <div className="bg-[#FFFFFF]">
+            <HeroSlideshow />
+
+            {/* Apple-style "Big Grid" for Donation Types */}
             <section className="py-32 bg-[#F5F5F7]">
-                <div className="max-w-[1080px] mx-auto px-6">
-                    <div className="mb-20">
-                        <h2 className="section-title text-[#1D1D1F] mb-6">Four ways to give. <span className="text-[#86868B]">One platform.</span></h2>
+                <div className="max-w-[1280px] mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <h2 className="text-4xl md:text-6xl font-semibold text-[#1D1D1F] tracking-tight mb-6">
+                            Choose your impact.
+                        </h2>
+                        <p className="text-xl text-[#86868B] max-w-2xl mx-auto">
+                            Every category is optimized for speed and transparency.
+                        </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-auto md:h-[600px]">
-                        {/* Large Card - Food */}
-                        <div className="bg-white rounded-[32px] p-10 relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col justify-between col-span-1 md:row-span-2">
-                            <div className="relative z-10">
-                                <span className="text-[#E85D04] font-semibold tracking-wide text-xs uppercase mb-2 block">Available Now</span>
-                                <h3 className="text-4xl font-semibold mb-4 text-[#1D1D1F]">Food Donation</h3>
-                                <p className="text-[#86868B] text-lg leading-relaxed max-w-xs">Connecting surplus food from restaurants to local shelters instantly.</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Food Card - Large */}
+                        <Link to="/donations?type=food" className="group relative h-[500px] rounded-[40px] overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+                            <div className="absolute inset-x-0 top-0 p-12 z-10">
+                                <span className="text-[#E85D04] font-semibold tracking-wider text-xs uppercase mb-3 block">Urgent Needs</span>
+                                <h3 className="text-4xl font-semibold text-[#1D1D1F] mb-3">Food.</h3>
+                                <p className="text-[#86868B] text-lg max-w-xs">Connecting restaurants and homes to local shelters.</p>
                             </div>
-                            <div className="absolute inset-x-0 bottom-0 h-[60%] z-0">
-                                <img
-                                    src="https://images.unsplash.com/photo-1594007759138-855170ec8dc0?q=80&w=1888&auto=format&fit=crop"
-                                    alt="Donation of fresh vegetables"
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 rounded-b-[32px]"
-                                />
+                            <img
+                                src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop"
+                                alt="Food"
+                                className="absolute inset-0 w-full h-full object-cover mt-32 group-hover:scale-105 transition-transform duration-700"
+                            />
+                            <div className="absolute bottom-10 right-10 z-20 bg-white/40 backdrop-blur-md p-3 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <span className="material-symbols-outlined text-[#1D1D1F]">arrow_forward</span>
                             </div>
-                            <div className="relative z-10 mt-auto pt-64">
-                                <button className="bg-[#1D1D1F] text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-black/80 transition-colors">Donate Food</button>
-                            </div>
-                        </div>
+                        </Link>
 
-                        <div className="grid grid-rows-2 gap-6 h-full">
-                            {/* Small Card - Clothes */}
-                            <div className="bg-white rounded-[32px] p-8 relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500">
-                                <div className="flex justify-between items-start relative z-10">
-                                    <div>
-                                        <h3 className="text-2xl font-semibold mb-2 text-[#1D1D1F]">Clothing</h3>
-                                        <p className="text-[#86868B]">Share warmth & dignity.</p>
+                        {/* Side by Side */}
+                        <div className="grid grid-rows-2 gap-8 h-[500px]">
+                            {/* Clothes */}
+                            <Link to="/donations?type=clothes" className="group relative rounded-[40px] overflow-hidden bg-[#FBFBFD] shadow-sm hover:shadow-2xl transition-all duration-500">
+                                <div className="absolute inset-0 flex items-center justify-between p-10 z-10">
+                                    <div className="max-w-[50%]">
+                                        <h3 className="text-3xl font-semibold text-[#1D1D1F] mb-2">Clothes.</h3>
+                                        <p className="text-[#86868B]">Share warmth.</p>
                                     </div>
-                                    <span className="material-symbols-outlined text-3xl text-[#0071E3]">checkroom</span>
+                                    <img
+                                        src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop"
+                                        alt="Clothes"
+                                        className="w-32 h-32 object-cover rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 shadow-lg"
+                                    />
                                 </div>
-                                <img
-                                    src="https://images.unsplash.com/photo-1520004434532-3d94697493bc?q=80&w=2025&auto=format&fit=crop"
-                                    className="absolute right-[-20%] bottom-[-20%] w-[60%] h-auto opacity-80 rotate-[-12deg] group-hover:rotate-[-6deg] transition-transform duration-500"
-                                    alt="Clothes"
-                                />
-                            </div>
+                            </Link>
 
-                            {/* Small Card - Money */}
-                            <div className="bg-[#1D1D1F] rounded-[32px] p-8 relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-500 text-white flex flex-col justify-center text-center">
-                                <div className="relative z-10">
-                                    <h3 className="text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-[#2997FF] to-[#0A84FF]">100%</h3>
-                                    <p className="text-[#F5F5F7]/80 text-lg">Direct Impact.</p>
-                                    <p className="text-[#F5F5F7]/60 text-sm mt-4 max-w-xs mx-auto">Every dollar goes directly to verified NGOs projects.</p>
+                            {/* Money */}
+                            <Link to="/donations?type=money" className="group relative rounded-[40px] overflow-hidden bg-[#1D1D1F] shadow-sm hover:shadow-2xl transition-all duration-500 flex items-center justify-center text-center">
+                                <div className="relative z-10 p-10">
+                                    <h3 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2997FF] to-[#0A84FF] mb-2">Funds.</h3>
+                                    <p className="text-[#F5F5F7] text-lg">100% Verified.</p>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     </div>
 
-                    {/* Full Width Card - Books */}
-                    <div className="mt-6 bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 h-[300px] relative group">
+                    {/* Books Full Width */}
+                    <Link to="/donations?type=books" className="mt-8 block group relative h-[300px] rounded-[40px] overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-500">
                         <div className="absolute inset-0">
                             <img
-                                src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=1974&auto=format&fit=crop"
-                                className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700"
+                                src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2070&auto=format&fit=crop"
+                                className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
                                 alt="Books"
                             />
-                            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors"></div>
                         </div>
-                        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center text-white p-10">
-                            <h3 className="text-4xl font-semibold mb-4 drop-shadow-lg">Spread Knowledge.</h3>
-                            <button className="bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-[#F5F5F7] transition-colors">Donate Books</button>
+                        <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white z-10 p-10">
+                            <h3 className="text-4xl font-semibold mb-2 drop-shadow-lg">Books & Education.</h3>
+                            <button className="mt-4 bg-white/20 backdrop-blur-md border border-white/50 text-white px-8 py-2 rounded-full font-medium hover:bg-white hover:text-black transition-all">
+                                Donate Books
+                            </button>
                         </div>
-                    </div>
+                    </Link>
                 </div>
             </section>
         </div>
