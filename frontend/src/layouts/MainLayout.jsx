@@ -24,7 +24,13 @@ const MainLayout = () => {
 
                     <div className={`hidden md:flex items-center gap-8 ${scrolled ? 'text-[#1D1D1F]/80' : 'text-white/80'}`}>
                         {['Mission', 'Impact', 'Stories', 'Community'].map((item) => (
-                            <a key={item} href="#" className="hover:text-current hover:opacity-70 transition-opacity">{item}</a>
+                            <a
+                                key={item}
+                                href={`/#${item.toLowerCase()}`}
+                                className="hover:text-current hover:opacity-70 transition-opacity"
+                            >
+                                {item}
+                            </a>
                         ))}
                     </div>
 
