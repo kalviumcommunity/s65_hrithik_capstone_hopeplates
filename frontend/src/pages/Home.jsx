@@ -160,7 +160,7 @@ const ImpactSection = () => (
 
 // 4. Bento Grid (The "Solution" - Donation Types) - REDESIGNED: DARK & DYNAMIC
 const DonationTypesSection = () => (
-    <Section className="bg-black relative overflow-hidden">
+    <Section className="bg-transparent relative overflow-hidden">
         {/* Ambient background glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none"></div>
 
@@ -175,7 +175,7 @@ const DonationTypesSection = () => (
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px]">
             {/* FOOD: Large Feature Card (Span 7) */}
-            <Link to="/donations?type=food" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+            <Link to="/donations?type=food" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden glass-card">
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
                 <img
                     src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=2698&auto=format&fit=crop"
@@ -192,7 +192,7 @@ const DonationTypesSection = () => (
             </Link>
 
             {/* CLOTHES: Vertical Card (Span 5) */}
-            <Link to="/donations?type=clothes" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+            <Link to="/donations?type=clothes" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden glass-card">
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
                 <img
                     src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=2670&auto=format&fit=crop"
@@ -209,7 +209,7 @@ const DonationTypesSection = () => (
             </Link>
 
             {/* FUNDS: Dark Gradient Card (Span 5) */}
-            <Link to="/donations?type=money" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10 flex flex-col justify-end">
+            <Link to="/donations?type=money" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden glass-card flex flex-col justify-end">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/20 via-zinc-900/0 to-zinc-900/0 z-0"></div>
                 <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:opacity-50 transition-opacity duration-700">
                     {/* Abstract visual for funds */}
@@ -227,7 +227,7 @@ const DonationTypesSection = () => (
             </Link>
 
             {/* BOOKS/EDUCATION: Large Feature Card (Span 7) */}
-            <Link to="/donations?type=books" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+            <Link to="/donations?type=books" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden glass-card">
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
                 <img
                     src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=2574&auto=format&fit=crop"
@@ -248,7 +248,7 @@ const DonationTypesSection = () => (
 
 // 5. Stories Section ("Voices") - DARK MODE
 const StoriesSection = () => (
-    <Section id="stories" className="bg-zinc-900 border-t border-white/5 py-32">
+    <Section id="stories" className="bg-transparent border-t border-white/5 py-32">
         <h2 className="text-white text-4xl md:text-6xl font-semibold mb-16 text-center tracking-tight">Voices of Hope.</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -271,7 +271,7 @@ const StoriesSection = () => (
                     img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop"
                 }
             ].map((story, i) => (
-                <div key={i} className="flex flex-col gap-6 p-8 rounded-[32px] bg-black/50 border border-white/5 hover:border-white/10 transition-colors">
+                <div key={i} className="flex flex-col gap-6 p-8 rounded-[32px] glass-dark hover:bg-black/60 transition-colors">
                     <div className="flex items-center gap-4">
                         <img src={story.img} className="w-14 h-14 rounded-full object-cover border border-white/10" alt={story.u} />
                         <div>
@@ -291,7 +291,7 @@ const ImpactCalculator = () => {
     const [amount, setAmount] = useState(50);
     // Logic: $1 = 2 meals approx
     return (
-        <Section className="bg-[#121212] py-32 relative overflow-hidden">
+        <Section className="bg-transparent py-32 relative overflow-hidden">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #333 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
 
@@ -303,7 +303,7 @@ const ImpactCalculator = () => {
                     <p className="text-neutral-400 text-xl font-light">Drag to calculate the direct impact of your donation.</p>
                 </div>
 
-                <div className="bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[40px] p-8 md:p-16 shadow-2xl relative overflow-hidden group">
+                <div className="glass-dark rounded-[40px] p-8 md:p-16 relative overflow-hidden group">
                     {/* Dynamic Glow based on amount */}
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-600/10 blur-[100px] transition-opacity duration-300" style={{ opacity: amount / 1000 + 0.2 }}></div>
 
