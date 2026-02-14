@@ -3,8 +3,10 @@
 ## Capstone Project Title
 **HopePlates: A Food & Essentials Redistribution Platform**
 
+**Frontend:https://s65-hrithik-capstone-hopeplates-1.onrender.com/**
 
-**Backend:https://s65-hrithik-capstone-hopeplates.onrender.com**
+
+**Backend:https://s65-hrithik-capstone-hopeplates.onrender.com/**
 
 ## Overview
 **HopePlates** is a social impact platform designed to reduce food waste and provide essential resources to those in need. It connects donors (restaurants, event organizers, households) with NGOs and volunteers to distribute surplus food, books, and clothes to underprivileged communities. Additionally, HopePlates enables monetary donations to verified NGOs via UPI.
@@ -71,14 +73,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
-## API Endpoints
-- `POST /api/donate/food` – Add a food donation listing
-- `POST /api/donate/books` – Add a book donation listing
-- `POST /api/donate/clothes` – Add a clothes donation listing
-- `POST /api/donate/money` – Donate money to an NGO via UPI
-- `GET /api/ngos` – Fetch list of verified NGOs
-- `POST /api/ngo/verify` – Admin verifies an NGO
 
 ## Contributing
 We welcome contributions! Feel free to open issues and pull requests to improve HopePlates.
