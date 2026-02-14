@@ -233,10 +233,10 @@ const DonationTypesSection = () => (
     </Section>
 );
 
-// 5. Stories Section ("Voices")
+// 5. Stories Section ("Voices") - DARK MODE
 const StoriesSection = () => (
-    <Section id="stories" className="bg-white">
-        <h2 className="text-[#1D1D1F] text-4xl font-semibold mb-12">Voices of Hope.</h2>
+    <Section id="stories" className="bg-zinc-900 border-t border-white/5 py-32">
+        <h2 className="text-white text-4xl md:text-6xl font-semibold mb-16 text-center tracking-tight">Voices of Hope.</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
                 {
@@ -258,25 +258,19 @@ const StoriesSection = () => (
                     img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop"
                 }
             ].map((story, i) => (
-                <div key={i} className="flex flex-col gap-6 p-6 rounded-3xl bg-[#F5F5F7] hover:bg-[#E8E8ED] transition-colors">
+                <div key={i} className="flex flex-col gap-6 p-8 rounded-[32px] bg-black/50 border border-white/5 hover:border-white/10 transition-colors">
                     <div className="flex items-center gap-4">
-                        <img src={story.img} className="w-12 h-12 rounded-full object-cover" alt={story.u} />
+                        <img src={story.img} className="w-14 h-14 rounded-full object-cover border border-white/10" alt={story.u} />
                         <div>
-                            <div className="font-semibold text-[#1D1D1F]">{story.u}</div>
-                            <div className="text-sm text-[#86868B]">{story.role}</div>
-                        </div>
-                    </div>
-                    <p className="text-[#1D1D1F] text-lg leading-relaxed italic">"{story.q}"</p>
-                </div>
-                            <div className="font-semibold text-white">{story.u}</div>
+                            <div className="font-semibold text-white text-lg">{story.u}</div>
                             <div className="text-sm text-neutral-400">{story.role}</div>
                         </div>
                     </div>
                     <p className="text-neutral-300 text-lg leading-relaxed italic">"{story.q}"</p>
-                </div >
+                </div>
             ))}
-        </div >
-    </Section >
+        </div>
+    </Section>
 );
 
 // 6. Impact Calculator (Interactive Feature) - REDESIGNED: Dynamic Visualizer
