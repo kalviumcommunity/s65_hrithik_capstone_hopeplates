@@ -1,7 +1,7 @@
 services:
   # Backend Service
   - type: web
-    name: hopeplates-backend
+    name: s65_hrithik_capstone_hopeplates-1
     env: node
     buildCommand: cd backend && npm install
     startCommand: cd backend && node server.js
@@ -9,15 +9,15 @@ services:
       - key: NODE_VERSION
         value: 20.11.0
       - key: MONGO_URI
-        fromGroup: hopeplates-env
+        sync: false
       - key: JWT_SECRET
-        fromGroup: hopeplates-env
+        sync: false
       - key: PORT
         value: 10000
 
   # Frontend Service (Static Site)
   - type: static
-    name: hopeplates-frontend
+    name: s65_hrithik_capstone_hopeplates-frontend
     env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
@@ -25,5 +25,5 @@ services:
       - key: VITE_API_URL
         fromService:
           type: web
-          name: hopeplates-backend
+          name: s65_hrithik_capstone_hopeplates-1
           property: url
