@@ -88,10 +88,10 @@ const Register = () => {
 
                 {/* Visual Side (Left) */}
                 <div className="hidden md:flex md:col-span-2 flex-col justify-end p-12 bg-white/5 text-white relative border-r border-white/5">
-                    <div className="absolute top-8 left-8 flex items-center gap-2">
+                    <Link to="/" className="absolute top-8 left-8 flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <span className="material-symbols-outlined text-blue-500">favorite</span>
                         <span className="font-semibold tracking-tight text-lg">HopePlates</span>
-                    </div>
+                    </Link>
                     <h2 className="text-3xl font-bold leading-tight mb-4">Start your journey.</h2>
                     <p className="text-zinc-300">Join a network where transparency meets direct impact. See exactly where your help goes.</p>
                 </div>

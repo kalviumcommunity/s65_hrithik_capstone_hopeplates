@@ -46,10 +46,10 @@ const Login = () => {
 
                 {/* Visual Side (Left in Box) */}
                 <div className="hidden md:flex flex-col justify-center p-12 bg-white/5 text-white relative border-r border-white/5">
-                    <div className="absolute top-8 left-8 flex items-center gap-2">
+                    <Link to="/" className="absolute top-8 left-8 flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <span className="material-symbols-outlined text-blue-500">favorite</span>
                         <span className="font-semibold tracking-tight text-lg">HopePlates</span>
-                    </div>
+                    </Link>
                     <h2 className="text-4xl font-bold leading-tight mb-4">Welcome back to the movement.</h2>
                     <p className="text-zinc-300 text-lg">Your generosity has already served over 12,000 meals. Let's keep the momentum going.</p>
                 </div>
