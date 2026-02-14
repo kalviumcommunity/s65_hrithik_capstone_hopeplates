@@ -11,7 +11,7 @@ const Register = () => {
         role: "donor",
     })
     const [profilePhoto, setProfilePhoto] = useState(null)
-    const [aboutImages, setAboutImages] = useState([]) // Optional: for NGO verification etc
+    const [aboutImages, setAboutImages] = useState(null) // Multiple images
     const navigate = useNavigate()
 
     const handleRegister = async (e) => {
@@ -47,6 +47,19 @@ const Register = () => {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formImg
+                })
+            }
+
+            // Upload About Images (Multiple)
+            if (aboutImages && aboutImages.length > 0) {
+                const formAbout = new FormData()
+                Array.from(aboutImages).forEach(file => {
+                    formAbout.append("images", file)
+                })
+                await fetch(`${import.meta.env.VITE_API_URL}/api/users/upload-images`, {
+                    method: "POST",
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formAbout
                 })
             }
 
@@ -128,16 +141,32 @@ const Register = () => {
                         </div>
 
                         <div>
-                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Profile Photo</label>
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Profile Photo (Required)</label>
                             <div className="flex items-center gap-4">
                                 <label className="flex-1 h-32 border-2 border-dashed border-zinc-700 hover:border-blue-500 hover:bg-blue-500/10 rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all group">
-                                    <span className="material-symbols-outlined text-3xl text-zinc-500 group-hover:text-blue-500 transition-colors">cloud_upload</span>
-                                    <span className="text-xs text-zinc-600 mt-2 group-hover:text-blue-400">Tap to upload</span>
+                                    <span className="material-symbols-outlined text-3xl text-zinc-500 group-hover:text-blue-500 transition-colors">account_circle</span>
+                                    <span className="text-xs text-zinc-600 mt-2 group-hover:text-blue-400">Upload Profile Pic</span>
                                     <input type="file" className="hidden" onChange={e => setProfilePhoto(e.target.files[0])} accept="image/*" required />
                                 </label>
                                 {profilePhoto && (
                                     <div className="h-32 w-32 rounded-xl overflow-hidden border border-white/10">
                                         <img src={URL.createObjectURL(profilePhoto)} className="w-full h-full object-cover" alt="Preview" />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">About Images (Showcase your work)</label>
+                            <div className="flex items-center gap-4">
+                                <label className="flex-1 h-32 border-2 border-dashed border-zinc-700 hover:border-green-500 hover:bg-green-500/10 rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all group">
+                                    <span className="material-symbols-outlined text-3xl text-zinc-500 group-hover:text-green-500 transition-colors">add_photo_alternate</span>
+                                    <span className="text-xs text-zinc-600 mt-2 group-hover:text-green-400">Upload Gallery (Max 10)</span>
+                                    <input type="file" className="hidden" onChange={e => setAboutImages(e.target.files)} accept="image/*" multiple />
+                                </label>
+                                {aboutImages && aboutImages.length > 0 && (
+                                    <div className="h-32 w-32 rounded-xl border border-white/10 flex items-center justify-center bg-white/5">
+                                        <span className="text-white font-bold">{aboutImages.length} Files</span>
                                     </div>
                                 )}
                             </div>

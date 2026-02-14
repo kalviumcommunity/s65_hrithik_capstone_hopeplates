@@ -49,7 +49,7 @@ const MainLayout = () => {
                     </Link>
 
                     {/* Centered Navigation Tabs - "Sliding Effect" */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center bg-white/5 backdrop-blur-[2px] rounded-full p-1.5 border border-white/5">
+                    <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center bg-white/5 backdrop-blur-[2px] rounded-full p-1.5 border border-white/5">
                         {/* Pill Background for Active State */}
                         {[
                             { name: 'Mission', path: '/' },
@@ -76,15 +76,34 @@ const MainLayout = () => {
                         </Link>
                     </div>
 
-                    {/* Right Side Actions */}
+                    {/* Mobile & Right Side Actions */}
                     <div className="flex items-center gap-4">
-                        {/* Login/Register or Profile if logged in could go here */}
-                        <Link to="/login" className="text-sm font-medium transition-colors text-neutral-300 hover:text-white">Log in</Link>
-                        <Link to="/register">
-                            <button className="px-5 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 active:scale-95 bg-white text-black hover:bg-neutral-200">
-                                Join Us
-                            </button>
-                        </Link>
+                        <Link to="/donations" className="md:hidden text-sm font-medium text-neutral-300 hover:text-white">Donations</Link>
+
+                        {localStorage.getItem('user') ? (
+                            <>
+                                <Link to="/dashboard" className="text-sm font-medium transition-colors text-neutral-300 hover:text-white">Dashboard</Link>
+                                <button
+                                    onClick={() => {
+                                        localStorage.removeItem('user');
+                                        localStorage.removeItem('token');
+                                        window.location.reload();
+                                    }}
+                                    className="px-5 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 active:scale-95 bg-white/10 text-white hover:bg-white hover:text-black border border-white/10"
+                                >
+                                    Log out
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/login" className="text-sm font-medium transition-colors text-neutral-300 hover:text-white">Log in</Link>
+                                <Link to="/register">
+                                    <button className="px-5 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 active:scale-95 bg-white text-black hover:bg-neutral-200">
+                                        Join Us
+                                    </button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>

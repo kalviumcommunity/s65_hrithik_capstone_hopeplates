@@ -20,7 +20,21 @@ requiredEnvVars.forEach((key) => {
     }
 })
 
+const http = require('http');
+const { Server } = require("socket.io");
+
 const app = express()
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: [
+            "http://localhost:5173",
+            "https://s65-hrithik-capstone-hopeplates-1.onrender.com"
+        ],
+        credentials: true
+    }
+});
 
 app.use(cors({
     origin: [
@@ -34,6 +48,11 @@ app.use(express.json())
 
 connectDB()
 
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
+
 app.use("/api/admin", adminRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/donations", donationRoutes)
@@ -44,17 +63,36 @@ app.use("/api/donations", donationRoutes)
 app.use("/uploads", express.static("uploads"))
 app.use("/api/messages", messageRoutes)
 
+// Socket.io Logic
+io.on("connection", (socket) => {
+    console.log("New client connected:", socket.id);
+
+    socket.on("join_room", (userId) => {
+        socket.join(userId);
+        console.log(`User ${userId} joined room ${userId}`);
+    });
+
+    socket.on("send_message", (data) => {
+        // data: { containerId (recipientId), senderId, message }
+        io.to(data.recipientId).emit("receive_message", data);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("Client disconnected:", socket.id);
+    });
+});
+
 app.get("/", (req, res) => {
     res.send("Hope Plates API is running!");
 });
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000;
 if (!PORT) {
     console.error("PORT is not defined in the environment variables.")
     process.exit(1)
 }
 
-app.listen(PORT, (err) => {
+server.listen(PORT, (err) => {
     if (err) {
         console.error("Failed to start the server:", err.message)
         process.exit(1)
