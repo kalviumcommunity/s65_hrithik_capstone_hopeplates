@@ -14,23 +14,34 @@ export const useSocket = () => {
 export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // Get the API URL from environment variables
+        // Get user from local storage
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+
+        // Get the API URL
         const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-        // Initialize socket connection
+        // Initialize socket
         const newSocket = io(API_URL, {
             transports: ["websocket", "polling"],
             reconnection: true,
-            reconnectionAttempts: 5,
-            reconnectionDelay: 1000,
         });
 
-        // Connection event handlers
         newSocket.on("connect", () => {
             console.log("Socket connected:", newSocket.id);
             setIsConnected(true);
+
+            // Join room with user ID if user exists
+            if (storedUser) {
+                const u = JSON.parse(storedUser);
+                newSocket.emit("join_room", u.id || u._id);
+                console.log("Joined room:", u.id || u._id);
+            }
         });
 
         newSocket.on("disconnect", () => {
@@ -38,24 +49,17 @@ export const SocketProvider = ({ children }) => {
             setIsConnected(false);
         });
 
-        newSocket.on("connect_error", (error) => {
-            console.error("Socket connection error:", error);
-            setIsConnected(false);
-        });
-
         setSocket(newSocket);
 
-        // Cleanup on unmount
         return () => {
-            if (newSocket) {
-                newSocket.disconnect();
-            }
+            if (newSocket) newSocket.disconnect();
         };
     }, []);
 
     const value = {
         socket,
         isConnected,
+        user
     };
 
     return (

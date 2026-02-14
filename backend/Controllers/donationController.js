@@ -52,6 +52,30 @@ const getDonationById = async (req, res) => {
     }
 };
 
+const claimDonation = async (req, res) => {
+    try {
+        const donation = await Donation.findById(req.params.id);
+        if (!donation) return res.status(404).json({ error: "Donation not found" });
+
+        if (donation.status === 'claimed' || donation.status === 'completed') {
+            return res.status(400).json({ error: "Donation already claimed" });
+        }
+
+        donation.status = 'claimed';
+        donation.claimedBy = req.user.id;
+        await donation.save();
+
+        // Populate donor details for the response
+        const populatedDonation = await Donation.findById(donation._id)
+            .populate("donor", "name email location contact");
+
+        res.json(populatedDonation);
+    } catch (err) {
+        console.error("Claim donation error:", err);
+        res.status(500).json({ error: "Failed to claim donation" });
+    }
+};
+
 const updateDonationStatus = async (req, res) => {
     try {
         const { status } = req.body;
@@ -88,7 +112,10 @@ const deleteDonation = async (req, res) => {
 const getDonationCountByUser = async (req, res) => {
     try {
         const { userId } = req.params;
-        const count = await Donation.countDocuments({ donor: userId });
+        const count = await Donation.countDocuments({
+            donor: userId,
+            status: { $ne: 'rejected' }
+        });
         res.json({ count });
     } catch (error) {
         console.error("Error fetching donation count:", error);
@@ -96,6 +123,16 @@ const getDonationCountByUser = async (req, res) => {
     }
 };
 
+const getDonationsByUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const donations = await Donation.find({ donor: userId }).sort({ createdAt: -1 });
+        res.json(donations);
+    } catch (error) {
+        console.error("Error fetching user donations:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
 
 module.exports = {
     createDonation,
@@ -103,5 +140,7 @@ module.exports = {
     getDonationById,
     updateDonationStatus,
     deleteDonation,
-    getDonationCountByUser
+    getDonationCountByUser,
+    getDonationsByUser,
+    claimDonation
 }

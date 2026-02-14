@@ -14,10 +14,15 @@ const Register = () => {
     const [aboutImages, setAboutImages] = useState(null) // Multiple images
     const navigate = useNavigate()
 
+    // Dynamic API URL handling best practice
+    const API_BASE = window.location.hostname === "localhost"
+        ? "http://localhost:5000"
+        : "https://s65-hrithik-capstone-hopeplates.onrender.com";
+
     const handleRegister = async (e) => {
         e.preventDefault()
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/register`, {
+            const response = await fetch(`${API_BASE}/api/users/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
@@ -28,8 +33,9 @@ const Register = () => {
                 return
             }
 
-            // Auto Login
-            const loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
+            // Auto Login to get tokens for uploads
+            // Note: Even if pending, login succeeds now so we can upload photos.
+            const loginRes = await fetch(`${API_BASE}/api/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: formData.email, password: formData.password })
@@ -38,12 +44,13 @@ const Register = () => {
             if (!loginRes.ok) throw new Error(loginData.message)
 
             const token = loginData.token
+            const user = loginData.user
 
             // Upload Photo
             if (profilePhoto) {
                 const formImg = new FormData()
                 formImg.append("profilePhoto", profilePhoto)
-                await fetch(`${import.meta.env.VITE_API_URL}/api/users/upload-profile-photo`, {
+                await fetch(`${API_BASE}/api/users/upload-profile-photo`, {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formImg
@@ -56,15 +63,25 @@ const Register = () => {
                 Array.from(aboutImages).forEach(file => {
                     formAbout.append("images", file)
                 })
-                await fetch(`${import.meta.env.VITE_API_URL}/api/users/upload-images`, {
+                await fetch(`${API_BASE}/api/users/upload-images`, {
                     method: "POST",
                     headers: { Authorization: `Bearer ${token}` },
                     body: formAbout
                 })
             }
 
-            alert("Welcome to HopePlates!")
-            navigate("/donations")
+            alert("Registration successful!")
+
+            // Redirect based on verification status
+            if (user.verificationStatus === "pending") {
+                localStorage.removeItem("token")
+                localStorage.removeItem("user")
+                alert("Registration successful! Your account is pending verification. Please log in to check status.")
+                navigate("/login")
+            } else {
+                navigate("/donations")
+            }
+
         } catch (error) {
             console.error("Registration error:", error)
             alert("An error occurred during registration")

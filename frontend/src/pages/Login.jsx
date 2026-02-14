@@ -7,10 +7,15 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
 
+    // Dynamic API URL
+    const API_BASE = window.location.hostname === "localhost"
+        ? "http://localhost:5000"
+        : "https://s65-hrithik-capstone-hopeplates.onrender.com";
+
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
+            const response = await fetch(`${API_BASE}/api/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -21,8 +26,18 @@ const Login = () => {
             }
             const data = await response.json()
             localStorage.setItem("token", data.token)
-            localStorage.setItem("user", JSON.stringify(data)) // Store user info
-            navigate("/dashboard")
+            // Store just the user object for easier access
+            localStorage.setItem("user", JSON.stringify(data.user))
+
+            // Redirect based on verification status
+            if (data.user.verificationStatus === "pending") {
+                navigate("/pending-approval")
+            } else if (data.user.role === "admin") {
+                navigate("/dashboard") // Or separate admin dashboard logic
+            } else {
+                navigate("/donations") // Standard landing for users
+            }
+
         } catch (err) {
             console.error(err.message)
             alert(err.message)

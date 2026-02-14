@@ -30,6 +30,44 @@ const MainLayout = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            try {
+                setUser(JSON.parse(userStr));
+
+                // Fetch fresh profile data
+                const API_BASE = window.location.hostname === "localhost"
+                    ? "http://localhost:5000"
+                    : "https://s65-hrithik-capstone-hopeplates.onrender.com";
+                const token = localStorage.getItem("token");
+
+                fetch(`${API_BASE}/api/users/${JSON.parse(userStr).id || JSON.parse(userStr)._id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && !data.error) {
+                            setUser(data);
+                            localStorage.setItem('user', JSON.stringify(data));
+                        }
+                    })
+                    .catch(err => console.error("Error updating user in MainLayout:", err));
+            } catch (e) {
+                console.error("Invalid user data in MainLayout");
+            }
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        setUser(null);
+        window.location.reload();
+    };
+
     const isHome = location.pathname === "/";
 
     return (
@@ -75,20 +113,33 @@ const MainLayout = () => {
 
                     {/* Mobile & Right Side Actions */}
                     <div className="flex items-center gap-4">
-                        {localStorage.getItem('user') ? (
-                            <>
-                                <Link to="/dashboard" className="text-sm font-medium transition-colors text-neutral-300 hover:text-white">Dashboard</Link>
+                        {user ? (
+                            <div className="flex items-center gap-4">
+                                <Link to="/dashboard" className="text-sm font-medium transition-colors text-neutral-300 hover:text-white hidden sm:block">Dashboard</Link>
+                                <div className="flex items-center gap-3 bg-white/5 pr-1 pl-3 py-1 rounded-full border border-white/10">
+                                    <span className="text-xs font-bold text-neutral-300 hidden md:block">{user.name}</span>
+                                    <Link to="/profile" className="w-8 h-8 rounded-full overflow-hidden border border-white/20">
+                                        {user.profilePhoto ? (
+                                            <img
+                                                src={user.profilePhoto.startsWith("http") ? user.profilePhoto : `${window.location.hostname === "localhost" ? "http://localhost:5000" : "https://s65-hrithik-capstone-hopeplates.onrender.com"}/${user.profilePhoto.replace(/\\/g, '/')}`}
+                                                alt="Profile"
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-blue-500/20 text-blue-400 font-bold text-[10px]">
+                                                {user.name?.charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                    </Link>
+                                </div>
                                 <button
-                                    onClick={() => {
-                                        localStorage.removeItem('user');
-                                        localStorage.removeItem('token');
-                                        window.location.reload();
-                                    }}
-                                    className="px-5 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 active:scale-95 bg-white/10 text-white hover:bg-white hover:text-black border border-white/10"
+                                    onClick={handleLogout}
+                                    className="p-2 hover:text-red-400 transition-colors"
+                                    title="Log out"
                                 >
-                                    Log out
+                                    <span className="material-symbols-outlined text-[20px]">logout</span>
                                 </button>
-                            </>
+                            </div>
                         ) : (
                             <>
                                 <Link to="/login" className="text-sm font-medium transition-colors text-neutral-300 hover:text-white">Log in</Link>

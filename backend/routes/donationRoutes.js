@@ -7,7 +7,9 @@ const {
     getDonationById,
     updateDonationStatus,
     deleteDonation,
-    getDonationCountByUser
+    getDonationCountByUser,
+    getDonationsByUser,
+    claimDonation
 } = require("../Controllers/donationController")
 const { protect } = require("../middlewares/authMiddleware")
 
@@ -27,14 +29,13 @@ router.get("/history", protect, async (req, res) => {
     try {
         const userId = req.user.id;
         const donations = await Donation.find({
-            status: "claimed",
             $or: [
                 { donor: userId },
                 { claimedBy: userId }
             ]
         })
-        .populate("donor", "name")
-        .populate("claimedBy", "name");
+            .populate("donor", "name")
+            .populate("claimedBy", "name");
         res.json(donations);
     } catch (err) {
         console.error("Donation history error:", err);
@@ -43,9 +44,11 @@ router.get("/history", protect, async (req, res) => {
 });
 
 router.post("/", protect, upload.array("images", 5), createDonation)
-router.get("/", protect, getAllDonations)
+router.get("/", protect, getAllDonations) // This might fetch all?
 router.get("/count/:userId", getDonationCountByUser)
+router.get("/user/:userId", protect, getDonationsByUser) // New route
 router.get("/:id", protect, getDonationById)
+router.post("/:id/claim", protect, claimDonation)
 router.put("/:id/status", protect, updateDonationStatus)
 router.delete("/:id", protect, deleteDonation)
 

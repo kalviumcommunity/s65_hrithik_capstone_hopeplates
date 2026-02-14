@@ -1,6 +1,6 @@
 const User = require("../models/userModel")
 const bcrypt = require("bcryptjs")
-const {generateToken} = require('../utils/jwt')
+const { generateToken } = require('../utils/jwt')
 
 exports.registerUser = async (req, res) => {
     try {
@@ -15,6 +15,8 @@ exports.registerUser = async (req, res) => {
 
         const existingUser = await User.findOne({ email })
         if (existingUser) return res.status(400).json({ message: "User already exists" })
+
+        // NGOs, Restaurants, Event Managers are pending by default. Donors are verified. Admin is verified.
         const verificationStatus = role === "admin" ? "verified" : ["ngo", "restaurant", "event_manager"].includes(role) ? "pending" : "verified"
 
         const user = new User({
@@ -44,15 +46,11 @@ exports.loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" })
 
-        if (
-            user.role !== "donor" &&
-            user.verificationStatus !== "verified"
-        ) {
-            return res.status(403).json({ message: "Your account is pending admin verification." })
-        }
+        // REMOVED BLOCKING LOGIC HERE so newly registered NGOs can login to upload photos.
+        // Frontend will handle redirecting them to a "Pending Approval" page.
 
         const token = generateToken(user)
-        
+
         res.status(200).json({
             message: "Login successful",
             token,
@@ -62,7 +60,8 @@ exports.loginUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 location: user.location,
-                verificationStatus: user.verificationStatus
+                verificationStatus: user.verificationStatus,
+                profilePhoto: user.profilePhoto
             }
         })
     } catch (err) {
@@ -72,7 +71,7 @@ exports.loginUser = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id) 
+        const user = await User.findById(req.user.id)
         if (!user) {
             return res.status(404).json({ message: "User not found" })
         }
@@ -83,7 +82,7 @@ exports.getUserProfile = async (req, res) => {
             role: user.role,
             location: user.location,
             images: user.images,
-            profilePhoto: user.profilePhoto 
+            profilePhoto: user.profilePhoto
         })
     } catch (err) {
         console.error("Error fetching user profile:", err.message)
@@ -108,18 +107,38 @@ exports.updateUserProfile = async (req, res) => {
 
 exports.getPendingVerifications = async (req, res) => {
     try {
-        console.log("Fetching pending verifications...")
-
         const pendingUsers = await User.find({
             verificationStatus: "pending",
-            role: { $in: ["ngo", "restaurant", "event_manager"] }, 
+            role: { $in: ["ngo", "restaurant", "event_manager"] },
         })
-
-        console.log("Pending Verifications:", pendingUsers)
-
         res.status(200).json({ pendingUsers })
     } catch (err) {
         console.error("Error in getPendingVerifications:", err.message)
+        res.status(500).json({ error: err.message })
+    }
+}
+
+// NEW: Verify User
+exports.verifyUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        user.verificationStatus = "verified"
+        await user.save()
+
+        res.status(200).json({ message: "User verified successfully", user })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+exports.rejectUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+        if (!user) return res.status(404).json({ message: "User not found" })
+        res.status(200).json({ message: "User rejected and deleted." })
+    } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
@@ -163,7 +182,6 @@ exports.deleteAboutImage = async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 }
-
 
 exports.getUserById = async (req, res) => {
     try {

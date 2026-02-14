@@ -3,20 +3,27 @@ import { useEffect, useState } from "react";
 
 const Navbar = () => {
     const [role, setRole] = useState(null);
+    const [user, setUser] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            const user = JSON.parse(atob(token.split(".")[1]));
-            setRole(user.role);
+            try {
+                const userData = JSON.parse(atob(token.split(".")[1]));
+                setRole(userData.role);
+                setUser(userData);
+            } catch (e) {
+                console.error("Invalid token");
+            }
         }
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         setRole(null);
+        setUser(null);
         setIsMenuOpen(false);
         navigate("/login");
     };
@@ -28,24 +35,24 @@ const Navbar = () => {
     return (
         <nav>
             <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <Link 
-                    to="/" 
-                    style={{ 
-                        fontWeight: "bold", 
-                        fontSize: 24, 
-                        color: "#007bff", 
-                        textDecoration: "none", 
-                        display: "flex", 
-                        alignItems: "center", 
+                <Link
+                    to="/"
+                    style={{
+                        fontWeight: "bold",
+                        fontSize: 24,
+                        color: "#007bff",
+                        textDecoration: "none",
+                        display: "flex",
+                        alignItems: "center",
                         gap: 8,
                         zIndex: 1001
                     }}
                 >
-                    <img 
-                        src="/logo.png" 
-                        alt="HopePlates" 
-                        style={{ height: 40 }} 
-                        onError={(e) => e.target.style.display = 'none'} 
+                    <img
+                        src="/logo.png"
+                        alt="HopePlates"
+                        style={{ height: 40 }}
+                        onError={(e) => e.target.style.display = 'none'}
                     />
                     HopePlates
                 </Link>
@@ -90,21 +97,25 @@ const Navbar = () => {
                 </button>
 
                 {/* Navigation Menu */}
-                <ul 
+                <ul
                     className={`nav-menu ${isMenuOpen ? 'active' : ''}`}
-                    style={{ 
-                        display: "flex", 
-                        listStyle: "none", 
-                        margin: 0, 
-                        padding: 0, 
-                        gap: 8, 
-                        alignItems: "center" 
+                    style={{
+                        display: "flex",
+                        listStyle: "none",
+                        margin: 0,
+                        padding: 0,
+                        gap: 8,
+                        alignItems: "center"
                     }}
                 >
                     <li><Link to="/" onClick={closeMenu}>Home</Link></li>
                     <li><Link to="/donations" onClick={closeMenu}>Donations</Link></li>
-                    <li><Link to="/profile" onClick={closeMenu}>Profile</Link></li>
-                    <li><Link to="/messages" onClick={closeMenu}>Messages</Link></li>
+                    {role && (
+                        <li><Link to="/profile" onClick={closeMenu}>Profile</Link></li>
+                    )}
+                    {role && (
+                        <li><Link to="/messages" onClick={closeMenu}>Messages</Link></li>
+                    )}
                     {role === "admin" && (
                         <li><Link to="/pending-verifications" onClick={closeMenu}>Pending Verifications</Link></li>
                     )}
@@ -113,7 +124,16 @@ const Navbar = () => {
                     )}
                     <li>
                         {role ? (
-                            <Link to="#" onClick={handleLogout}>Logout</Link>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginLeft: '10px' }}>
+                                <Link to="/profile" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }} title="Profile">
+                                    <img
+                                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=random`}
+                                        alt="Profile"
+                                        style={{ width: 32, height: 32, borderRadius: "50%", border: "2px solid #007bff" }}
+                                    />
+                                </Link>
+                                <Link to="#" onClick={handleLogout} style={{ color: '#dc3545', fontWeight: 'bold' }}>Logout</Link>
+                            </div>
                         ) : (
                             <Link to="/login" onClick={closeMenu}>Login</Link>
                         )}
