@@ -33,7 +33,6 @@ const MainLayout = () => {
     const isHome = location.pathname === "/";
 
     return (
-    return (
         <div className="font-sans antialiased text-white bg-transparent min-h-screen flex flex-col">
             {/* Navbar - Fixed & Dynamic Dark Mode */}
             <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'glass-dark border-b-0' : 'bg-transparent'}`}>
@@ -53,7 +52,7 @@ const MainLayout = () => {
                     <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center bg-white/5 backdrop-blur-[2px] rounded-full p-1.5 border border-white/5">
                         {/* Pill Background for Active State */}
                         {[
-                            { name: 'Mission', path: '/' }, 
+                            { name: 'Mission', path: '/' },
                             { name: 'Impact', path: '/' },
                             { name: 'Stories', path: '/' },
                             { name: 'Community', path: '/' }
@@ -64,8 +63,8 @@ const MainLayout = () => {
                                     key={item.name}
                                     href={`/#${item.name.toLowerCase()}`}
                                     className={`relative px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${isActive
-                                            ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
-                                            : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                                        ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
+                                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
                                         }`}
                                 >
                                     {item.name}
