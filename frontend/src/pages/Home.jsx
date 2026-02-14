@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Button } from "../components/ui";
+import { Button, Badge } from "../components/ui";
 
 // --- Components for Sections ---
 
