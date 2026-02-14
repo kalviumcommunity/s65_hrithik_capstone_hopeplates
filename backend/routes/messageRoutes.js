@@ -1,13 +1,27 @@
 const express = require("express");
 const router = express.Router();
 const Message = require("../models/Message");
-const User =  require("../models/userModel")
+const User = require("../models/userModel")
 const { protect } = require("../middlewares/authMiddleware");
 
 router.post("/", protect, async (req, res) => {
     const { to, content } = req.body;
-    const message = await Message.create({ from: req.user.id, to, content });
-    res.json(message);
+    try {
+        const message = await Message.create({ from: req.user.id, to, content });
+
+        // Emit socket event
+        if (req.io) {
+            req.io.to(to).emit("receive_message", {
+                from: req.user.id,
+                content: content,
+                timestamp: message.timestamp
+            });
+        }
+
+        res.json(message);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to send message" });
+    }
 });
 
 router.get("/conversations", protect, async (req, res) => {
@@ -42,8 +56,8 @@ router.get("/:userId", protect, async (req, res) => {
     const userId = req.params.userId;
     const messages = await Message.find({
         $or: [
-        { from: req.user.id, to: userId },
-        { from: userId, to: req.user.id }
+            { from: req.user.id, to: userId },
+            { from: userId, to: req.user.id }
         ]
     }).sort({ timestamp: 1 });
     res.json(messages);
