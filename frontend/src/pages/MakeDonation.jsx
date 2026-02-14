@@ -90,22 +90,22 @@ const MakeDonation = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#F5F5F7] pt-24 pb-20 flex justify-center items-start">
-            <div className="w-full max-w-2xl bg-white rounded-[32px] p-8 md:p-12 shadow-sm border border-gray-100">
+        <div className="min-h-screen pt-24 pb-20 flex justify-center items-start px-6">
+            <div className="w-full max-w-2xl glass-dark rounded-[32px] p-8 md:p-12">
                 <div className="mb-10 text-center">
-                    <h1 className="text-3xl font-semibold text-[#1D1D1F] tracking-tight">Create Donation</h1>
-                    <p className="text-[#86868B] mt-2">Share your impact with the world.</p>
+                    <h1 className="text-3xl font-bold text-white tracking-tight">Create Donation</h1>
+                    <p className="text-neutral-400 mt-2">Share your impact with the world.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Title */}
                     <div>
-                        <label className="block text-sm font-medium text-[#1D1D1F] mb-2">Title</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-2">Title</label>
                         <input
                             type="text"
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            className="w-full rounded-xl border border-[#D2D2D7] px-4 py-3 text-[#1D1D1F] focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/20 outline-none transition-all"
+                            className="w-full rounded-xl px-4 py-3 glass-input focus:ring-2 focus:ring-blue-500/20"
                             placeholder="e.g. Fresh Vegetables Bundle"
                             required
                         />
@@ -113,16 +113,16 @@ const MakeDonation = () => {
 
                     {/* Type Selection - Apple Pill Style */}
                     <div>
-                        <label className="block text-sm font-medium text-[#1D1D1F] mb-3">Category</label>
-                        <div className="flex gap-3 overflow-x-auto pb-2">
+                        <label className="block text-sm font-medium text-neutral-300 mb-3">Category</label>
+                        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
                             {['food', 'clothes', 'books', 'money'].map((t) => (
                                 <button
                                     key={t}
                                     type="button"
                                     onClick={() => setFormData({ ...formData, type: t })}
-                                    className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all capitalize ${formData.type === t
-                                            ? 'bg-[#1D1D1F] text-white shadow-md'
-                                            : 'bg-[#F5F5F7] text-[#86868B] hover:bg-[#E8E8ED]'
+                                    className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all capitalize whitespace-nowrap ${formData.type === t
+                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
+                                        : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
                                         }`}
                                 >
                                     {t}
@@ -134,24 +134,24 @@ const MakeDonation = () => {
                     {/* Conditional Fields */}
                     {formData.type === 'money' ? (
                         <div>
-                            <label className="block text-sm font-medium text-[#1D1D1F] mb-2">Amount ($)</label>
+                            <label className="block text-sm font-medium text-neutral-300 mb-2">Amount ($)</label>
                             <input
                                 type="number"
                                 value={formData.amount}
                                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                                className="w-full rounded-xl border border-[#D2D2D7] px-4 py-3"
+                                className="w-full rounded-xl px-4 py-3 glass-input"
                                 placeholder="0.00"
                                 required
                             />
                         </div>
                     ) : (
                         <div>
-                            <label className="block text-sm font-medium text-[#1D1D1F] mb-2">Quantity</label>
+                            <label className="block text-sm font-medium text-neutral-300 mb-2">Quantity</label>
                             <input
                                 type="text"
                                 value={formData.quantity}
                                 onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                                className="w-full rounded-xl border border-[#D2D2D7] px-4 py-3"
+                                className="w-full rounded-xl px-4 py-3 glass-input"
                                 placeholder="e.g. 5 bags, 10 items"
                             />
                         </div>
@@ -159,11 +159,11 @@ const MakeDonation = () => {
 
                     {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-[#1D1D1F] mb-2">Description</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-2">Description</label>
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            className="w-full rounded-xl border border-[#D2D2D7] px-4 py-3 min-h-[120px]"
+                            className="w-full rounded-xl px-4 py-3 min-h-[120px] glass-input"
                             placeholder="Tell us about your donation..."
                             required
                         />
@@ -172,13 +172,13 @@ const MakeDonation = () => {
                     {/* Location */}
                     {formData.type !== 'money' && (
                         <div>
-                            <label className="block text-sm font-medium text-[#1D1D1F] mb-2">Pickup Location</label>
+                            <label className="block text-sm font-medium text-neutral-300 mb-2">Pickup Location</label>
                             <div className="flex gap-3">
                                 <input
                                     type="text"
                                     value={formData.pickupLocation}
                                     onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
-                                    className="flex-1 rounded-xl border border-[#D2D2D7] px-4 py-3"
+                                    className="flex-1 rounded-xl px-4 py-3 glass-input"
                                     placeholder="Enter address"
                                     required
                                 />
@@ -186,7 +186,7 @@ const MakeDonation = () => {
                                     type="button"
                                     onClick={handleGetLocation}
                                     disabled={locLoading}
-                                    className="bg-[#E8E8ED] text-[#1D1D1F] px-4 py-3 rounded-xl hover:bg-[#D2D2D7] transition-colors"
+                                    className="bg-white/10 text-white px-4 py-3 rounded-xl hover:bg-white/20 transition-colors border border-white/10 backdrop-blur-sm"
                                 >
                                     <span className="material-symbols-outlined">{locLoading ? 'sync' : 'my_location'}</span>
                                 </button>
@@ -196,22 +196,22 @@ const MakeDonation = () => {
 
                     {/* Image Upload */}
                     <div>
-                        <label className="block text-sm font-medium text-[#1D1D1F] mb-2">Photos</label>
+                        <label className="block text-sm font-medium text-neutral-300 mb-2">Photos</label>
                         <div className="grid grid-cols-4 gap-4">
-                            <label className="aspect-square rounded-2xl border-2 border-dashed border-[#D2D2D7] flex items-center justify-center cursor-pointer hover:border-[#0071E3] hover:text-[#0071E3] transition-colors text-[#86868B]">
+                            <label className="aspect-square rounded-2xl border-2 border-dashed border-white/20 flex items-center justify-center cursor-pointer hover:border-blue-500 hover:text-blue-500 transition-colors text-neutral-500 bg-white/5 hover:bg-white/10">
                                 <input type="file" multiple accept="image/*" className="hidden" onChange={e => setImages([...e.target.files])} />
                                 <span className="material-symbols-outlined text-3xl">add_a_photo</span>
                             </label>
                             {/* Preview */}
                             {Array.from(images).map((img, idx) => (
-                                <div key={idx} className="aspect-square rounded-2xl overflow-hidden relative group">
+                                <div key={idx} className="aspect-square rounded-2xl overflow-hidden relative group border border-white/10">
                                     <img src={URL.createObjectURL(img)} alt="preview" className="w-full h-full object-cover" />
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <Button type="submit" className="w-full bg-[#0071E3] text-white py-4 rounded-xl text-lg font-semibold hover:bg-[#0077ED] shadow-xl shadow-blue-500/20 mt-8">
+                    <Button type="submit" className="w-full bg-[#0071E3] text-white py-4 rounded-xl text-lg font-bold hover:bg-[#0077ED] shadow-lg shadow-blue-500/20 mt-8 transition-transform hover:scale-[1.02] active:scale-[0.98]">
                         Post Donation
                     </Button>
                 </form>
