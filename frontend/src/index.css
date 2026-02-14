@@ -1,9 +1,103 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Apple-Style Minimalist UI */
+@import "tailwindcss";
+
+@theme {
+  /* Colors - Apple-like Clean Palette */
+  --color-brand-primary: #0071E3;
+  /* Apple Blue */
+  --color-brand-light: #FBFBFD;
+  /* Product Page Light BG */
+  --color-brand-dark: #1D1D1F;
+  /* Typography Dark */
+
+  --color-text-primary: #1D1D1F;
+  --color-text-secondary: #86868B;
+
+  --color-divider: #D2D2D7;
+
+  /* Fonts - SF Pro Display Feel (Use Inter) */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Utilities */
+  --spacing-container: 1080px;
+  /* Tighter container for focus */
+
+  /* Animations */
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
 }
 
-h1, h2, h3, p {
-  margin: 10px 0;
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background-color: #FFFFFF;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Classes */
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-lg;
+  }
+
+  .glass-dark {
+    @apply bg-black/70 backdrop-blur-xl border border-white/10 shadow-lg text-white;
+  }
+
+  /* Typography - Large & Clean */
+  .display-title {
+    @apply text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05];
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl font-semibold tracking-tight leading-tight;
+  }
+
+  .body-text {
+    @apply text-lg md:text-xl text-[#86868B] font-medium leading-relaxed;
+  }
+
+  /* Buttons - Pill Shape */
+  .btn-apple {
+    @apply px-6 py-2 rounded-full font-medium transition-all duration-300 active:scale-95;
+  }
+
+  .btn-primary {
+    @apply bg-[#0071E3] text-white hover:bg-[#0077ED];
+  }
+
+  .btn-secondary {
+    @apply bg-[#E8E8ED] text-[#1D1D1F] hover:bg-[#D2D2D7];
+    /* Subtle grey */
+  }
+
+  /* Bento Grid Layout */
+  .bento-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .bento-card {
+    @apply bg-[#F5F5F7] rounded-3xl p-8 overflow-hidden relative transition-transform duration-500 hover:scale-[1.02];
+  }
 }

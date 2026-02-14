@@ -1,0 +1,29 @@
+services:
+  # Backend Service
+  - type: web
+    name: hopeplates-backend
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: MONGO_URI
+        fromGroup: hopeplates-env
+      - key: JWT_SECRET
+        fromGroup: hopeplates-env
+      - key: PORT
+        value: 10000
+
+  # Frontend Service (Static Site)
+  - type: static
+    name: hopeplates-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: hopeplates-backend
+          property: url

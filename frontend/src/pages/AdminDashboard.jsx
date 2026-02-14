@@ -16,6 +16,7 @@ const AdminDashboard = () => {
                     throw new Error(errorData.message)
                 }
                 const data = await response.json()
+                console.log("pendingUsers response:", data.pendingUsers)
                 setPendingUsers(data.pendingUsers)
             } catch (err) {
                 console.error("Error fetching pending verifications:", err.message)
@@ -65,6 +66,28 @@ const AdminDashboard = () => {
         }
     }
 
+    const formatDate = (dateStr) => {
+        try {
+            return new Date(dateStr).toLocaleDateString()
+        } catch (e) {
+            return dateStr
+        }
+    }
+
+    const imageUrl = (path) => {
+        if (!path) return null
+        // normalize backslashes
+        let p = path.replace(/\\/g, "/")
+        // If full absolute path was stored (e.g., C:/.../uploads/...), extract from the 'uploads/' segment
+        const uploadsIndex = p.indexOf("uploads/")
+        if (uploadsIndex !== -1) {
+            p = p.slice(uploadsIndex)
+        }
+        // remove any leading slashes
+        p = p.replace(/(^\/+)/, "")
+        return `https://s65-hrithik-capstone-hopeplates.onrender.com/${p}`
+    }
+
     if (loading) return <p>Loading pending verifications...</p>
 
     return (
@@ -78,34 +101,61 @@ const AdminDashboard = () => {
                 <ul>
                     {pendingUsers.map((user) => (
                         <li key={user._id} style={{ marginBottom: 30 }}>
-                            <strong>Name:</strong> {user.name} <br />
-                            <strong>Role:</strong> {user.role} <br />
-                            <strong>Email:</strong> {user.email} <br />
-                            <strong>Location:</strong> {user.location} <br />
-                            {user.images && user.images.length > 0 && (
-                            <div style={{ display: "flex", gap: 10, margin: "10px 0" }}>
-                                {user.images.map((img, idx) => (
-                                <img
-                                    key={idx}
-                                    src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${img}`}
-                                    alt="user"
-                                    style={{ width: 100, height: 100, objectFit: "cover", borderRadius: 8, border: "1px solid #ccc" }}
-                                />
-                                ))}
+                            <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                                <div>
+                                    <strong>Name:</strong> {user.name} <br />
+                                    <strong>Role:</strong> {user.role} <br />
+                                    <strong>Email:</strong> {user.email} <br />
+                                    <strong>Location:</strong> {user.location} <br />
+                                    <strong>Registered:</strong> {user.createdAt ? formatDate(user.createdAt) : "-"}
+                                </div>
+
+                                <div style={{ display: "flex", gap: 10 }}>
+                                    {user.profilePhoto && (
+                                        <div style={{ textAlign: "center" }}>
+                                            <div>Profile</div>
+                                                <img
+                                                    src={imageUrl(user.profilePhoto)}
+                                                    alt={`${user.name} profile`}
+                                                    style={{ width: 100, height: 100, objectFit: "cover", borderRadius: "50%", border: "1px solid #ccc" }}
+                                                />
+                                                <div style={{ fontSize: 12, marginTop: 4 }}>
+                                                    <a href={imageUrl(user.profilePhoto)} target="_blank" rel="noreferrer">Open profile image</a>
+                                                </div>
+                                        </div>
+                                    )}
+
+                                    {user.images && user.images.length > 0 && (
+                                        <div style={{ textAlign: "center" }}>
+                                            <div>About</div>
+                                            <img
+                                                src={imageUrl(user.images[0])}
+                                                alt={`${user.name} about`}
+                                                style={{ width: 120, height: 100, objectFit: "cover", borderRadius: 8, border: "1px solid #ccc" }}
+                                            />
+                                            <div style={{ fontSize: 12, marginTop: 4 }}>
+                                                <a href={imageUrl(user.images[0])} target="_blank" rel="noreferrer">Open about image</a>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            )}
-                            <button
-                                onClick={() => handleVerify(user._id)}
-                                className="action-button verify"
-                            >
-                                Verify
-                            </button>
-                            <button
-                                onClick={() => handleReject(user._id)}
-                                className="action-button reject"
-                            >
-                                Reject
-                            </button>
+
+                            <div style={{ marginTop: 10 }}>
+                                <button
+                                    onClick={() => handleVerify(user._id)}
+                                    className="action-button verify"
+                                >
+                                    Verify
+                                </button>
+                                <button
+                                    onClick={() => handleReject(user._id)}
+                                    className="action-button reject"
+                                    style={{ marginLeft: 8 }}
+                                >
+                                    Reject
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>
