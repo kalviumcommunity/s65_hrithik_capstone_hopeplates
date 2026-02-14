@@ -57,29 +57,25 @@ const MainLayout = () => {
                             { name: 'Stories', path: '/' },
                             { name: 'Community', path: '/' }
                         ].map((item) => {
+                        ].map((item) => {
                             const isActive = activeSection === item.name.toLowerCase() && isHome;
-                            return (
-                                <a
-                                    key={item.name}
-                                    href={`/#${item.name.toLowerCase()}`}
-                                    className={`relative px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${isActive
-                                        ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
-                                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                                        }`}
-                                >
-                                    {item.name}
-                                </a>
-                            )
+                        return (
+                        <a
+                            key={item.name}
+                            href={`/#${item.name.toLowerCase()}`}
+                            className={`relative px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${isActive
+                                ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
+                                : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                                }`}
+                        >
+                            {item.name}
+                        </a>
+                        )
                         })}
-                        <Link to="/donations" className="relative px-5 py-1.5 text-sm font-medium rounded-full text-neutral-400 hover:text-white hover:bg-white/5 transition-all duration-300">
-                            Donations
-                        </Link>
                     </div>
 
                     {/* Mobile & Right Side Actions */}
                     <div className="flex items-center gap-4">
-                        <Link to="/donations" className="md:hidden text-sm font-medium text-neutral-300 hover:text-white">Donations</Link>
-
                         {localStorage.getItem('user') ? (
                             <>
                                 <Link to="/dashboard" className="text-sm font-medium transition-colors text-neutral-300 hover:text-white">Dashboard</Link>
@@ -111,6 +107,18 @@ const MainLayout = () => {
             <main className="pt-0 flex-grow">
                 <Outlet />
             </main>
+
+            {/* Floating Action Button for Donations */}
+            <Link
+                to="/donations"
+                className="fixed bottom-8 right-8 z-50 group flex items-center justify-center w-14 h-14 bg-blue-600 rounded-full shadow-lg shadow-blue-600/30 hover:scale-110 hover:shadow-blue-600/50 transition-all duration-300"
+                title="View Donations"
+            >
+                <span className="material-symbols-outlined text-white text-2xl group-hover:rotate-90 transition-transform duration-300">volunteer_activism</span>
+                <span className="absolute right-full mr-4 bg-white text-black text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                    Browse Donations
+                </span>
+            </Link>
 
             {/* Minimal Footer - Dark Mode */}
             <footer className="bg-black/40 backdrop-blur-md text-neutral-400 text-xs py-10 mt-auto border-t border-white/5">
