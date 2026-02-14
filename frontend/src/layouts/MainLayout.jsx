@@ -1,43 +1,84 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const MainLayout = () => {
     const [scrolled, setScrolled] = useState(false);
+    const [activeSection, setActiveSection] = useState("");
+    const location = useLocation();
 
+    // Scroll Effect & ScrollSpy
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
+            const scrollY = window.scrollY;
+            setScrolled(scrollY > 20);
+
+            // ScrollSpy Logic
+            const sections = ['mission', 'impact', 'stories', 'community'];
+            let current = "";
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) { // 150px offset for navbar
+                        current = section;
+                    }
+                }
+            }
+            setActiveSection(current);
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const isHome = location.pathname === "/";
+
     return (
         <div className="font-sans antialiased text-[#1D1D1F]">
-            {/* Navbar - Apple Style: Sticky, Blur, Minimal */}
-            <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-md border-b border-[#D2D2D7]/30' : 'bg-black/20 backdrop-blur-sm'}`}>
-                <div className="max-w-[1080px] mx-auto px-6 h-[52px] flex items-center justify-between text-sm font-medium">
-                    <Link to="/" className="flex items-center gap-2 group">
-                        <span className={`material-symbols-outlined text-[20px] ${scrolled ? 'text-[#1D1D1F]' : 'text-white'}`}>favorite</span>
-                        <span className={`tracking-tight font-semibold ${scrolled ? 'text-[#1D1D1F]' : 'text-white'}`}>HopePlates</span>
+            {/* Navbar - Fixed & Dynamic */}
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-[#D2D2D7]/30 shadow-sm' : 'bg-transparent'}`}>
+                <div className="max-w-[1280px] mx-auto px-6 h-[64px] flex items-center justify-between">
+
+                    {/* Fixed Logo Area - Left Side */}
+                    <Link to="/" className="flex items-center gap-2 group z-50 relative">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 ${scrolled ? 'bg-[#1D1D1F] text-white' : 'bg-white text-black'}`}>
+                            <span className="material-symbols-outlined text-[18px]">favorite</span>
+                        </div>
+                        <span className={`text-lg font-bold tracking-tight transition-colors duration-300 ${scrolled ? 'text-[#1D1D1F]' : 'text-white'}`}>
+                            HopePlates
+                        </span>
                     </Link>
 
-                    <div className={`hidden md:flex items-center gap-8 ${scrolled ? 'text-[#1D1D1F]/80' : 'text-white/80'}`}>
-                        {['Mission', 'Impact', 'Stories', 'Community'].map((item) => (
-                            <a
-                                key={item}
-                                href={`/#${item.toLowerCase()}`}
-                                className="hover:text-current hover:opacity-70 transition-opacity"
-                            >
-                                {item}
-                            </a>
-                        ))}
+                    {/* Centered Navigation Tabs - "Sliding Effect" */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center bg-black/5 backdrop-blur-[2px] rounded-full p-1.5 border border-white/10">
+                        {/* Pill Background for Active State */}
+                        {['Mission', 'Impact', 'Stories', 'Community'].map((item) => {
+                            const isActive = activeSection === item.toLowerCase() && isHome;
+                            return (
+                                <a
+                                    key={item}
+                                    href={`/#${item.toLowerCase()}`}
+                                    className={`relative px-5 py-1.5 text-sm font-medium rounded-full transition-all duration-300 ${isActive
+                                            ? 'bg-white text-black shadow-md'
+                                            : scrolled ? 'text-[#1D1D1F] hover:bg-black/5' : 'text-white hover:bg-white/10'
+                                        }`}
+                                >
+                                    {item}
+                                </a>
+                            )
+                        })}
                     </div>
 
+                    {/* Right Side Actions */}
                     <div className="flex items-center gap-4">
-                        <Link to="/login" className={`hover:opacity-70 transition-opacity ${scrolled ? 'text-[#1D1D1F]' : 'text-white'}`}>Log in</Link>
-                        <Link to="/register" className={`btn-apple px-4 py-1.5 text-xs ${scrolled ? 'bg-[#1D1D1F] text-white hover:bg-black' : 'bg-white text-black hover:bg-white/90'}`}>
-                            Join us
+                        {/* Login/Register or Profile if logged in could go here */}
+                        <Link to="/login" className={`text-sm font-medium transition-colors hover:opacity-70 ${scrolled ? 'text-[#1D1D1F]' : 'text-white'}`}>Log in</Link>
+                        <Link to="/register">
+                            <button className={`px-5 py-2 rounded-full text-sm font-medium transition-all hover:scale-105 active:scale-95 ${scrolled
+                                    ? 'bg-[#0071E3] text-white hover:bg-[#0077ED]'
+                                    : 'bg-white text-black hover:bg-[#F5F5F7]'
+                                }`}>
+                                Join Us
+                            </button>
                         </Link>
                     </div>
                 </div>

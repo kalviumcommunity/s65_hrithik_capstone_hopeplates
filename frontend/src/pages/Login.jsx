@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
+import { Button } from "../components/ui"
 
 const Login = () => {
     const [email, setEmail] = useState("")
@@ -9,7 +10,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
-            const response = await fetch("https://s65-hrithik-capstone-hopeplates.onrender.com/api/users/login", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -20,8 +21,8 @@ const Login = () => {
             }
             const data = await response.json()
             localStorage.setItem("token", data.token)
-            alert("Login successful!")
-            navigate("/donations") // Redirect to dashboard
+            localStorage.setItem("user", JSON.stringify(data)) // Store user info
+            navigate("/donations")
         } catch (err) {
             console.error(err.message)
             alert(err.message)
@@ -29,86 +30,89 @@ const Login = () => {
     }
 
     return (
-        <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-background-light">
-            {/* Left Side - Form */}
-            <div className="flex flex-col justify-center items-center p-8 md:p-16">
-                <div className="w-full max-w-md space-y-8">
-                    <div className="flex items-center gap-2 mb-8">
-                        <div className="bg-primary p-1.5 rounded-lg text-white">
-                            <span className="material-symbols-outlined text-2xl">favorite</span>
-                        </div>
-                        <h1 className="text-xl font-800 tracking-tight text-[#181311]">GivingHeart</h1>
+        <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
+            {/* Immersive Background */}
+            <div className="absolute inset-0 z-0">
+                <img
+                    src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2070&auto=format&fit=crop"
+                    alt="Background"
+                    className="w-full h-full object-cover animate-slow-zoom"
+                />
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+            </div>
+
+            {/* Floating Glass Card */}
+            <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-[40px] shadow-2xl overflow-hidden m-4">
+
+                {/* Visual Side (Left in Box) */}
+                <div className="hidden md:flex flex-col justify-center p-12 bg-black/20 text-white relative">
+                    <div className="absolute top-8 left-8 flex items-center gap-2">
+                        <span className="material-symbols-outlined">favorite</span>
+                        <span className="font-semibold tracking-tight text-lg">HopePlates</span>
+                    </div>
+                    <h2 className="text-4xl font-bold leading-tight mb-4">Welcome back to the movement.</h2>
+                    <p className="text-white/80 text-lg">Your generosity has already served over 12,000 meals. Let's keep the momentum going.</p>
+                </div>
+
+                {/* Form Side */}
+                <div className="p-10 md:p-14 bg-white/80 md:bg-white/90 backdrop-blur-md">
+                    <div className="mb-10">
+                        <h3 className="text-3xl font-bold text-[#1D1D1F] mb-2">Sign In</h3>
+                        <p className="text-[#86868B]">Enter your credentials to access your dashboard.</p>
                     </div>
 
-                    <div>
-                        <h2 className="text-3xl font-bold tracking-tight text-[#181311]">Welcome back</h2>
-                        <p className="mt-2 text-[#896f61]">Please enter your details to sign in.</p>
-                    </div>
-
-                    <form className="mt-8 space-y-6 bg-transparent shadow-none p-0 border-none" onSubmit={handleLogin}>
-                        <div className="space-y-4">
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-[#181311] mb-1">Email address</label>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    required
-                                    className="block w-full rounded-xl border border-primary/20 px-4 py-3 text-[#181311] placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 sm:text-sm bg-white"
-                                    placeholder="Enter your email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="password" className="block text-sm font-medium text-[#181311] mb-1">Password</label>
-                                <input
-                                    id="password"
-                                    type="password"
-                                    required
-                                    className="block w-full rounded-xl border border-primary/20 px-4 py-3 text-[#181311] placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 sm:text-sm bg-white"
-                                    placeholder="Enter your password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
+                    <form onSubmit={handleLogin} className="space-y-6">
+                        <div className="group">
+                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2 group-focus-within:text-[#0071E3] transition-colors">Email Address</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] focus:ring-2 focus:ring-[#0071E3]/50 transition-all outline-none"
+                                placeholder="name@example.com"
+                                required
+                            />
+                        </div>
+                        <div className="group">
+                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2 group-focus-within:text-[#0071E3] transition-colors">Password</label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] focus:ring-2 focus:ring-[#0071E3]/50 transition-all outline-none"
+                                placeholder="••••••••"
+                                required
+                            />
                         </div>
 
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                <label htmlFor="remember-me" className="ml-2 block text-sm text-[#896f61]">Remember me</label>
-                            </div>
-                            <div className="text-sm">
-                                <a href="#" className="font-semibold text-primary hover:text-primary/80">Forgot password?</a>
-                            </div>
+                        <div className="flex justify-between items-center text-sm">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" className="rounded border-gray-300 text-[#0071E3] focus:ring-[#0071E3]" />
+                                <span className="text-[#86868B]">Remember me</span>
+                            </label>
+                            <a href="#" className="text-[#0071E3] hover:underline font-medium">Forgot Password?</a>
                         </div>
 
-                        <button
-                            type="submit"
-                            className="flex w-full justify-center rounded-xl bg-primary px-3 py-4 text-sm font-bold leading-6 text-white shadow-lg shadow-primary/25 hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all active:scale-[0.98]"
-                        >
-                            Sign in
-                        </button>
+                        <Button type="submit" className="w-full bg-[#1D1D1F] text-white hover:bg-black py-4 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                            Continue
+                        </Button>
                     </form>
 
-                    <p className="text-center text-sm text-[#896f61]">
-                        Don't have an account?{' '}
-                        <Link to="/register" className="font-semibold text-primary hover:text-primary/80">
-                            Create an account
-                        </Link>
-                    </p>
+                    <div className="mt-8 text-center text-sm text-[#86868B]">
+                        New here? <Link to="/register" className="text-[#0071E3] font-semibold hover:underline">Create an account</Link>
+                    </div>
                 </div>
             </div>
 
-            {/* Right Side - Image/Hero */}
-            <div className="hidden md:block relative bg-[#181311]">
-                <div className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop')" }}></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#181311] via-transparent to-transparent"></div>
-                <div className="relative h-full flex flex-col justify-end p-16 text-white">
-                    <h2 className="text-4xl font-bold mb-6">"We rise by lifting others."</h2>
-                    <p className="text-lg text-white/80 max-w-lg">Join our community of over 20,000 donors making a real difference in people's lives every single day.</p>
-                </div>
-            </div>
+            <style>{`
+                @keyframes slowZoom {
+                    0% { transform: scale(1); }
+                    100% { transform: scale(1.1); }
+                }
+                .animate-slow-zoom {
+                    animation: slowZoom 20s infinite alternate linear;
+                }
+            `}</style>
         </div>
     )
 }
