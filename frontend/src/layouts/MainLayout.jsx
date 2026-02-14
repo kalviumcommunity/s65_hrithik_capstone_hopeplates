@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
@@ -37,7 +37,9 @@ const MainLayout = ({ children }) => {
                 </div>
             </nav>
 
-            <main>{children}</main>
+            <main>
+                <Outlet />
+            </main>
 
             {/* Minimal Footer */}
             <footer className="bg-[#F5F5F7] text-[#86868B] text-xs py-10 mt-20 border-t border-[#D2D2D7]">
