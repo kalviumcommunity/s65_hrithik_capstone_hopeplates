@@ -2,8 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSocket } from '../context/SocketContext';
 import axios from 'axios';
 
+import { useLocation } from 'react-router-dom';
+
 const Messages = () => {
     const { socket, user } = useSocket();
+    const location = useLocation();
     const [conversations, setConversations] = useState([]);
     const [currentChatUser, setCurrentChatUser] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -12,8 +15,19 @@ const Messages = () => {
     const [showProfile, setShowProfile] = useState(false);
 
     useEffect(() => {
-        fetchConversations();
-    }, []);
+        const init = async () => {
+            await fetchConversations();
+
+            // Check if we navigated here to chat with someone specific
+            if (location.state?.chatWith) {
+                const targetUser = location.state.chatWith;
+                // Since conversations might not be loaded yet or might not exist, we just set the current user directly.
+                // However, we should check if they are already in the conversations list to map properly.
+                setCurrentChatUser(targetUser);
+            }
+        };
+        init();
+    }, [location.state]);
 
     useEffect(() => {
         if (currentChatUser) {
@@ -29,7 +43,6 @@ const Messages = () => {
                 setMessages((prev) => [...prev, { from: data.from, content: data.content, timestamp: data.timestamp }]);
                 scrollToBottom();
             } else {
-                // Refresh conversations to show new message preview
                 fetchConversations();
             }
         });
@@ -43,7 +56,6 @@ const Messages = () => {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/messages/conversations`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            // Ensure unique conversations and filter out invalid ones
             const validConvos = res.data.filter(c => c.user).reduce((acc, current) => {
                 const x = acc.find(item => item.user._id === current.user._id);
                 if (!x) {
@@ -53,6 +65,7 @@ const Messages = () => {
                 }
             }, []);
             setConversations(validConvos);
+            return validConvos; // Return for init to use if needed
         } catch (err) {
             console.error(err);
         }

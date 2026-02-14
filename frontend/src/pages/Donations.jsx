@@ -1,56 +1,66 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Badge } from "../components/ui";
 
 const Donations = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
     const initialType = queryParams.get('type') || 'all';
 
     const [donations, setDonations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState(initialType);
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setCurrentUser(JSON.parse(storedUser));
+        }
+
         const fetchDonations = async () => {
             setLoading(true);
             try {
-                // In a real app, this would be an API call
-                // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/donations?type=${filter}`)
-                // const data = await res.json()
+                const token = localStorage.getItem('token');
+                // Fetch from REAL API
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/donations`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                const data = await res.json()
 
-                // SIMULATED DATA for "Dynamic" feel if backend empty
-                setTimeout(() => {
-                    const mockData = [
-                        { _id: '1', title: 'Surplus Bread & Pastries', type: 'food', description: 'Fresh loaves from daily bake.', quantity: '15kg', location: 'Downtown Bakery', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2072&auto=format&fit=crop' },
-                        { _id: '2', title: 'Winter Jackets Batch', type: 'clothes', description: 'Assorted sizes, gently used.', quantity: '50 items', location: 'Community Center', image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=2670&auto=format&fit=crop' },
-                        { _id: '3', title: 'Canned Goods Request', type: 'food', description: 'Urgent need for shelter pantry.', quantity: '100 cans', location: 'Hope Shelter', image: 'https://images.unsplash.com/photo-1534483509522-3c87c0e86b64?q=80&w=2070&auto=format&fit=crop' },
-                        { _id: '4', title: 'Math Textbooks', type: 'books', description: 'High school level calculus books.', quantity: '30 books', location: 'City Library Drop', image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop' },
-                        { _id: '5', title: 'Emergency Fund', type: 'money', description: 'Medical aid for local families.', quantity: '$500 goal', location: 'Red Cross', image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2670&auto=format&fit=crop' },
-                    ];
+                if (!res.ok) throw new Error("Failed to fetch")
 
-                    const filteredData = filter === 'all'
-                        ? mockData
-                        : mockData.filter(d => d.type.toLowerCase() === filter.toLowerCase());
+                // Filter logic
+                const filteredData = filter === 'all'
+                    ? data
+                    : data.filter(d => d.type.toLowerCase() === filter.toLowerCase());
 
-                    setDonations(filteredData);
-                    setLoading(false);
-                }, 800)
+                setDonations(filteredData);
+                setLoading(false);
             } catch (err) {
                 console.error(err)
                 setLoading(false)
+                // Fallback or empty state
             }
         }
         fetchDonations()
-    }, [filter])
+    }, [filter]);
 
-    // Update filter if URL changes (back/forward navigation)
+    // Update filter if URL changes
     useEffect(() => {
         const typeNode = queryParams.get('type');
         if (typeNode && typeNode !== filter) {
             setFilter(typeNode);
         }
     }, [location.search]);
+
+    const handleMessage = (donor) => {
+        // Create a user object that matches what Messages expects
+        // The donations endpoint returns donor populated with { _id, name, email, contact }
+        // We might need to ensure consistency, but if it has _id, it should work.
+        navigate('/messages', { state: { chatWith: donor } });
+    }
 
     return (
         <div className="min-h-screen pt-24 pb-20 px-6 bg-transparent text-white">
@@ -68,8 +78,8 @@ const Donations = () => {
                                 key={type}
                                 onClick={() => setFilter(type)}
                                 className={`px-6 py-2.5 rounded-full text-sm font-medium capitalize transition-all whitespace-nowrap backdrop-blur-md ${filter === type
-                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
-                                        : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
+                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
+                                    : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
                                     }`}
                             >
                                 {type}
@@ -95,33 +105,58 @@ const Donations = () => {
                             <p className="text-neutral-400 max-w-xs">Have surplus food or items? Share it now.</p>
                         </Link>
 
-                        {donations.map(donation => (
-                            <div key={donation._id} className="glass-dark rounded-[32px] overflow-hidden hover:scale-[1.02] transition-all duration-300 flex flex-col group h-full">
-                                <div className="h-48 overflow-hidden relative">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 transition-opacity group-hover:opacity-80"></div>
-                                    <img src={donation.image} alt={donation.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute top-4 left-4 z-20">
-                                        <Badge className="bg-white/10 backdrop-blur-md text-white border-none capitalize">{donation.type}</Badge>
-                                    </div>
-                                </div>
-                                <div className="p-8 flex-1 flex flex-col">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <h3 className="text-xl font-bold text-white line-clamp-1">{donation.title}</h3>
-                                        <span className="text-sm font-semibold text-blue-400 whitespace-nowrap ml-2">{donation.quantity}</span>
-                                    </div>
-                                    <p className="text-neutral-400 text-sm mb-6 line-clamp-2 flex-grow">{donation.description}</p>
-
-                                    <div className="flex items-center gap-2 text-neutral-500 text-sm mt-auto pt-6 border-t border-white/5">
-                                        <span className="material-symbols-outlined text-lg">location_on</span>
-                                        <span className="truncate">{donation.location}</span>
-                                    </div>
-
-                                    <button className="w-full mt-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors" onClick={() => alert("Claim feature coming soon")}>
-                                        Claim
-                                    </button>
-                                </div>
+                        {donations.length === 0 ? (
+                            <div className="col-span-full text-center text-neutral-500 py-20">
+                                <p>No active donations found for this category.</p>
                             </div>
-                        ))}
+                        ) : (
+                            donations.map(donation => (
+                                <div key={donation._id} className="glass-dark rounded-[32px] overflow-hidden hover:scale-[1.02] transition-all duration-300 flex flex-col group h-full">
+                                    <div className="h-48 overflow-hidden relative">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 transition-opacity group-hover:opacity-80"></div>
+                                        <img
+                                            src={donation.images && donation.images.length > 0 ? `${import.meta.env.VITE_API_URL}/${donation.images[0].replace(/\\/g, '/')}` : "https://via.placeholder.com/400x200"}
+                                            alt={donation.title}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        />
+                                        <div className="absolute top-4 left-4 z-20">
+                                            <Badge className="bg-white/10 backdrop-blur-md text-white border-none capitalize">{donation.type}</Badge>
+                                        </div>
+                                    </div>
+                                    <div className="p-8 flex-1 flex flex-col">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <h3 className="text-xl font-bold text-white line-clamp-1">{donation.title}</h3>
+                                            <span className="text-sm font-semibold text-blue-400 whitespace-nowrap ml-2">{donation.quantity}</span>
+                                        </div>
+                                        <p className="text-neutral-400 text-sm mb-6 line-clamp-2 flex-grow">{donation.description}</p>
+
+                                        <div className="flex items-center gap-2 text-neutral-500 text-sm mt-auto pt-6 border-t border-white/5 mb-4">
+                                            <span className="material-symbols-outlined text-lg">location_on</span>
+                                            <span className="truncate">{donation.pickupLocation || donation.location || "Location not specified"}</span>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-3 mt-auto">
+                                            <button
+                                                className="py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors"
+                                                onClick={() => alert("Claim feature coming soon")}
+                                            >
+                                                Claim
+                                            </button>
+
+                                            {donation.donor && currentUser && donation.donor._id !== currentUser.id && (
+                                                <button
+                                                    onClick={() => handleMessage(donation.donor)}
+                                                    className="py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
+                                                >
+                                                    <span className="material-symbols-outlined text-lg">chat</span>
+                                                    Message
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 )}
             </div>
