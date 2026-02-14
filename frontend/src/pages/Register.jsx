@@ -63,11 +63,11 @@ const Register = () => {
             {/* Immersive Background - Dynamic Action Shot */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1593113630400-ea4288add22l?q=80&w=2070&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2070&auto=format&fit=crop"
                     alt="Community Action"
-                    className="w-full h-full object-cover animate-slow-zoom"
+                    className="w-full h-full object-cover animate-slow-zoom filter blur-sm scale-110"
                 />
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]"></div>
+                <div className="absolute inset-0 bg-black/40 backdrop-blur-md"></div>
             </div>
 
             {/* Glass Card */}
@@ -116,10 +116,10 @@ const Register = () => {
                             <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">I am a...</label>
                             <div className="relative">
                                 <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer">
-                                    <option value="donor">Donor (Individual)</option>
-                                    <option value="ngo">NGO (Organization)</option>
-                                    <option value="restaurant">Restaurant/Business</option>
-                                    <option value="event_manager">Event Manager</option>
+                                    <option value="donor" className="text-black">Donor (Individual)</option>
+                                    <option value="ngo" className="text-black">NGO</option>
+                                    <option value="restaurant" className="text-black">Restaurants</option>
+                                    <option value="event_manager" className="text-black">Event Manager</option>
                                 </select>
                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
                                     <span className="material-symbols-outlined text-sm">expand_more</span>
