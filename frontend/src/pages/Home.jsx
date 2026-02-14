@@ -145,48 +145,90 @@ const ImpactSection = () => (
     </div>
 );
 
-// 4. Bento Grid (The "Solution" - Donation Types)
-// Keeping the existing nice design but refining it
+// 4. Bento Grid (The "Solution" - Donation Types) - REDESIGNED: DARK & DYNAMIC
 const DonationTypesSection = () => (
-    <Section className="bg-[#F5F5F7]">
-        <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-semibold text-[#1D1D1F] tracking-tight mb-6">
+    <Section className="bg-black relative overflow-hidden">
+        {/* Ambient background glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none"></div>
+
+        <div className="relative z-10 text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-6">
                 Choose your impact.
             </h2>
-            <p className="text-xl text-[#86868B] max-w-2xl mx-auto">
-                Every category is optimized for speed and transparency.
+            <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
+                Direct, transparent, and verified.
             </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Link to="/donations?type=food" className="group relative h-[500px] rounded-[40px] overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                <div className="absolute inset-x-0 top-0 p-12 z-10">
-                    <span className="text-[#E85D04] font-semibold tracking-wider text-xs uppercase mb-3 block">Urgent Needs</span>
-                    <h3 className="text-4xl font-semibold text-[#1D1D1F] mb-3">Food.</h3>
-                    <p className="text-[#86868B] text-lg max-w-xs">Connecting restaurants and homes to local shelters.</p>
-                </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px]">
+            {/* FOOD: Large Feature Card (Span 7) */}
+            <Link to="/donations?type=food" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
                 <img
-                    src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=2070&auto=format&fit=crop"
-                    alt="Food"
-                    className="absolute inset-0 w-full h-full object-cover mt-32 group-hover:scale-105 transition-transform duration-700"
+                    src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=2698&auto=format&fit=crop"
+                    alt="Food Donation"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                <div className="absolute bottom-0 left-0 p-10 z-20 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <span className="inline-block px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-orange-500/20">
+                        Urgent
+                    </span>
+                    <h3 className="text-4xl md:text-5xl font-bold text-white mb-2">Food Recovery.</h3>
+                    <p className="text-neutral-300 text-lg max-w-md">Bridging the gap between restaurant surplus and local hunger.</p>
+                </div>
             </Link>
-            <div className="grid grid-rows-2 gap-8 h-[500px]">
-                <Link to="/donations?type=clothes" className="group relative rounded-[40px] overflow-hidden bg-[#FBFBFD] shadow-sm hover:shadow-2xl transition-all duration-500">
-                    <div className="absolute inset-0 flex items-center justify-between p-10 z-10">
-                        <div className="max-w-[50%]">
-                            <h3 className="text-3xl font-semibold text-[#1D1D1F] mb-2">Clothes.</h3>
-                            <p className="text-[#86868B]">Share warmth.</p>
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop" className="w-32 h-32 object-cover rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500 shadow-lg" alt="Clothes" />
+
+            {/* CLOTHES: Vertical Card (Span 5) */}
+            <Link to="/donations?type=clothes" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
+                <img
+                    src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=2670&auto=format&fit=crop"
+                    alt="Clothes Donation"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute bottom-0 left-0 p-10 z-20 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <span className="inline-block px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-blue-500/20">
+                        Essentials
+                    </span>
+                    <h3 className="text-4xl font-bold text-white mb-2">Warmth & Dignity.</h3>
+                    <p className="text-neutral-300 text-lg">Give clothes a second life.</p>
+                </div>
+            </Link>
+
+            {/* FUNDS: Dark Gradient Card (Span 5) */}
+            <Link to="/donations?type=money" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10 flex flex-col justify-end">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/20 via-zinc-900/0 to-zinc-900/0 z-0"></div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-30 group-hover:opacity-50 transition-opacity duration-700">
+                    {/* Abstract visual for funds */}
+                    <div className="w-64 h-64 bg-blue-600/20 blur-[80px] rounded-full"></div>
+                </div>
+
+                <div className="relative z-20 p-10">
+                    <h3 className="text-4xl font-bold text-white mb-2">Direct Funds.</h3>
+                    <p className="text-neutral-400 text-lg mb-6">100% verified transfers to registered NGOs.</p>
+                    <div className="flex items-center gap-3 text-blue-400 font-semibold group-hover:gap-5 transition-all">
+                        <span>Donate securely</span>
+                        <span className="material-symbols-outlined">arrow_forward</span>
                     </div>
-                </Link>
-                <Link to="/donations?type=money" className="group relative rounded-[40px] overflow-hidden bg-[#1D1D1F] shadow-sm hover:shadow-2xl transition-all duration-500 flex items-center justify-center text-center">
-                    <div className="relative z-10 p-10">
-                        <h3 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2997FF] to-[#0A84FF] mb-2">Funds.</h3>
-                        <p className="text-[#F5F5F7] text-lg">100% Verified.</p>
-                    </div>
-                </Link>
-            </div>
+                </div>
+            </Link>
+
+            {/* BOOKS/EDUCATION: Large Feature Card (Span 7) */}
+            <Link to="/donations?type=books" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
+                <img
+                    src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=2574&auto=format&fit=crop"
+                    alt="Education"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute bottom-0 left-0 p-10 z-20 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    <span className="inline-block px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-purple-500/20">
+                        Education
+                    </span>
+                    <h3 className="text-4xl font-bold text-white mb-2">Knowledge.</h3>
+                    <p className="text-neutral-300 text-lg">Fuel the future with books and supplies.</p>
+                </div>
+            </Link>
         </div>
     </Section>
 );
