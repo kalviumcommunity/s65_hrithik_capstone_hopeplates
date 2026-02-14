@@ -31,55 +31,55 @@ const Login = () => {
 
     return (
         <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
-            {/* Immersive Background */}
+            {/* Immersive Background - Dynamic */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2070&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?q=80&w=2070&auto=format&fit=crop"
                     alt="Background"
                     className="w-full h-full object-cover animate-slow-zoom"
                 />
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]"></div>
             </div>
 
-            {/* Floating Glass Card */}
-            <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-[40px] shadow-2xl overflow-hidden m-4">
+            {/* Floating Glass Card - Dark Mode */}
+            <div className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-[#121212]/80 backdrop-blur-2xl border border-white/10 rounded-[40px] shadow-2xl overflow-hidden m-4">
 
                 {/* Visual Side (Left in Box) */}
-                <div className="hidden md:flex flex-col justify-center p-12 bg-black/20 text-white relative">
+                <div className="hidden md:flex flex-col justify-center p-12 bg-black/40 text-white relative border-r border-white/5">
                     <div className="absolute top-8 left-8 flex items-center gap-2">
-                        <span className="material-symbols-outlined">favorite</span>
+                        <span className="material-symbols-outlined text-blue-500">favorite</span>
                         <span className="font-semibold tracking-tight text-lg">HopePlates</span>
                     </div>
                     <h2 className="text-4xl font-bold leading-tight mb-4">Welcome back to the movement.</h2>
-                    <p className="text-white/80 text-lg">Your generosity has already served over 12,000 meals. Let's keep the momentum going.</p>
+                    <p className="text-zinc-300 text-lg">Your generosity has already served over 12,000 meals. Let's keep the momentum going.</p>
                 </div>
 
                 {/* Form Side */}
-                <div className="p-10 md:p-14 bg-white/80 md:bg-white/90 backdrop-blur-md">
+                <div className="p-10 md:p-14 bg-black/50 backdrop-blur-md">
                     <div className="mb-10">
-                        <h3 className="text-3xl font-bold text-[#1D1D1F] mb-2">Sign In</h3>
-                        <p className="text-[#86868B]">Enter your credentials to access your dashboard.</p>
+                        <h3 className="text-3xl font-bold text-white mb-2">Sign In</h3>
+                        <p className="text-zinc-400">Enter your credentials to access your dashboard.</p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-6">
                         <div className="group">
-                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2 group-focus-within:text-[#0071E3] transition-colors">Email Address</label>
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 group-focus-within:text-blue-500 transition-colors">Email Address</label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] focus:ring-2 focus:ring-[#0071E3]/50 transition-all outline-none"
+                                className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 transition-all outline-none placeholder:text-zinc-600"
                                 placeholder="name@example.com"
                                 required
                             />
                         </div>
                         <div className="group">
-                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2 group-focus-within:text-[#0071E3] transition-colors">Password</label>
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 group-focus-within:text-blue-500 transition-colors">Password</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] focus:ring-2 focus:ring-[#0071E3]/50 transition-all outline-none"
+                                className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500/50 transition-all outline-none placeholder:text-zinc-600"
                                 placeholder="••••••••"
                                 required
                             />
@@ -87,19 +87,19 @@ const Login = () => {
 
                         <div className="flex justify-between items-center text-sm">
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" className="rounded border-gray-300 text-[#0071E3] focus:ring-[#0071E3]" />
-                                <span className="text-[#86868B]">Remember me</span>
+                                <input type="checkbox" className="rounded border-zinc-700 bg-zinc-800 text-blue-500 focus:ring-blue-500" />
+                                <span className="text-zinc-400">Remember me</span>
                             </label>
-                            <a href="#" className="text-[#0071E3] hover:underline font-medium">Forgot Password?</a>
+                            <a href="#" className="text-blue-400 hover:underline font-medium">Forgot Password?</a>
                         </div>
 
-                        <Button type="submit" className="w-full bg-[#1D1D1F] text-white hover:bg-black py-4 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                        <Button type="submit" className="w-full bg-white text-black hover:bg-zinc-200 py-4 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 font-bold">
                             Continue
                         </Button>
                     </form>
 
-                    <div className="mt-8 text-center text-sm text-[#86868B]">
-                        New here? <Link to="/register" className="text-[#0071E3] font-semibold hover:underline">Create an account</Link>
+                    <div className="mt-8 text-center text-sm text-zinc-500">
+                        New here? <Link to="/register" className="text-blue-400 font-semibold hover:underline">Create an account</Link>
                     </div>
                 </div>
             </div>

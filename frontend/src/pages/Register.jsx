@@ -60,90 +60,96 @@ const Register = () => {
 
     return (
         <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center py-10">
-            {/* Immersive Background */}
+            {/* Immersive Background - Dynamic Action Shot */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=2070&auto=format&fit=crop"
-                    alt="Background"
+                    src="https://images.unsplash.com/photo-1593113630400-ea4288add22l?q=80&w=2070&auto=format&fit=crop"
+                    alt="Community Action"
                     className="w-full h-full object-cover animate-slow-zoom"
                 />
-                <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[3px]"></div>
             </div>
 
             {/* Glass Card */}
-            <div className="relative z-10 w-full max-w-5xl grid grid-cols-1 md:grid-cols-5 bg-white/10 backdrop-blur-xl border border-white/20 rounded-[40px] shadow-2xl overflow-hidden m-4">
+            <div className="relative z-10 w-full max-w-5xl grid grid-cols-1 md:grid-cols-5 bg-black/40 backdrop-blur-2xl border border-white/10 rounded-[40px] shadow-2xl overflow-hidden m-4">
 
                 {/* Visual Side (Left) */}
-                <div className="hidden md:flex md:col-span-2 flex-col justify-end p-12 bg-black/20 text-white relative">
+                <div className="hidden md:flex md:col-span-2 flex-col justify-end p-12 bg-black/40 text-white relative border-r border-white/5">
                     <div className="absolute top-8 left-8 flex items-center gap-2">
-                        <span className="material-symbols-outlined">favorite</span>
+                        <span className="material-symbols-outlined text-blue-500">favorite</span>
                         <span className="font-semibold tracking-tight text-lg">HopePlates</span>
                     </div>
                     <h2 className="text-3xl font-bold leading-tight mb-4">Start your journey.</h2>
-                    <p className="text-white/80">Join a network where transparency meets direct impact. See exactly where your help goes.</p>
+                    <p className="text-zinc-300">Join a network where transparency meets direct impact. See exactly where your help goes.</p>
                 </div>
 
                 {/* Form Side */}
-                <div className="md:col-span-3 p-10 bg-white/90 backdrop-blur-md overflow-y-auto max-h-[90vh]">
+                <div className="md:col-span-3 p-10 bg-[#121212]/90 backdrop-blur-md overflow-y-auto max-h-[90vh]">
                     <div className="mb-8">
-                        <h3 className="text-3xl font-bold text-[#1D1D1F] mb-1">Create Account</h3>
-                        <p className="text-[#86868B]">Fill in your details to get started.</p>
+                        <h3 className="text-3xl font-bold text-white mb-1">Create Account</h3>
+                        <p className="text-zinc-400">Fill in your details to get started.</p>
                     </div>
 
                     <form onSubmit={handleRegister} className="space-y-5">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2">Full Name</label>
-                                <input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] outline-none focus:ring-2 focus:ring-[#0071E3]/50" required placeholder="John Doe" />
+                                <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Full Name</label>
+                                <input type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="John Doe" />
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2">Location</label>
-                                <input type="text" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] outline-none focus:ring-2 focus:ring-[#0071E3]/50" required placeholder="City, Country" />
+                                <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Location</label>
+                                <input type="text" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="City, Country" />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2">Email</label>
-                            <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] outline-none focus:ring-2 focus:ring-[#0071E3]/50" required placeholder="you@example.com" />
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Email</label>
+                            <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="you@example.com" />
                         </div>
 
                         <div>
-                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2">Password</label>
-                            <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] outline-none focus:ring-2 focus:ring-[#0071E3]/50" required placeholder="••••••••" />
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Password</label>
+                            <input type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-zinc-600" required placeholder="••••••••" />
                         </div>
 
                         <div>
-                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2">I am a...</label>
-                            <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full bg-[#F5F5F7] border-none rounded-xl px-4 py-3 text-[#1D1D1F] outline-none focus:ring-2 focus:ring-[#0071E3]/50">
-                                <option value="donor">Donor (Individual)</option>
-                                <option value="ngo">NGO (Organization)</option>
-                                <option value="restaurant">Restaurant/Business</option>
-                            </select>
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">I am a...</label>
+                            <div className="relative">
+                                <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full bg-[#1c1c1e] border border-white/5 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer">
+                                    <option value="donor">Donor (Individual)</option>
+                                    <option value="ngo">NGO (Organization)</option>
+                                    <option value="restaurant">Restaurant/Business</option>
+                                    <option value="event_manager">Event Manager</option>
+                                </select>
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
+                                    <span className="material-symbols-outlined text-sm">expand_more</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div>
-                            <label className="block text-xs font-semibold text-[#86868B] uppercase tracking-wider mb-2">Profile Photo</label>
+                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Profile Photo</label>
                             <div className="flex items-center gap-4">
-                                <label className="flex-1 h-32 border-2 border-dashed border-[#D2D2D7] rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-[#0071E3] hover:bg-[#F5F9FF] transition-all">
-                                    <span className="material-symbols-outlined text-3xl text-[#0071E3]">cloud_upload</span>
-                                    <span className="text-xs text-[#86868B] mt-2">Tap to upload</span>
+                                <label className="flex-1 h-32 border-2 border-dashed border-zinc-700 hover:border-blue-500 hover:bg-blue-500/10 rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all group">
+                                    <span className="material-symbols-outlined text-3xl text-zinc-500 group-hover:text-blue-500 transition-colors">cloud_upload</span>
+                                    <span className="text-xs text-zinc-600 mt-2 group-hover:text-blue-400">Tap to upload</span>
                                     <input type="file" className="hidden" onChange={e => setProfilePhoto(e.target.files[0])} accept="image/*" required />
                                 </label>
                                 {profilePhoto && (
-                                    <div className="h-32 w-32 rounded-xl overflow-hidden border border-[#D2D2D7]">
+                                    <div className="h-32 w-32 rounded-xl overflow-hidden border border-white/10">
                                         <img src={URL.createObjectURL(profilePhoto)} className="w-full h-full object-cover" alt="Preview" />
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        <Button type="submit" className="w-full bg-[#0071E3] text-white hover:bg-[#0077ED] py-4 rounded-xl text-lg shadow-lg mt-4">
+                        <Button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-500 py-4 rounded-xl text-lg shadow-lg shadow-blue-900/20 mt-4 transition-all hover:scale-[1.02]">
                             Join Now
                         </Button>
                     </form>
 
-                    <div className="mt-6 text-center text-sm text-[#86868B]">
-                        Already a member? <Link to="/login" className="text-[#0071E3] font-semibold hover:underline">Log in</Link>
+                    <div className="mt-6 text-center text-sm text-zinc-500">
+                        Already a member? <Link to="/login" className="text-blue-500 font-semibold hover:text-blue-400">Log in</Link>
                     </div>
                 </div>
             </div>

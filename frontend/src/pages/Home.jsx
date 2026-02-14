@@ -268,87 +268,151 @@ const StoriesSection = () => (
                     </div>
                     <p className="text-[#1D1D1F] text-lg leading-relaxed italic">"{story.q}"</p>
                 </div>
+                            <div className="font-semibold text-white">{story.u}</div>
+                            <div className="text-sm text-neutral-400">{story.role}</div>
+                        </div>
+                    </div>
+                    <p className="text-neutral-300 text-lg leading-relaxed italic">"{story.q}"</p>
+                </div >
             ))}
-        </div>
-    </Section>
+        </div >
+    </Section >
 );
 
-// 6. Impact Calculator (Interactive Feature)
+// 6. Impact Calculator (Interactive Feature) - REDESIGNED: Dynamic Visualizer
 const ImpactCalculator = () => {
     const [amount, setAmount] = useState(50);
     // Logic: $1 = 2 meals approx
     return (
-        <Section className="bg-[#1D1D1F] text-white text-center">
-            <h2 className="text-4xl font-semibold mb-6">Calculate Your Impact</h2>
-            <p className="text-[#86868B] mb-12 max-w-xl mx-auto">See how your contribution translates directly into meals for families in need.</p>
+        <Section className="bg-[#121212] py-32 relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #333 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
 
-            <div className="max-w-2xl mx-auto bg-black/30 backdrop-blur-md border border-white/10 rounded-3xl p-12">
-                <div className="text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2997FF] to-[#0A84FF] mb-4">
-                    {Math.floor(amount * 2)}
+            <div className="relative z-10 max-w-4xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-400 mb-6">
+                        See your power.
+                    </h2>
+                    <p className="text-neutral-400 text-xl font-light">Drag to calculate the direct impact of your donation.</p>
                 </div>
-                <div className="text-xl font-medium mb-12">Meals Provided</div>
 
-                <input
-                    type="range"
-                    min="10"
-                    max="1000"
-                    value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#2997FF]"
-                />
-                <div className="flex justify-between mt-4 text-[#86868B] font-medium font-mono">
-                    <span>$10</span>
-                    <span className="text-white">${amount} Donation</span>
-                    <span>$1,000</span>
+                <div className="bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[40px] p-8 md:p-16 shadow-2xl relative overflow-hidden group">
+                    {/* Dynamic Glow based on amount */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-600/10 blur-[100px] transition-opacity duration-300" style={{ opacity: amount / 1000 + 0.2 }}></div>
+
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-12 relative z-20">
+                        <div className="text-center md:text-left w-full md:w-1/2">
+                            <div className="text-neutral-500 font-medium tracking-widest uppercase mb-2 text-sm">Your Contribution</div>
+                            <div className="flex items-center justify-center md:justify-start gap-2">
+                                <span className="text-5xl md:text-7xl font-bold text-white">$</span>
+                                <span className="text-6xl md:text-8xl font-bold text-white tracking-tighter tabular-nums">
+                                    {amount}
+                                </span>
+                            </div>
+
+                            <div className="mt-8">
+                                <input
+                                    type="range"
+                                    min="10"
+                                    max="500"
+                                    step="10"
+                                    value={amount}
+                                    onChange={(e) => setAmount(Number(e.target.value))}
+                                    className="w-full h-3 bg-neutral-800 rounded-full appearance-none cursor-pointer accent-blue-500 hover:accent-blue-400 transition-all"
+                                />
+                                <div className="flex justify-between mt-3 text-neutral-500 text-xs font-mono uppercase">
+                                    <span>Micro</span>
+                                    <span>Transformative</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Visualizer Circle */}
+                        <div className="w-full md:w-1/2 flex flex-col items-center justify-center relative">
+                            <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
+                                {/* Rings */}
+                                <div className="absolute inset-0 rounded-full border border-white/5 animate-[spin_10s_linear_infinite]"></div>
+                                <div className="absolute inset-4 rounded-full border border-white/5 animate-[spin_15s_linear_infinite_reverse]"></div>
+
+                                <div className="flex flex-col items-center">
+                                    <span className="material-symbols-outlined text-4xl mb-2 text-orange-500 animate-bounce">restaurant</span>
+                                    <div className="text-6xl md:text-7xl font-bold text-white tabular-nums drop-shadow-2xl">
+                                        {Math.floor(amount * 2.5)}
+                                    </div>
+                                    <div className="text-orange-400 font-medium text-lg mt-2 uppercase tracking-wide">Meals Served</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </Section>
     );
 };
 
-// 7. Community/Events (Carousel)
+// 7. Community/Events (Carousel) - REDESIGNED: Actionable & Dynamic
 const CommunitySection = () => (
-    <Section id="community" className="bg-[#000000] text-white">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+    <Section id="community" className="bg-zinc-950 text-white border-t border-white/5">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16">
             <div className="max-w-xl">
-                <h2 className="text-4xl md:text-5xl font-semibold mb-6">Community Events.</h2>
-                <p className="text-[#86868B] text-xl">Join us on the ground. From food drives to charity runs, make a physical difference.</p>
+                <h2 className="text-4xl md:text-5xl font-semibold mb-6 tracking-tight">Community Events.</h2>
+                <p className="text-neutral-400 text-xl font-light">Join us on the ground. From food drives to charity runs, make a physical difference.</p>
             </div>
-            <Button variant="outline" className="text-white border-white/30 hover:bg-white/10 mt-6 md:mt-0 rounded-full px-8">
+            <Button variant="outline" className="text-white border-white/20 hover:bg-white/10 mt-6 md:mt-0 rounded-full px-8 py-6 text-lg transition-transform hover:scale-105">
                 View All Events
             </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="group relative rounded-[32px] overflow-hidden sm:h-[400px]">
-                <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2074&auto=format&fit=crop" className="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-all duration-700" alt="Event" />
-                <div className="absolute bottom-0 left-0 p-8">
-                    <Badge className="bg-[#2997FF] text-white mb-3">Upcoming</Badge>
-                    <h3 className="text-2xl font-bold">NYC Winter Food Drive</h3>
-                    <p className="text-white/80 mt-1">Dec 24 • Central Park</p>
+            <div className="group relative rounded-[40px] overflow-hidden sm:h-[450px] border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2074&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" alt="Event" />
+                <div className="absolute top-8 left-8 z-20">
+                    <Badge className="bg-blue-600 text-white border-none py-1.5 px-4 text-sm shadow-xl">Upcoming</Badge>
+                </div>
+                <div className="absolute bottom-0 left-0 p-10 z-20 w-full">
+                    <h3 className="text-3xl font-bold mb-2 group-hover:text-blue-400 transition-colors">NYC Winter Food Drive</h3>
+                    <p className="text-neutral-300 text-lg mb-6 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-sm">calendar_today</span> Dec 24 • Central Park
+                    </p>
+                    <button className="w-full py-4 bg-white/10 hover:bg-white text-white hover:text-black backdrop-blur-md rounded-2xl font-bold transition-all flex items-center justify-center gap-2 group-hover:translate-y-0 translate-y-2 opacity-0 group-hover:opacity-100 duration-300" onClick={() => alert("Registration feature coming soon!")}>
+                        Register Now <span className="material-symbols-outlined">arrow_forward</span>
+                    </button>
                 </div>
             </div>
-            <div className="group relative rounded-[32px] overflow-hidden sm:h-[400px]">
-                <img src="https://images.unsplash.com/photo-1518398046578-8cca57782eeb?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-all duration-700" alt="Event" />
-                <div className="absolute bottom-0 left-0 p-8">
-                    <Badge className="bg-white/20 backdrop-blur text-white mb-3">Volunteer Open</Badge>
-                    <h3 className="text-2xl font-bold">Community Kitchen Setup</h3>
-                    <p className="text-white/80 mt-1">Jan 10 • Brooklyn</p>
+
+            <div className="group relative rounded-[40px] overflow-hidden sm:h-[450px] border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1518398046578-8cca57782eeb?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" alt="Event" />
+                <div className="absolute top-8 left-8 z-20">
+                    <Badge className="bg-green-600 text-white border-none py-1.5 px-4 text-sm shadow-xl">Volunteers Needed</Badge>
+                </div>
+                <div className="absolute bottom-0 left-0 p-10 z-20 w-full">
+                    <h3 className="text-3xl font-bold mb-2 group-hover:text-green-400 transition-colors">Community Kitchen Setup</h3>
+                    <p className="text-neutral-300 text-lg mb-6 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-sm">location_on</span> Jan 10 • Brooklyn
+                    </p>
+                    <button className="w-full py-4 bg-white/10 hover:bg-white text-white hover:text-black backdrop-blur-md rounded-2xl font-bold transition-all flex items-center justify-center gap-2 group-hover:translate-y-0 translate-y-2 opacity-0 group-hover:opacity-100 duration-300" onClick={() => alert("Joined as volunteer!")}>
+                        Join Team <span className="material-symbols-outlined">handshake</span>
+                    </button>
                 </div>
             </div>
         </div>
     </Section>
 );
 
-// 8. Join Us / Final CTA (Minimal)
+// 8. Join Us / Final CTA (Minimal) - DARK MODE
 const JoinSection = () => (
-    <Section className="bg-[#F5F5F7]">
-        <div className="bg-white rounded-[40px] p-12 md:p-24 text-center shadow-xl">
-            <h2 className="text-4xl md:text-5xl font-semibold text-[#1D1D1F] mb-6">Ready to make a difference?</h2>
-            <p className="text-xl text-[#86868B] mb-10 max-w-2xl mx-auto">Create an account today and start your journey of giving. It takes less than 2 minutes.</p>
-            <div className="flex justify-center gap-4">
+    <Section className="bg-black py-40">
+        <div className="bg-neutral-900/50 border border-white/10 rounded-[50px] p-12 md:p-32 text-center shadow-2xl relative overflow-hidden">
+            {/* Decorative */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+            <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter relative z-10">Ready to change a life?</h2>
+            <p className="text-2xl text-neutral-400 mb-12 max-w-3xl mx-auto font-light relative z-10">Join 20,000+ others directly impacting their local communities.</p>
+            <div className="flex justify-center gap-6 relative z-10">
                 <Link to="/register">
-                    <Button className="bg-[#0071E3] text-white hover:bg-[#0077ED] h-14 px-10 rounded-full text-lg shadow-lg shadow-blue-500/30">
+                    <Button className="bg-white text-black hover:bg-neutral-200 h-16 px-12 rounded-full text-xl font-bold transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
                         Join HopePlates
                     </Button>
                 </Link>
@@ -359,11 +423,62 @@ const JoinSection = () => (
 
 const Home = () => {
     return (
-        <div className="bg-[#FFFFFF] snap-y snap-mandatory">
+        <div className="bg-black font-sans selection:bg-blue-500/30 selection:text-blue-200">
             <HeroSlideshow />
             <MissionSection />
             <ImpactSection />
-            <DonationTypesSection />
+            {/* UPDATED FUNDS Image in DonationTypesSection needed within the file edit context, applying strict replace for safety */}
+            <Section className="bg-black relative overflow-hidden">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none"></div>
+                <div className="relative z-10 text-center mb-20">
+                    <h2 className="text-4xl md:text-6xl font-semibold text-white tracking-tight mb-6">Choose your impact.</h2>
+                    <p className="text-xl text-neutral-400 max-w-2xl mx-auto">Direct, transparent, and verified.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px]">
+                    <Link to="/donations?type=food" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=2698&auto=format&fit=crop" alt="Food" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div className="absolute bottom-0 left-0 p-10 z-20">
+                            <span className="inline-block px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-orange-500/20">Urgent</span>
+                            <h3 className="text-4xl md:text-5xl font-bold text-white mb-2">Food Recovery.</h3>
+                            <p className="text-neutral-300 text-lg">Bridging the gap between restaurant surplus and local hunger.</p>
+                        </div>
+                    </Link>
+                    <Link to="/donations?type=clothes" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=2670&auto=format&fit=crop" alt="Clothes" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div className="absolute bottom-0 left-0 p-10 z-20">
+                            <span className="inline-block px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-blue-500/20">Essentials</span>
+                            <h3 className="text-4xl font-bold text-white mb-2">Warmth.</h3>
+                            <p className="text-neutral-300 text-lg">Give clothes a second life.</p>
+                        </div>
+                    </Link>
+                    {/* UPDATED FUNDS CARD WITH PHOTO */}
+                    <Link to="/donations?type=money" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10 opacity-80"></div>
+                        {/* Dynamic Photo for Funds */}
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2670&auto=format&fit=crop" alt="Funds" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
+                        <div className="absolute bottom-0 left-0 p-10 z-20">
+                            <span className="inline-block px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-green-500/20">Verified</span>
+                            <h3 className="text-4xl font-bold text-white mb-2">Direct Funds.</h3>
+                            <p className="text-neutral-300 text-lg">Secure transfers to NGOs.</p>
+                            <div className="mt-4 flex items-center gap-2 text-green-400 font-bold opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                                <span>Donate Now</span> <span className="material-symbols-outlined">arrow_forward</span>
+                            </div>
+                        </div>
+                    </Link>
+                    <Link to="/donations?type=books" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=2574&auto=format&fit=crop" alt="Education" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div className="absolute bottom-0 left-0 p-10 z-20">
+                            <span className="inline-block px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-purple-500/20">Education</span>
+                            <h3 className="text-4xl font-bold text-white mb-2">Knowledge.</h3>
+                            <p className="text-neutral-300 text-lg">Fuel the future.</p>
+                        </div>
+                    </Link>
+                </div>
+            </Section>
+
             <ImpactCalculator />
             <StoriesSection />
             <CommunitySection />
