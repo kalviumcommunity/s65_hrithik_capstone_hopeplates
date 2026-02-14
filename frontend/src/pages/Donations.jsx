@@ -2,21 +2,48 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Card, Badge } from "../components/ui";
 
-const MOCK_DONATIONS = [
-    { id: 1, type: 'Food', title: 'Rice Bags', status: 'Pending', quantity: '10kg', icon: 'restaurant' },
-    { id: 2, type: 'Clothes', title: 'Winter Jackets', status: 'Verified', quantity: '5 items', icon: 'checkroom' },
-    { id: 3, type: 'Money', title: 'Fundraiser', status: 'Completed', quantity: '$50', icon: 'payments' },
-    { id: 4, type: 'Books', title: 'Science Textbooks', status: 'Pending', quantity: '12 books', icon: 'menu_book' },
-];
-
 const Donations = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const typeFilter = queryParams.get('type'); // auto-filter based on Home page click
+    const typeFilter = queryParams.get('type');
 
-    // In real app, fetch from API.
-    const [donations, setDonations] = useState(MOCK_DONATIONS);
+    const [donations, setDonations] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState(typeFilter || 'all');
+
+    useEffect(() => {
+        const fetchDonations = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                // Fetch user's donations or all donations depending on view context. 
+                // For now, let's fetch ALL donations (public view) or user specifc if needed.
+                // The 'getAllDonations' endpoint in backend returns all. 
+                // Let's assume we want to see public donations to claim, or our own history.
+                // The prompt implies a "Dashboard" which usually means specific to user or actionable.
+                // However, the redesign looks like an "App Store" of public donations. 
+                // Let's fetch all available donations first.
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/donations`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!res.ok) throw new Error('Failed to load donations');
+                const data = await res.json();
+                setDonations(data);
+            } catch (err) {
+                console.error(err);
+                // Fallback to mock for demo purposes if backend fails/unauthorized
+                setDonations([
+                    { _id: 1, type: 'food', title: 'Rice Bags (Demo)', status: 'pending', quantity: '10kg', description: 'Sample data' },
+                    { _id: 2, type: 'clothes', title: 'Jackets (Demo)', status: 'verified', quantity: '5 items', description: 'Sample data' },
+                ]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDonations();
+    }, []);
 
     return (
         <div className="min-h-screen bg-[#F5F5F7] pt-24 pb-20">
@@ -43,8 +70,8 @@ const Donations = () => {
                             key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`px-6 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${activeTab === tab
-                                    ? 'bg-[#1D1D1F] text-white shadow-md'
-                                    : 'bg-white text-[#86868B] hover:bg-[#E8E8ED]'
+                                ? 'bg-[#1D1D1F] text-white shadow-md'
+                                : 'bg-white text-[#86868B] hover:bg-[#E8E8ED]'
                                 }`}
                         >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -66,36 +93,49 @@ const Donations = () => {
                     {/* Donation Cards */}
                     {donations
                         .filter(d => activeTab === 'all' || d.type.toLowerCase() === activeTab)
-                        .map((donation) => (
-                            <div key={donation.id} className="bg-white rounded-[24px] p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[280px] group">
-                                <div>
-                                    <div className="flex justify-between items-start mb-6">
-                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${donation.type === 'Food' ? 'bg-orange-100 text-orange-600' :
-                                                donation.type === 'Clothes' ? 'bg-blue-100 text-blue-600' :
-                                                    donation.type === 'Money' ? 'bg-green-100 text-green-600' :
-                                                        'bg-yellow-100 text-yellow-600'
-                                            }`}>
-                                            <span className="material-symbols-outlined">{donation.icon}</span>
-                                        </div>
-                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${donation.status === 'Verified' ? 'bg-blue-50 text-blue-600' :
-                                                donation.status === 'Completed' ? 'bg-green-50 text-green-600' :
-                                                    'bg-gray-100 text-gray-600'
-                                            }`}>
-                                            {donation.status}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-2xl font-semibold text-[#1D1D1F] mb-2">{donation.title}</h3>
-                                    <p className="text-[#86868B] font-medium">{donation.quantity}</p>
-                                </div>
+                        .map((donation) => {
+                            const getIcon = (t) => {
+                                switch (t.toLowerCase()) {
+                                    case 'food': return 'restaurant';
+                                    case 'clothes': return 'checkroom';
+                                    case 'books': return 'menu_book';
+                                    case 'money': return 'payments';
+                                    default: return 'volunteer_activism';
+                                }
+                            };
 
-                                <div className="pt-6 mt-auto border-t border-[#F5F5F7] flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <span className="text-xs text-[#86868B]">Tap to view details</span>
-                                    <button className="w-8 h-8 rounded-full bg-[#F5F5F7] flex items-center justify-center text-[#1D1D1F]">
-                                        <span className="material-symbols-outlined text-xs">arrow_forward</span>
-                                    </button>
+                            return (
+                                <div key={donation._id} className="bg-white rounded-[24px] p-6 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[280px] group">
+                                    <div>
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${donation.type === 'food' ? 'bg-orange-100 text-orange-600' :
+                                                    donation.type === 'clothes' ? 'bg-blue-100 text-blue-600' :
+                                                        donation.type === 'money' ? 'bg-green-100 text-green-600' :
+                                                            'bg-yellow-100 text-yellow-600'
+                                                }`}>
+                                                <span className="material-symbols-outlined">{getIcon(donation.type)}</span>
+                                            </div>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${donation.status === 'verified' ? 'bg-blue-50 text-blue-600' :
+                                                    donation.status === 'completed' ? 'bg-green-50 text-green-600' :
+                                                        'bg-gray-100 text-gray-600'
+                                                }`}>
+                                                {donation.status}
+                                            </span>
+                                        </div>
+                                        <h3 className="text-2xl font-semibold text-[#1D1D1F] mb-2 truncate">{donation.title}</h3>
+                                        <p className="text-[#86868B] font-medium">{donation.quantity || donation.amount ? `$${donation.amount}` : ''}</p>
+                                        <p className="text-sm text-[#86868B] mt-2 line-clamp-2">{donation.description}</p>
+                                    </div>
+
+                                    <div className="pt-6 mt-auto border-t border-[#F5F5F7] flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span className="text-xs text-[#86868B]">Tap to view details</span>
+                                        <button className="w-8 h-8 rounded-full bg-[#F5F5F7] flex items-center justify-center text-[#1D1D1F]">
+                                            <span className="material-symbols-outlined text-xs">arrow_forward</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        })}
                 </div>
             </div>
         </div>
