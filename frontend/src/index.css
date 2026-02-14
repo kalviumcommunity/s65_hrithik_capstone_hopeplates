@@ -74,14 +74,6 @@ body {
   }
 
   .glass-input {
-    @apply bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:bg-white/10 focus:border-white/20 outline-none backdrop-blur-sm;
-
-
-    /* Typography - Large & Clean */
-    .display-title {
-      @apply text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05];
-    }
-
     .section-title {
       @apply text-4xl md:text-5xl font-semibold tracking-tight leading-tight;
     }
