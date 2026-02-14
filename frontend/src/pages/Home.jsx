@@ -102,19 +102,32 @@ const HeroSlideshow = () => {
     );
 };
 
-// 2. Mission Section - Large Typography
+// 2. Mission Section - Large Typography - DARK MODE
 const MissionSection = () => (
-    <Section id="mission" className="bg-white">
-        <h2 className="text-[#1D1D1F] text-4xl md:text-5xl font-semibold leading-tight tracking-tight mb-8">
+    <Section id="mission" className="bg-black py-32">
+        <h2 className="text-white text-4xl md:text-5xl font-semibold leading-tight tracking-tight mb-12 text-center md:text-left">
             Our mission is simple. <br />
-            <span className="text-[#86868B]">Make hunger history, efficiently.</span>
+            <span className="text-neutral-500">Make hunger history, efficiently.</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <p className="text-xl text-[#1D1D1F] leading-relaxed font-medium">
-                We believe that surplus food is not waste—it's a resource. By connecting restaurants, households, and event managers directly with verified NGOs, we bridge the gap between abundance and scarcity using smart technology.
-            </p>
-            <div className="h-[400px] rounded-3xl overflow-hidden shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" alt="Mission" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+                <p className="text-xl text-neutral-300 leading-relaxed font-light">
+                    We believe that surplus food is not waste—it's a resource. <span className="text-white font-medium">HopePlates</span> connects restaurants, households, and event managers directly with verified NGOs.
+                </p>
+                <div className="flex gap-4">
+                    <div className="px-6 py-4 bg-zinc-900 rounded-2xl border border-white/10">
+                        <div className="text-2xl font-bold text-white mb-1">Zero</div>
+                        <div className="text-sm text-neutral-500">Hidden Fees</div>
+                    </div>
+                    <div className="px-6 py-4 bg-zinc-900 rounded-2xl border border-white/10">
+                        <div className="text-2xl font-bold text-white mb-1">10k+</div>
+                        <div className="text-sm text-neutral-500">Volunteers</div>
+                    </div>
+                </div>
+            </div>
+            <div className="h-[500px] rounded-[40px] overflow-hidden shadow-2xl border border-white/10 relative group">
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
+                <img src="https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Mission" />
             </div>
         </div>
     </Section>
