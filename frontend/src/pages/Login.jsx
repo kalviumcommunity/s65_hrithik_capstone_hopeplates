@@ -29,13 +29,15 @@ const Login = () => {
             // Store just the user object for easier access
             localStorage.setItem("user", JSON.stringify(data.user))
 
-            // Redirect based on verification status
+            // Redirect based on verification status and role
             if (data.user.verificationStatus === "pending") {
                 navigate("/pending-approval")
             } else if (data.user.role === "admin") {
-                navigate("/dashboard") // Or separate admin dashboard logic
+                navigate("/dashboard")
+            } else if (data.user.role === "ngo") {
+                navigate("/donations") // Only NGOs go to donations to claim
             } else {
-                navigate("/donations") // Standard landing for users
+                navigate("/dashboard") // Donors and others go to dashboard
             }
 
         } catch (err) {

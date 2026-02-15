@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { Badge } from "../components/ui";
 
 const Donations = () => {
@@ -8,24 +8,21 @@ const Donations = () => {
     const queryParams = new URLSearchParams(location.search);
     const initialType = queryParams.get('type') || 'all';
 
+    const [currentUser] = useState(() => {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
+
+    // Redirect non-NGO/Admin to Home IMMEDIATELY
+    if (currentUser && !['ngo', 'admin'].includes(currentUser.role)) {
+        return <Navigate to="/" replace />;
+    }
+
     const [donations, setDonations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState(initialType);
-    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-            const user = JSON.parse(storedUser);
-            setCurrentUser(user);
-
-            // If donor, don't fetch donations
-            if (user.role === 'donor') {
-                setLoading(false);
-                return;
-            }
-        }
-
         const fetchDonations = async () => {
             setLoading(true);
             try {
@@ -66,25 +63,7 @@ const Donations = () => {
         navigate('/messages', { state: { chatWith: donor } });
     }
 
-    // Role-based Access Check
-    if (currentUser?.role === 'donor') {
-        return (
-            <div className="min-h-screen pt-32 px-6 flex flex-col items-center justify-center text-center">
-                <div className="max-w-md bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10">
-                    <div className="w-16 h-16 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <span className="material-symbols-outlined text-3xl">volunteer_activism</span>
-                    </div>
-                    <h2 className="text-2xl font-bold mb-4">Thank You for Donating!</h2>
-                    <p className="text-neutral-400 mb-8">
-                        As a donor, this page is restricted. You can view, track, and manage all your contributions in your Donation History.
-                    </p>
-                    <Link to="/donation-history" className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-500 transition-colors inline-block w-full">
-                        View My History
-                    </Link>
-                </div>
-            </div>
-        )
-    }
+
 
     const [claimedDetails, setClaimedDetails] = useState(null);
 

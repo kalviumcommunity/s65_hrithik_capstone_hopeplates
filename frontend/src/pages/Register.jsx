@@ -72,14 +72,16 @@ const Register = () => {
 
             alert("Registration successful!")
 
-            // Redirect based on verification status
+            // Redirect based on verification status and role
             if (user.verificationStatus === "pending") {
                 localStorage.removeItem("token")
                 localStorage.removeItem("user")
                 alert("Registration successful! Your account is pending verification. Please log in to check status.")
                 navigate("/login")
+            } else if (user.role === "ngo") {
+                navigate("/donations") // Only NGOs go to donations to claim
             } else {
-                navigate("/donations")
+                navigate("/dashboard") // Donors and others go to dashboard
             }
 
         } catch (error) {

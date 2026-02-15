@@ -53,8 +53,8 @@ const DashboardLayout = () => {
 
     const baseNavItems = [
         { label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
-        // Only show "Donations" (Active Listings) to non-donors (e.g., NGOs, Admins)
-        ...(user?.role !== 'donor' ? [{ label: 'Donations', path: '/donations', icon: 'volunteer_activism' }] : []),
+        // Only show "Donations" (Active Listings) to NGOs and Admins
+        ...(['ngo', 'admin'].includes(user?.role) ? [{ label: 'Donations', path: '/donations', icon: 'volunteer_activism' }] : []),
         { label: 'History', path: '/donation-history', icon: 'history' },
         { label: 'Messages', path: '/messages', icon: 'chat' },
         { label: 'Profile', path: '/profile', icon: 'person' },
