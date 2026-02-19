@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Badge } from "../components/ui";
+import DonationImage from "../components/DonationImage";
 
 const DonationHistory = () => {
     const [donations, setDonations] = useState([]);
@@ -100,9 +101,8 @@ const DonationHistory = () => {
     return (
         <div className="min-h-screen pt-24 pb-20 px-6 bg-transparent text-white">
             <div className="max-w-6xl mx-auto">
-                <div className="mb-10">
-                    <h1 className="text-4xl font-bold mb-4 tracking-tight">Donation History</h1>
-                    <p className="text-neutral-400 text-lg">Track your contributions and claimed items.</p>
+                <div className="mb-0">
+                    {/* Title handled by Layout */}
                 </div>
 
                 {error && (
@@ -141,9 +141,10 @@ const DonationHistory = () => {
                                 <div key={donation._id} className="glass-dark p-6 rounded-3xl border border-white/5 hover:border-white/10 transition-all group flex flex-col md:flex-row gap-6">
                                     {/* Image */}
                                     <div className="w-full md:w-48 h-48 rounded-2xl overflow-hidden bg-black/50 flex-shrink-0">
-                                        <img
-                                            src={donation.images && donation.images.length > 0 ? `${API_BASE}/${donation.images[0].replace(/\\/g, '/')}` : "https://via.placeholder.com/200?text=No+Image"}
-                                            alt={donation.title}
+                                        <DonationImage
+                                            images={donation.images}
+                                            type={donation.type}
+                                            title={donation.title}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         />
                                     </div>

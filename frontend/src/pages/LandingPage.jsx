@@ -9,7 +9,7 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-2 group cursor-pointer">
                         <div className="bg-primary p-1.5 rounded-lg text-white">
-                            <span className="material-symbols-outlined text-2xl">favorite</span>
+                            <span className="material-symbols-outlined text-2xl animate-heartbeat">favorite</span>
                         </div>
                         <h1 className="text-xl font-800 tracking-tight text-[#181311] dark:text-white">GivingHeart</h1>
                     </div>
@@ -93,7 +93,7 @@ const LandingPage = () => {
                         <div className="group bg-white dark:bg-[#2a1b14] p-4 rounded-2xl border border-primary/5 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 shadow-md">
                             <div className="aspect-square rounded-xl overflow-hidden mb-6 relative">
                                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <img className="w-full h-full object-cover" alt="Fresh nutritious organic vegetables in a basket" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTKHfY4VO58h9L-3X2L1y_CxLlH9XIwmTJhDqhJPRPC0jarqu049INbg0_Us_JBz8UEsdYD_-rk7L8-HXkpZQ7Qy3Up78gTUy7cIgQfrcDVfKOfxd9zwJyFoFbFZT8bVeuf1L0LeGWoH7d75WOiAEN8xvss_JClfJceCN35gp4nL10Eo7mH3Ofjis-zamSNlcCdXlcfmoV3zcaLrs4U6389nxLtiy_3F_mbMzwHRaX-_YR1KCLx3auEZ-NUrQhQbtx7KLPi3efiGs" />
+                                <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="Fresh nutritious organic vegetables in a basket" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTKHfY4VO58h9L-3X2L1y_CxLlH9XIwmTJhDqhJPRPC0jarqu049INbg0_Us_JBz8UEsdYD_-rk7L8-HXkpZQ7Qy3Up78gTUy7cIgQfrcDVfKOfxd9zwJyFoFbFZT8bVeuf1L0LeGWoH7d75WOiAEN8xvss_JClfJceCN35gp4nL10Eo7mH3Ofjis-zamSNlcCdXlcfmoV3zcaLrs4U6389nxLtiy_3F_mbMzwHRaX-_YR1KCLx3auEZ-NUrQhQbtx7KLPi3efiGs" />
                             </div>
                             <div className="px-2 pb-4">
                                 <div className="flex items-center gap-2 mb-3">
@@ -110,7 +110,7 @@ const LandingPage = () => {
                         <div className="group bg-white dark:bg-[#2a1b14] p-4 rounded-2xl border border-primary/5 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 shadow-md">
                             <div className="aspect-square rounded-xl overflow-hidden mb-6 relative">
                                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <img className="w-full h-full object-cover" alt="Stack of clean folded warm clothes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYwkVNsEh9k8M6h-R6GOnH9scR5dAU-EPnwf2dV4m4AkbmGIbnRvn_-QAqovM4X8ooB0NPPKEvFGQGQ6k-KjvNDahCdpZ_ReB2lriOYil43Rahh7QzKVLqMG_g8OhjHyzos7ndnwxBhE9rO6aRJQW6lYtQeNcPihEZKCDjfwrTyOVWAR051eXlEm8W2LGAeaU7TtVltmMhddDas4iRTWxbG56SbbgD7iQTZvZkDLTLwURV_cQzCsy3P1ZJtFZR2TZG_bm-3HoK0HM" />
+                                <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="Stack of clean folded warm clothes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYwkVNsEh9k8M6h-R6GOnH9scR5dAU-EPnwf2dV4m4AkbmGIbnRvn_-QAqovM4X8ooB0NPPKEvFGQGQ6k-KjvNDahCdpZ_ReB2lriOYil43Rahh7QzKVLqMG_g8OhjHyzos7ndnwxBhE9rO6aRJQW6lYtQeNcPihEZKCDjfwrTyOVWAR051eXlEm8W2LGAeaU7TtVltmMhddDas4iRTWxbG56SbbgD7iQTZvZkDLTLwURV_cQzCsy3P1ZJtFZR2TZG_bm-3HoK0HM" />
                             </div>
                             <div className="px-2 pb-4">
                                 <div className="flex items-center gap-2 mb-3">
@@ -127,7 +127,7 @@ const LandingPage = () => {
                         <div className="group bg-white dark:bg-[#2a1b14] p-4 rounded-2xl border border-primary/5 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 shadow-md">
                             <div className="aspect-square rounded-xl overflow-hidden mb-6 relative">
                                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <img className="w-full h-full object-cover" alt="Child reading a colorful storybook happily" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChns7qiqatiICEc4Z9hnUM2iI3didZ08hXYWu6vE_cZa4uusX3qGDUkAev8KjLj46Hm0-dBN1Hiw5v6rYHuuRfz-Hh7U7BrJFKXQL1PnPXpSzfFwV_e2wQh5Ih_mpfzcVWdQXc5AUXFI89vGIfrufpZzUhcnLM6pP_wyrTCXHNe1sILQ6-p6Zaux0yLdg18iQ88BZ7GI-TikJucY53Zm1N2dU0ZxluGUYvMpJ3X1ewqaClggwFArenfEa7Cx05snowd1SkVR5CsTU" />
+                                <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="Child reading a colorful storybook happily" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChns7qiqatiICEc4Z9hnUM2iI3didZ08hXYWu6vE_cZa4uusX3qGDUkAev8KjLj46Hm0-dBN1Hiw5v6rYHuuRfz-Hh7U7BrJFKXQL1PnPXpSzfFwV_e2wQh5Ih_mpfzcVWdQXc5AUXFI89vGIfrufpZzUhcnLM6pP_wyrTCXHNe1sILQ6-p6Zaux0yLdg18iQ88BZ7GI-TikJucY53Zm1N2dU0ZxluGUYvMpJ3X1ewqaClggwFArenfEa7Cx05snowd1SkVR5CsTU" />
                             </div>
                             <div className="px-2 pb-4">
                                 <div className="flex items-center gap-2 mb-3">
@@ -144,7 +144,7 @@ const LandingPage = () => {
                         <div className="group bg-white dark:bg-[#2a1b14] p-4 rounded-2xl border border-primary/5 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 shadow-md">
                             <div className="aspect-square rounded-xl overflow-hidden mb-6 relative">
                                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <img className="w-full h-full object-cover" alt="Hands holding coins to put into charity jar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh3MNlUYgwMyVHLLz2UqtEGY5hLnB_jBqQETUFOvK0SEZ0In4KzcAjpFMRhXiczM_8g5tZfvS12bibUWpeTCriqjpCOmOWhTB37_YDrnys7Llt2nu-apR92TYrv_VvZCfUs94WmJnXLrUYV11eIexWvxdoWZ2EvqpfZSpSmR6Qgzw7KpiMwJscNULUrGA7mlssfTCXpfJAl_8qx0ZciUe2tOMCxan4RKUMyXothkl9TjkANT1py2kvirfIwNDtpNcdXsduNHSLaJ0" />
+                                <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt="Hands holding coins to put into charity jar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh3MNlUYgwMyVHLLz2UqtEGY5hLnB_jBqQETUFOvK0SEZ0In4KzcAjpFMRhXiczM_8g5tZfvS12bibUWpeTCriqjpCOmOWhTB37_YDrnys7Llt2nu-apR92TYrv_VvZCfUs94WmJnXLrUYV11eIexWvxdoWZ2EvqpfZSpSmR6Qgzw7KpiMwJscNULUrGA7mlssfTCXpfJAl_8qx0ZciUe2tOMCxan4RKUMyXothkl9TjkANT1py2kvirfIwNDtpNcdXsduNHSLaJ0" />
                             </div>
                             <div className="px-2 pb-4">
                                 <div className="flex items-center gap-2 mb-3">
@@ -212,7 +212,7 @@ const LandingPage = () => {
                         <div className="col-span-1 md:col-span-1">
                             <div className="flex items-center gap-2 mb-6">
                                 <div className="bg-primary p-1.5 rounded-lg text-white">
-                                    <span className="material-symbols-outlined text-xl">favorite</span>
+                                    <span className="material-symbols-outlined text-xl animate-heartbeat">favorite</span>
                                 </div>
                                 <h1 className="text-xl font-800 tracking-tight">GivingHeart</h1>
                             </div>

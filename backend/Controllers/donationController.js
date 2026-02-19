@@ -13,7 +13,16 @@ const createDonation = async (req, res) => {
             return res.status(400).json({ error: "Amount is required for money donations." })
         }
 
-        const images = req.files ? req.files.map(file => file.path) : []
+        let images = req.files && req.files.length > 0 ? req.files.map(file => file.path) : []
+
+        // Populate default images if none are uploaded
+        if (images.length === 0) {
+            const t = (type || "").toLowerCase();
+            if (t === 'food') images.push("https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=800&q=80");
+            else if (t === 'clothes') images.push("https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=800&q=80");
+            else if (t === 'books') images.push("https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=800&q=80");
+            else if (t === 'money') images.push("https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80");
+        }
 
         const newDonation = new Donation({
             donor: userId,

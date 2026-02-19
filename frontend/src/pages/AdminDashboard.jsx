@@ -100,7 +100,6 @@ const AdminDashboard = () => {
 
     return (
         <div className="bg-black text-white p-6 rounded-lg">
-            <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
             <h2 className="text-xl font-semibold mb-4 text-neutral-400">Pending Verifications</h2>
 
             {/* Link to Dedicated Page */}

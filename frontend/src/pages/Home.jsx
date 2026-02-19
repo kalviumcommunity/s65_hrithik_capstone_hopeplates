@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button, Badge } from "../components/ui";
 
@@ -289,6 +289,17 @@ const StoriesSection = () => (
 // 6. Impact Calculator (Interactive Feature) - REDESIGNED: Dynamic Visualizer
 const ImpactCalculator = () => {
     const [amount, setAmount] = useState(50);
+    const navigate = useNavigate();
+
+    const handleDonationClick = () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            navigate(`/make-donation?type=money`);
+        } else {
+            navigate("/login");
+        }
+    };
+
     // Logic: $1 = 2 meals approx
     return (
         <Section className="bg-transparent py-32 relative overflow-hidden">
@@ -328,8 +339,8 @@ const ImpactCalculator = () => {
                                     className="w-full h-3 bg-neutral-800 rounded-full appearance-none cursor-pointer accent-blue-500 hover:accent-blue-400 transition-all"
                                 />
                                 <div className="flex justify-between mt-3 text-neutral-500 text-xs font-mono uppercase">
-                                    <span>Micro</span>
-                                    <span>Transformative</span>
+                                    <button onClick={handleDonationClick} className="hover:text-white transition-colors uppercase">Micro</button>
+                                    <button onClick={handleDonationClick} className="hover:text-white transition-colors uppercase">Transformative</button>
                                 </div>
                             </div>
                         </div>
@@ -341,7 +352,7 @@ const ImpactCalculator = () => {
                                 <div className="absolute inset-0 rounded-full border border-white/5 animate-[spin_10s_linear_infinite]"></div>
                                 <div className="absolute inset-4 rounded-full border border-white/5 animate-[spin_15s_linear_infinite_reverse]"></div>
 
-                                <div className="flex flex-col items-center">
+                                <div onClick={handleDonationClick} className="flex flex-col items-center hover:scale-105 transition-transform cursor-pointer">
                                     <span className="material-symbols-outlined text-4xl mb-2 text-orange-500 animate-bounce">restaurant</span>
                                     <div className="text-6xl md:text-7xl font-bold text-white tabular-nums drop-shadow-2xl">
                                         {Math.floor(amount * 2.5)}
@@ -409,26 +420,41 @@ const CommunitySection = () => (
 );
 
 // 8. Join Us / Final CTA (Minimal) - DARK MODE
-const JoinSection = () => (
-    <Section className="bg-black py-40">
-        <div className="bg-neutral-900/50 border border-white/10 rounded-[50px] p-12 md:p-32 text-center shadow-2xl relative overflow-hidden">
-            {/* Decorative */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+const JoinSection = () => {
+    const token = localStorage.getItem("token");
 
-            <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter relative z-10">Ready to change a life?</h2>
-            <p className="text-2xl text-neutral-400 mb-12 max-w-3xl mx-auto font-light relative z-10">Join 20,000+ others directly impacting their local communities.</p>
-            <div className="flex justify-center gap-6 relative z-10">
-                <Link to="/register">
-                    <Button className="bg-white text-black hover:bg-neutral-200 h-16 px-12 rounded-full text-xl font-bold transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-                        Join HopePlates
-                    </Button>
-                </Link>
+    return (
+        <Section className="bg-black py-40">
+            <div className="bg-neutral-900/50 border border-white/10 rounded-[50px] p-12 md:p-32 text-center shadow-2xl relative overflow-hidden">
+                {/* Decorative */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+                <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter relative z-10">Ready to change a life?</h2>
+                <p className="text-2xl text-neutral-400 mb-12 max-w-3xl mx-auto font-light relative z-10">Join 20,000+ others directly impacting their local communities.</p>
+                <div className="flex justify-center gap-6 relative z-10">
+                    <Link to={token ? "/make-donation" : "/register"}>
+                        <Button className="bg-white text-black hover:bg-neutral-200 h-16 px-12 rounded-full text-xl font-bold transition-all hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                            {token ? "Start your Donation" : "Join HopePlates"}
+                        </Button>
+                    </Link>
+                </div>
             </div>
-        </div>
-    </Section>
-);
+        </Section>
+    );
+};
 
 const Home = () => {
+    const navigate = useNavigate();
+
+    const handleDonationClick = (type) => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            navigate(`/make-donation?type=${type}`);
+        } else {
+            navigate("/login");
+        }
+    };
+
     return (
         <div className="bg-black font-sans selection:bg-blue-500/30 selection:text-blue-200">
             <HeroSlideshow />
@@ -442,29 +468,29 @@ const Home = () => {
                     <p className="text-xl text-neutral-400 max-w-2xl mx-auto">Direct, transparent, and verified.</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[400px]">
-                    <Link to="/donations?type=food" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                    <div onClick={() => handleDonationClick('food')} className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer">
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
-                        <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=2698&auto=format&fit=crop" alt="Food" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=2698&auto=format&fit=crop" alt="Food" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" />
                         <div className="absolute bottom-0 left-0 p-10 z-20">
                             <span className="inline-block px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-orange-500/20">Urgent</span>
                             <h3 className="text-4xl md:text-5xl font-bold text-white mb-2">Food Recovery.</h3>
                             <p className="text-neutral-300 text-lg">Bridging the gap between restaurant surplus and local hunger.</p>
                         </div>
-                    </Link>
-                    <Link to="/donations?type=clothes" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                    </div>
+                    <div onClick={() => handleDonationClick('clothes')} className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer">
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
-                        <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=2670&auto=format&fit=crop" alt="Clothes" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=2670&auto=format&fit=crop" alt="Clothes" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" />
                         <div className="absolute bottom-0 left-0 p-10 z-20">
                             <span className="inline-block px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-blue-500/20">Essentials</span>
                             <h3 className="text-4xl font-bold text-white mb-2">Warmth.</h3>
                             <p className="text-neutral-300 text-lg">Give clothes a second life.</p>
                         </div>
-                    </Link>
+                    </div>
                     {/* UPDATED FUNDS CARD WITH PHOTO */}
-                    <Link to="/donations?type=money" className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                    <div onClick={() => handleDonationClick('money')} className="group relative md:col-span-12 lg:col-span-5 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer">
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10 opacity-80"></div>
                         {/* Dynamic Photo for Funds */}
-                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2670&auto=format&fit=crop" alt="Funds" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
+                        <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2670&auto=format&fit=crop" alt="Funds" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" />
                         <div className="absolute bottom-0 left-0 p-10 z-20">
                             <span className="inline-block px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-green-500/20">Verified</span>
                             <h3 className="text-4xl font-bold text-white mb-2">Direct Funds.</h3>
@@ -473,16 +499,16 @@ const Home = () => {
                                 <span>Donate Now</span> <span className="material-symbols-outlined">arrow_forward</span>
                             </div>
                         </div>
-                    </Link>
-                    <Link to="/donations?type=books" className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10">
+                    </div>
+                    <div onClick={() => handleDonationClick('books')} className="group relative md:col-span-12 lg:col-span-7 rounded-[32px] overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer">
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
-                        <img src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=2574&auto=format&fit=crop" alt="Education" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <img src="https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=2574&auto=format&fit=crop" alt="Education" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110" />
                         <div className="absolute bottom-0 left-0 p-10 z-20">
                             <span className="inline-block px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold tracking-wider uppercase mb-3 backdrop-blur-md border border-purple-500/20">Education</span>
                             <h3 className="text-4xl font-bold text-white mb-2">Knowledge.</h3>
                             <p className="text-neutral-300 text-lg">Fuel the future.</p>
                         </div>
-                    </Link>
+                    </div>
                 </div>
             </Section>
 

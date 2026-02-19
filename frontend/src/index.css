@@ -1,114 +1,158 @@
-/* Apple-Style Minimalist UI */
+/* Apple-Style Minimalist UI - Premium Glassmorphism */
 @import "tailwindcss";
 
 @theme {
-  /* Colors - Apple-like Clean Palette */
-  --color-brand-primary: #0071E3;
-  /* Apple Blue */
-  --color-brand-light: #FBFBFD;
-  /* Product Page Light BG */
-  --color-brand-dark: #1D1D1F;
-  /* Typography Dark */
+    /* Colors - Deep Premium Palette */
+    --color-brand-primary: #2997FF;
+    /* Apple Blue */
+    --color-brand-accent: #BF5AF2;
+    /* Apple Purple for accents */
+    --color-brand-success: #30D158;
+    --color-brand-warning: #FF9F0A;
+    --color-brand-danger: #FF453A;
 
-  --color-text-primary: #1D1D1F;
-  --color-text-secondary: #86868B;
+    --color-bg-dark: #000000;
+    --color-text-primary: #F5F5F7;
+    --color-text-secondary: #86868B;
+    --color-border-glass: rgba(255, 255, 255, 0.1);
 
-  --color-divider: #D2D2D7;
+    /* Fonts */
+    --font-sans: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: "SF Pro Display", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Fonts - SF Pro Display Feel (Use Inter) */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Animations */
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-fade-in-up: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    --animate-ticker: ticker 30s linear infinite;
 
-  /* Utilities */
-  --spacing-container: 1080px;
-  /* Tighter container for focus */
+    @keyframes float {
 
-  /* Animations */
-  --animate-float: float 6s ease-in-out infinite;
+        0%,
+        100% {
+            transform: translateY(0px);
+        }
 
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
+        50% {
+            transform: translateY(-10px);
+        }
     }
 
-    50% {
-      transform: translateY(-20px);
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    100% {
-      transform: translateY(0px);
+    @keyframes ticker {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
     }
-  }
+
+    @keyframes heartbeat {
+        0% {
+            transform: scale(1);
+        }
+
+        15% {
+            transform: scale(1.3);
+        }
+
+        30% {
+            transform: scale(1);
+        }
+
+        45% {
+            transform: scale(1.15);
+        }
+
+        60% {
+            transform: scale(1);
+        }
+    }
+
+    --animate-heartbeat: heartbeat 1.5s ease-in-out infinite;
 }
 
 :root {
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-  font-family: var(--font-sans);
-  color: #F5F5F7;
-  background-color: #000000;
-  background-image:
-    radial-gradient(circle at 15% 50%, rgba(29, 29, 31, 1) 0%, transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(40, 40, 45, 1) 0%, transparent 25%);
-  margin: 0;
-  overflow-x: hidden;
-  min-height: 100vh;
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: #000000;
+    /* Deep, rich abstract background */
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(41, 151, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(191, 90, 242, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 30%);
+    background-attachment: fixed;
+    margin: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
-/* Glassmorphism Classes */
+/* --- Premium Glass Utilities --- */
 @layer utilities {
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-xl;
-  }
 
-  .glass-dark {
-    @apply bg-black/40 backdrop-blur-2xl border border-white/10 shadow-2xl;
-  }
+    /* Standard Glass Panel (Cards) */
+    .glass {
+        @apply bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_#0000005C];
+    }
 
-  .glass-card {
-    @apply bg-zinc-900/60 backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-300;
-  }
+    /* Darker Glass (Sidebar / Modals) */
+    .glass-dark {
+        @apply bg-black/40 backdrop-blur-3xl border border-white/5 shadow-2xl;
+    }
 
-  .glass-input {
-    @apply bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 focus:bg-white/10 focus:border-white/20 outline-none backdrop-blur-sm transition-all;
-  }
+    /* Lighter Glass (Inputs / Active states) */
+    .glass-light {
+        @apply bg-white/10 backdrop-blur-md border border-white/20;
+    }
 
-  /* Typography - Large & Clean */
-  .display-title {
-    @apply text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05];
-  }
+    /* Premium Card with Hover Effect */
+    .glass-card {
+        @apply bg-[#1c1c1e]/60 backdrop-blur-xl border border-white/5 rounded-[32px] shadow-lg hover:bg-[#2c2c2e]/60 hover:border-white/10 hover:shadow-2xl hover:scale-[1.01] transition-all duration-500 ease-out;
+    }
 
-  .section-title {
-    @apply text-4xl md:text-5xl font-semibold tracking-tight leading-tight;
-  }
+    /* Form Inputs */
+    .glass-input {
+        @apply bg-white/5 border border-white/10 text-white placeholder:text-neutral-500 rounded-2xl px-4 py-3 focus:bg-white/10 focus:border-[#2997FF]/50 focus:ring-1 focus:ring-[#2997FF]/20 outline-none backdrop-blur-sm transition-all duration-300;
+    }
 
-  .body-text {
-    @apply text-lg md:text-xl text-[#86868B] font-medium leading-relaxed;
-  }
+    /* Buttons */
+    .btn-primary {
+        @apply bg-[#0071E3] text-white px-6 py-3 rounded-full font-medium hover:bg-[#0077ED] active:scale-95 transition-all duration-300 shadow-lg shadow-blue-500/20;
+    }
 
-  /* Buttons - Pill Shape */
-  .btn-apple {
-    @apply px-6 py-2 rounded-full font-medium transition-all duration-300 active:scale-95;
-  }
+    .btn-glass {
+        @apply bg-white/10 text-white border border-white/10 px-6 py-3 rounded-full font-medium hover:bg-white/20 active:scale-95 transition-all duration-300 backdrop-blur-md;
+    }
 
-  .btn-primary {
-    @apply bg-[#0071E3] text-white hover:bg-[#0077ED];
-  }
+    /* Typography */
+    .display-title {
+        @apply text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05] bg-gradient-to-b from-white to-white/70 bg-clip-text text-transparent;
+    }
 
-  .btn-secondary {
-    @apply bg-[#E8E8ED] text-[#1D1D1F] hover:bg-[#D2D2D7];
-  }
+    .section-title {
+        @apply text-3xl md:text-4xl font-semibold tracking-tight text-white;
+    }
 
-  /* Bento Grid Layout */
-  .bento-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
-  }
-
-  .bento-card {
-    @apply bg-[#F5F5F7] rounded-3xl p-8 overflow-hidden relative transition-transform duration-500 hover:scale-[1.02];
-  }
+    /* Scrollbar aesthetics */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
 }

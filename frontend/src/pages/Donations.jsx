@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { Badge } from "../components/ui";
+import DonationImage from "../components/DonationImage";
 
 const Donations = () => {
     const location = useLocation();
@@ -13,7 +14,6 @@ const Donations = () => {
         return storedUser ? JSON.parse(storedUser) : null;
     });
 
-    // Redirect non-NGO/Admin to Home IMMEDIATELY
     if (currentUser && !['ngo', 'admin'].includes(currentUser.role)) {
         return <Navigate to="/" replace />;
     }
@@ -27,15 +27,13 @@ const Donations = () => {
             setLoading(true);
             try {
                 const token = localStorage.getItem('token');
-                // Fetch from REAL API
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/api/donations`, {
                     headers: { Authorization: `Bearer ${token}` }
-                })
-                const data = await res.json()
+                });
+                const data = await res.json();
 
-                if (!res.ok) throw new Error("Failed to fetch")
+                if (!res.ok) throw new Error("Failed to fetch");
 
-                // Filter logic
                 const filteredData = filter === 'all'
                     ? data
                     : data.filter(d => d.type.toLowerCase() === filter.toLowerCase());
@@ -43,15 +41,13 @@ const Donations = () => {
                 setDonations(filteredData);
                 setLoading(false);
             } catch (err) {
-                console.error(err)
-                setLoading(false)
-                // Fallback or empty state
+                console.error(err);
+                setLoading(false);
             }
-        }
-        fetchDonations()
+        };
+        fetchDonations();
     }, [filter]);
 
-    // Update filter if URL changes
     useEffect(() => {
         const typeNode = queryParams.get('type');
         if (typeNode && typeNode !== filter) {
@@ -61,9 +57,7 @@ const Donations = () => {
 
     const handleMessage = (donor) => {
         navigate('/messages', { state: { chatWith: donor } });
-    }
-
-
+    };
 
     const [claimedDetails, setClaimedDetails] = useState(null);
 
@@ -84,10 +78,7 @@ const Donations = () => {
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || "Failed to claim");
 
-            // Update local state to reflect change immediately
             setDonations(prev => prev.map(d => d._id === donationId ? { ...d, status: 'claimed' } : d));
-
-            // Show details
             setClaimedDetails(data);
         } catch (err) {
             console.error("Claim error:", err);
@@ -96,23 +87,21 @@ const Donations = () => {
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-20 px-6 bg-transparent text-white">
+        <div className="min-h-screen pt-4 pb-20 px-4 md:px-8 bg-transparent text-white animate-in fade-in duration-700">
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Active Donations</h1>
-                        <p className="text-neutral-400 text-lg">Real-time listings from our community.</p>
+                        {/* Title removed to avoid repetition with Layout Header */}
                     </div>
 
-                    {/* Filter Pills */}
-                    <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                    <div className="glass-light p-1.5 rounded-full flex gap-1 overflow-x-auto">
                         {['all', 'food', 'clothes', 'money', 'books'].map(type => (
                             <button
                                 key={type}
                                 onClick={() => setFilter(type)}
-                                className={`px-6 py-2.5 rounded-full text-sm font-medium capitalize transition-all whitespace-nowrap backdrop-blur-md ${filter === type
-                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
-                                    : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
+                                className={`px-6 py-2.5 rounded-full text-sm font-bold capitalize transition-all duration-300 ${filter === type
+                                    ? 'bg-white text-black shadow-lg'
+                                    : 'text-neutral-400 hover:text-white hover:bg-white/10'
                                     }`}
                             >
                                 {type}
@@ -122,22 +111,19 @@ const Donations = () => {
                 </div>
 
                 {loading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="h-[400px] bg-white/5 rounded-[32px] border border-white/5"></div>
+                            <div key={i} className="h-[400px] bg-white/5 rounded-[32px] animate-pulse"></div>
                         ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {/* Make Donation CTA Card */}
-                        <div onClick={() => {
-                            if (currentUser) {
-                                navigate("/make-donation");
-                            } else {
-                                navigate("/login");
-                            }
-                        }} className="group bg-white/5 backdrop-blur-md rounded-[32px] p-8 border border-dashed border-white/10 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all flex flex-col items-center justify-center text-center cursor-pointer min-h-[400px]">
-                            <div className="w-20 h-20 rounded-full bg-blue-600/20 text-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        {/* CTA Card */}
+                        <div
+                            onClick={() => navigate(currentUser ? "/make-donation" : "/login")}
+                            className="glass-card flex flex-col items-center justify-center text-center p-8 cursor-pointer border-dashed border-2 border-white/10 hover:border-blue-500/50 hover:bg-blue-500/5 group"
+                        >
+                            <div className="w-20 h-20 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-lg shadow-blue-500/10">
                                 <span className="material-symbols-outlined text-4xl">add</span>
                             </div>
                             <h3 className="text-2xl font-bold text-white mb-2">Create Listing</h3>
@@ -146,42 +132,52 @@ const Donations = () => {
 
                         {donations.length === 0 ? (
                             <div className="col-span-full text-center text-neutral-500 py-20">
-                                <p>No active donations found for this category.</p>
+                                <span className="material-symbols-outlined text-6xl opacity-20 mb-4">search_off</span>
+                                <p className="text-xl">No active donations found for this category.</p>
                             </div>
                         ) : (
                             donations.map(donation => (
-                                <div key={donation._id} className="glass-dark rounded-[32px] overflow-hidden hover:scale-[1.02] transition-all duration-300 flex flex-col group h-full">
-                                    <div className="h-48 overflow-hidden relative">
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 transition-opacity group-hover:opacity-80"></div>
-                                        <img
-                                            src={donation.images && donation.images.length > 0 ? `${import.meta.env.VITE_API_URL}/${donation.images[0].replace(/\\/g, '/')}` : "https://via.placeholder.com/400x200"}
-                                            alt={donation.title}
+                                <div key={donation._id} className="glass-card overflow-hidden flex flex-col h-full group">
+                                    <div className="h-56 relative overflow-hidden">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 opacity-60 group-hover:opacity-40 transition-opacity"></div>
+                                        <DonationImage
+                                            images={donation.images}
+                                            type={donation.type}
+                                            title={donation.title}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                         />
                                         <div className="absolute top-4 left-4 z-20">
-                                            <Badge className="bg-white/10 backdrop-blur-md text-white border-none capitalize">{donation.type}</Badge>
+                                            <Badge className="bg-white/10 backdrop-blur-md border border-white/10 text-white font-bold capitalize px-3 py-1">
+                                                {donation.type}
+                                            </Badge>
                                         </div>
                                     </div>
-                                    <div className="p-8 flex-1 flex flex-col">
-                                        <div className="flex justify-between items-start mb-4">
-                                            <h3 className="text-xl font-bold text-white line-clamp-1">{donation.title}</h3>
-                                            <span className="text-sm font-semibold text-blue-400 whitespace-nowrap ml-2">{donation.quantity}</span>
-                                        </div>
-                                        <p className="text-neutral-400 text-sm mb-6 line-clamp-2 flex-grow">{donation.description}</p>
 
-                                        <div className="flex items-center gap-2 text-neutral-500 text-sm mt-auto pt-6 border-t border-white/5 mb-4">
+                                    <div className="p-6 flex-1 flex flex-col">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <h3 className="text-xl font-bold text-white line-clamp-1">{donation.title}</h3>
+                                            <span className="text-sm font-bold text-blue-400 bg-blue-500/10 px-2 py-1 rounded-lg border border-blue-500/20">
+                                                {donation.quantity}
+                                            </span>
+                                        </div>
+
+                                        <p className="text-neutral-400 text-sm mb-6 line-clamp-2 leading-relaxed flex-grow">
+                                            {donation.description}
+                                        </p>
+
+                                        <div className="flex items-center gap-2 text-neutral-500 text-xs font-bold uppercase tracking-wider mb-6">
                                             <span className="material-symbols-outlined text-lg">location_on</span>
                                             <span className="truncate">{donation.pickupLocation || donation.location || "Location not specified"}</span>
                                         </div>
 
                                         <div className="grid grid-cols-2 gap-3 mt-auto">
                                             {donation.status === 'claimed' ? (
-                                                <div className="col-span-2 bg-green-500/20 text-green-400 py-3 rounded-xl text-center font-bold border border-green-500/30">
-                                                    Claimed
+                                                <div className="col-span-2 bg-green-500/20 text-green-400 py-3 rounded-xl text-center font-bold border border-green-500/30 flex items-center justify-center gap-2">
+                                                    <span className="material-symbols-outlined">check_circle</span> Claimed
                                                 </div>
                                             ) : (
                                                 <button
-                                                    className="py-3 bg-white text-black font-semibold rounded-xl hover:bg-neutral-200 transition-colors"
+                                                    className="btn-primary py-3 w-full flex items-center justify-center gap-2"
                                                     onClick={() => handleClaim(donation._id)}
                                                 >
                                                     Claim
@@ -191,7 +187,7 @@ const Donations = () => {
                                             {donation.donor && currentUser && donation.donor._id !== currentUser.id && (
                                                 <button
                                                     onClick={() => handleMessage(donation.donor)}
-                                                    className="py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors flex items-center justify-center gap-2"
+                                                    className="btn-glass py-3 w-full flex items-center justify-center gap-2 text-sm hover:bg-white/10"
                                                 >
                                                     <span className="material-symbols-outlined text-lg">chat</span>
                                                     Message
@@ -206,79 +202,51 @@ const Donations = () => {
                 )}
             </div>
 
-
             {/* Claim Success Modal */}
-            {
-                claimedDetails && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-                        <div className="bg-zinc-900 border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl relative animate-in zoom-in-95 duration-300">
+            {claimedDetails && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
+                    <div className="glass-dark border border-white/10 rounded-[40px] p-8 max-w-md w-full shadow-2xl relative animate-in zoom-in-95 duration-400">
+                        <button
+                            onClick={() => setClaimedDetails(null)}
+                            className="absolute top-6 right-6 text-neutral-400 hover:text-white transition-colors"
+                        >
+                            <span className="material-symbols-outlined text-2xl">close</span>
+                        </button>
+
+                        <div className="w-20 h-20 bg-gradient-to-tr from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/20">
+                            <span className="material-symbols-outlined text-4xl text-white">check</span>
+                        </div>
+
+                        <h2 className="text-3xl font-bold text-center mb-2 text-white">Claim Successful!</h2>
+                        <p className="text-neutral-400 text-center mb-8">You have successfully claimed this donation.</p>
+
+                        <div className="space-y-4">
+                            <div className="p-5 bg-white/5 rounded-3xl border border-white/5">
+                                <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-4">Donor Details</h3>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                                        {claimedDetails.donor?.name?.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-white text-lg">{claimedDetails.donor?.name}</p>
+                                        <p className="text-sm text-neutral-400">{claimedDetails.donor?.email}</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <button
-                                onClick={() => setClaimedDetails(null)}
-                                className="absolute top-4 right-4 text-neutral-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+                                onClick={() => handleMessage(claimedDetails.donor)}
+                                className="w-full btn-primary py-4 text-lg font-bold flex items-center justify-center gap-2 mt-4"
                             >
-                                <span className="material-symbols-outlined">close</span>
+                                <span className="material-symbols-outlined">chat</span>
+                                Chat with Donor
                             </button>
-
-                            <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span className="material-symbols-outlined text-4xl">check_circle</span>
-                            </div>
-
-                            <h2 className="text-2xl font-bold text-center mb-2">Claim Successful!</h2>
-                            <p className="text-neutral-400 text-center mb-8">You have successfully claimed this donation.</p>
-
-                            <div className="space-y-4">
-                                <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                                    <h3 className="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-3">Donor Details</h3>
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-                                            {claimedDetails.donor?.name?.charAt(0).toUpperCase()}
-                                        </div>
-                                        <div>
-                                            <p className="font-bold text-white">{claimedDetails.donor?.name}</p>
-                                            <p className="text-sm text-neutral-400">{claimedDetails.donor?.email}</p>
-                                        </div>
-                                    </div>
-                                    {claimedDetails.donor?.contact && (
-                                        <div className="flex items-center gap-2 text-sm text-neutral-300 mt-2">
-                                            <span className="material-symbols-outlined text-base">call</span>
-                                            {claimedDetails.donor.contact}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                                    <h3 className="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-3">Pickup Location</h3>
-                                    <div className="flex items-start gap-2">
-                                        <span className="material-symbols-outlined text-red-400 mt-0.5">location_on</span>
-                                        <div>
-                                            <p className="text-white font-medium mb-2">{claimedDetails.pickupLocation || claimedDetails.location || "Contact donor for location"}</p>
-                                            <a
-                                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(claimedDetails.pickupLocation || claimedDetails.location || "")}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-400 text-sm hover:underline flex items-center gap-1"
-                                            >
-                                                View on Google Maps
-                                                <span className="material-symbols-outlined text-sm">open_in_new</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button
-                                    onClick={() => handleMessage(claimedDetails.donor)}
-                                    className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-colors flex items-center justify-center gap-2 mt-2"
-                                >
-                                    <span className="material-symbols-outlined">chat</span>
-                                    Chat with Donor
-                                </button>
-                            </div>
                         </div>
                     </div>
-                )
-            }
+                </div>
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default Donations;

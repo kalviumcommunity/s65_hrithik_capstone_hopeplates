@@ -93,10 +93,9 @@ const PendingVerifications = () => {
     return (
         <div className="min-h-screen bg-black text-white p-8">
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
-                    <Clock className="text-yellow-500" /> Pending Verifications
-                </h1>
-                <p className="text-neutral-400 mb-8">Review and approve new NGO, Restaurant, and Event Manager accounts.</p>
+                <div className="mb-4">
+                    {/* Title handled by Layout */}
+                </div>
 
                 {pendingUsers.length === 0 ? (
                     <div className="bg-zinc-900/50 border border-white/10 rounded-2xl p-12 text-center">

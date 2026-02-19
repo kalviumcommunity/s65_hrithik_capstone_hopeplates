@@ -133,7 +133,7 @@ const Messages = () => {
             {/* Sidebar - Conversation List */}
             <div className={`w-full md:w-1/3 border-r border-white/10 flex flex-col ${currentChatUser ? 'hidden md:flex' : 'flex'} bg-black/40`}>
                 <div className="p-4 border-b border-white/10 flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-white">Messages</h2>
+                    <h2 className="text-xl font-bold text-white">Conversations</h2>
                     <span className="text-xs bg-blue-600/20 text-blue-400 px-2 py-1 rounded-full">{conversations.length}</span>
                 </div>
                 <div className="flex-1 overflow-y-auto custom-scrollbar">

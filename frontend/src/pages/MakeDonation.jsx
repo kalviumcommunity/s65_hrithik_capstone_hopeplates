@@ -1,11 +1,14 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { Button } from "../components/ui"
 
 const MakeDonation = () => {
+    const [searchParams] = useSearchParams()
+    const urlType = searchParams.get('type')
+
     const [formData, setFormData] = useState({
         title: "",
-        type: "food",
+        type: (['food', 'clothes', 'books', 'money'].includes(urlType) ? urlType : "food"),
         description: "",
         quantity: "",
         amount: "",
@@ -92,9 +95,8 @@ const MakeDonation = () => {
     return (
         <div className="min-h-screen pt-24 pb-20 flex justify-center items-start px-6">
             <div className="w-full max-w-2xl glass-dark rounded-[32px] p-8 md:p-12">
-                <div className="mb-10 text-center">
-                    <h1 className="text-3xl font-bold text-white tracking-tight">Create Donation</h1>
-                    <p className="text-neutral-400 mt-2">Share your impact with the world.</p>
+                <div className="mb-6">
+                    {/* Title handled by Layout */}
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
