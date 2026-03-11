@@ -1,6 +1,8 @@
-# 🍽️ [HopePlates](https://s65-hrithik-capstone-hopeplates-1.onrender.com/)
+
 
 <div align="center">
+  # 🍽️ [HopePlates](https://s65-hrithik-capstone-hopeplates-1.onrender.com/)
+  
   <h3>A Food & Essentials Redistribution Platform</h3>
   <p>Connecting surplus with scarcity, one plate at a time.</p>
 </div>
