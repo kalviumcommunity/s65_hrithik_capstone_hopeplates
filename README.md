@@ -1,7 +1,11 @@
-# HopePlates
+  # 🍽️ [HopePlates](https://s65-hrithik-capstone-hopeplates-1.onrender.com/)
 
-## Capstone Project Title
-**HopePlates: A Food & Essentials Redistribution Platform**
+
+<div align="center">
+  
+  <h3>A Food & Essentials Redistribution Platform</h3>
+  <p>Connecting surplus with scarcity, one plate at a time.</p>
+</div>
 
 
 **Backend:https://s65-hrithik-capstone-hopeplates.onrender.com**
