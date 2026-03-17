@@ -27,7 +27,7 @@ const Donations = () => {
             setLoading(true);
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/donations`, {
+                const res = await fetch(`${window.location.hostname === "localhost" ? "http://localhost:5000" : "https://s65-hrithik-capstone-hopeplates.onrender.com"}/api/donations`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const data = await res.json();
@@ -70,7 +70,7 @@ const Donations = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/donations/${donationId}/claim`, {
+            const res = await fetch(`${window.location.hostname === "localhost" ? "http://localhost:5000" : "https://s65-hrithik-capstone-hopeplates.onrender.com"}/api/donations/${donationId}/claim`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` }
             });

@@ -1,1 +1,3 @@
-backend/scripts/populateUsers.js
+backend/node_modules/
+frontend/node_modules/
+.env
