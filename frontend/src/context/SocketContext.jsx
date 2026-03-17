@@ -24,7 +24,7 @@ export const SocketProvider = ({ children }) => {
         }
 
         // Get the API URL
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === "localhost" ? "http://localhost:5000" : "https://s65-hrithik-capstone-hopeplates.onrender.com");
 
         // Initialize socket
         const newSocket = io(API_URL, {
