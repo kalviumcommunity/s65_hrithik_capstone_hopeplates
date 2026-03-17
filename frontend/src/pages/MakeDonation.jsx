@@ -73,7 +73,7 @@ const MakeDonation = () => {
 
             images.forEach(img => form.append("images", img))
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/donations`, {
+            const response = await fetch(`${window.location.hostname === "localhost" ? "http://localhost:5000" : "https://s65-hrithik-capstone-hopeplates.onrender.com"}/api/donations`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
