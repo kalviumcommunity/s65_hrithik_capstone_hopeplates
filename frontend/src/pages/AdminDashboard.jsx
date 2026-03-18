@@ -15,7 +15,7 @@ const AdminDashboard = () => {
             const token = localStorage.getItem("token")
             try {
                 // Using API_BASE and mapped endpoint
-                const response = await fetch(`${API_BASE}/api/users/pending-verifications`, {
+                const response = await fetch(`${API_BASE}/api/admin/pending-verifications`, {
                     headers: { Authorization: `Bearer ${token}` },
                 })
                 if (!response.ok) {
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
     const handleVerify = async (id) => {
         const token = localStorage.getItem("token")
         try {
-            const response = await fetch(`${API_BASE}/api/users/verify/${id}`, {
+            const response = await fetch(`${API_BASE}/api/admin/verify/user/${id}`, {
                 method: "PUT",
                 headers: { Authorization: `Bearer ${token}` },
             })
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
         if (!window.confirm("Are you sure you want to reject and delete this user?")) return;
         const token = localStorage.getItem("token")
         try {
-            const response = await fetch(`${API_BASE}/api/users/reject/${id}`, {
+            const response = await fetch(`${API_BASE}/api/admin/reject/user/${id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             })

@@ -97,11 +97,53 @@ const getDonationCountByUser = async (req, res) => {
 };
 
 
+const getDonationsByUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const donations = await Donation.find({ donor: userId }).sort({ createdAt: -1 });
+        res.status(200).json(donations);
+    } catch (error) {
+        console.error("Error fetching user donations:", error);
+        res.status(500).json({ error: "Failed to fetch user donations" });
+    }
+};
+
+const claimDonation = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const donationId = req.params.id;
+
+        const donation = await Donation.findById(donationId);
+        if (!donation) return res.status(404).json({ error: "Donation not found" });
+
+        if (donation.status === "claimed" || donation.status === "completed") {
+            return res.status(400).json({ error: "Donation is already claimed or completed" });
+        }
+
+        if (donation.donor.toString() === userId) {
+            return res.status(403).json({ error: "You cannot claim your own donation" });
+        }
+
+        donation.status = "claimed";
+        donation.claimedBy = userId;
+        await donation.save();
+
+        const updatedDonation = await Donation.findById(donationId).populate("donor", "name email");
+
+        res.status(200).json(updatedDonation);
+    } catch (error) {
+        console.error("Error claiming donation:", error);
+        res.status(500).json({ error: "Failed to claim donation" });
+    }
+};
+
 module.exports = {
     createDonation,
     getAllDonations,
     getDonationById,
     updateDonationStatus,
     deleteDonation,
-    getDonationCountByUser
+    getDonationCountByUser,
+    getDonationsByUser,
+    claimDonation
 }

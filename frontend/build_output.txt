@@ -1,0 +1,19 @@
+
+> frontend@0.0.0 build
+> vite build
+
+[36mvite v6.3.5 [32mbuilding for production...[36m[39m
+transforming...
+
+/chat-bg-pattern.svg referenced in /chat-bg-pattern.svg didn't resolve at build time, it will remain unchanged to be resolved at runtime
+
+/pattern.svg referenced in /pattern.svg didn't resolve at build time, it will remain unchanged to be resolved at runtime
+[32m✓[39m 45 modules transformed.
+[31m✗[39m Build failed in 793ms
+[31merror during build:
+[31mCould not resolve "../components/DonationImage" from "src/pages/DonationHistory.jsx"[31m
+file: [36mC:/Users/Hrithik/OneDrive/Desktop/projects/S65_Hrithik_Capstone_HopePlates/frontend/src/pages/DonationHistory.jsx[31m
+    at getRollupError (file:///C:/Users/Hrithik/OneDrive/Desktop/projects/S65_Hrithik_Capstone_HopePlates/frontend/node_modules/rollup/dist/es/shared/parseAst.js:400:41)
+    at error (file:///C:/Users/Hrithik/OneDrive/Desktop/projects/S65_Hrithik_Capstone_HopePlates/frontend/node_modules/rollup/dist/es/shared/parseAst.js:396:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///C:/Users/Hrithik/OneDrive/Desktop/projects/S65_Hrithik_Capstone_HopePlates/frontend/node_modules/rollup/dist/es/shared/node-entry.js:21389:24)
+    at file:///C:/Users/Hrithik/OneDrive/Desktop/projects/S65_Hrithik_Capstone_HopePlates/frontend/node_modules/rollup/dist/es/shared/node-entry.js:21349:26[39m

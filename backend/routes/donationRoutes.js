@@ -7,7 +7,9 @@ const {
     getDonationById,
     updateDonationStatus,
     deleteDonation,
-    getDonationCountByUser
+    getDonationCountByUser,
+    getDonationsByUser,
+    claimDonation
 } = require("../Controllers/donationController")
 const { protect } = require("../middlewares/authMiddleware")
 
@@ -45,6 +47,8 @@ router.get("/history", protect, async (req, res) => {
 router.post("/", protect, upload.array("images", 5), createDonation)
 router.get("/", protect, getAllDonations)
 router.get("/count/:userId", getDonationCountByUser)
+router.get("/user/:userId", protect, getDonationsByUser)
+router.post("/:id/claim", protect, claimDonation)
 router.get("/:id", protect, getDonationById)
 router.put("/:id/status", protect, updateDonationStatus)
 router.delete("/:id", protect, deleteDonation)
