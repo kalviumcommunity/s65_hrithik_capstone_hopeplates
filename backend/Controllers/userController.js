@@ -4,13 +4,17 @@ const {generateToken} = require('../utils/jwt')
 
 exports.registerUser = async (req, res) => {
     try {
-        const { name, email, password, location, role } = req.body
+        const { name, email, password, location, role, phoneNumber } = req.body
 
         if (role === "admin") {
             const existingAdmin = await User.findOne({ role: "admin" })
             if (existingAdmin) {
                 return res.status(403).json({ message: "An admin account already exists. Only one admin is allowed." })
             }
+        }
+
+        if (phoneNumber && !/^\d{10}$/.test(phoneNumber)) {
+            return res.status(400).json({ message: "Phone number must be exactly 10 digits." })
         }
 
         const existingUser = await User.findOne({ email })
@@ -23,11 +27,13 @@ exports.registerUser = async (req, res) => {
             password,
             location,
             role,
+            phoneNumber,
             verificationStatus
         })
 
         await user.save()
-        res.status(201).json({ message: "User registered successfully", user })
+        const token = generateToken(user)
+        res.status(201).json({ message: "User registered successfully", user, token })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -62,6 +68,7 @@ exports.loginUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 location: user.location,
+                phoneNumber: user.phoneNumber,
                 verificationStatus: user.verificationStatus
             }
         })
@@ -82,6 +89,7 @@ exports.getUserProfile = async (req, res) => {
             email: user.email,
             role: user.role,
             location: user.location,
+            phoneNumber: user.phoneNumber,
             images: user.images,
             profilePhoto: user.profilePhoto 
         })
@@ -93,10 +101,15 @@ exports.getUserProfile = async (req, res) => {
 
 exports.updateUserProfile = async (req, res) => {
     try {
-        const { name, email, location } = req.body
+        const { name, email, location, phoneNumber } = req.body
+        
+        if (phoneNumber && !/^\d{10}$/.test(phoneNumber)) {
+            return res.status(400).json({ message: "Phone number must be exactly 10 digits." })
+        }
+
         const user = await User.findByIdAndUpdate(
             req.params.id,
-            { name, email, location },
+            { name, email, location, phoneNumber },
             { new: true }
         )
         if (!user) return res.status(404).json({ message: "User not found" })

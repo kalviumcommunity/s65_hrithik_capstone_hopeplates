@@ -123,7 +123,7 @@ const MakeDonation = () => {
                                     type="button"
                                     onClick={() => setFormData({ ...formData, type: t })}
                                     className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all capitalize whitespace-nowrap ${formData.type === t
-                                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
+                                        ? 'bg-white text-black shadow-lg shadow-white/20 font-bold'
                                         : 'bg-white/5 text-neutral-400 hover:bg-white/10 border border-white/5'
                                         }`}
                                 >
@@ -213,7 +213,7 @@ const MakeDonation = () => {
                         </div>
                     </div>
 
-                    <Button type="submit" className="w-full bg-[#0071E3] text-white py-4 rounded-xl text-lg font-bold hover:bg-[#0077ED] shadow-lg shadow-blue-500/20 mt-8 transition-transform hover:scale-[1.02] active:scale-[0.98]">
+                    <Button type="submit" className="w-full btn-primary py-4 rounded-xl text-lg mt-8">
                         Post Donation
                     </Button>
                 </form>

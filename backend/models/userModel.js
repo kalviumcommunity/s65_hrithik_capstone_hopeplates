@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
     location: { type: String, required: true },
     verificationStatus: { type: String, enum: ["pending", "verified"], default: "pending" },
     profilePhoto: { type: String },
+    phoneNumber: { type: String },
     images: [{ type: String }]
 }, { timestamps: true })
 

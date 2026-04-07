@@ -163,7 +163,7 @@ const NGODashboard = ({ user }) => {
                                     <div className="flex items-center mt-2 md:mt-0">
                                         <button
                                             onClick={() => handleClaim(donation._id)}
-                                            className="w-full md:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-lg transition-colors shadow-lg shadow-blue-600/20"
+                                            className="w-full md:w-auto btn-primary text-sm px-6 py-2"
                                         >
                                             Claim
                                         </button>
