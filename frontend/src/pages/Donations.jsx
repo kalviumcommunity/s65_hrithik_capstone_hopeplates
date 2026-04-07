@@ -165,15 +165,20 @@ const Donations = () => {
                                             {donation.description}
                                         </p>
 
-                                        <div className="flex items-center gap-2 text-neutral-500 text-xs font-bold uppercase tracking-wider mb-6">
-                                            <span className="material-symbols-outlined text-lg">location_on</span>
+                                        <a 
+                                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(donation.pickupLocation || donation.location || '')}`}
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-2 text-neutral-500 text-xs font-bold uppercase tracking-wider mb-6 hover:text-blue-400 transition-colors cursor-pointer w-full overflow-hidden"
+                                        >
+                                            <span className="material-symbols-outlined text-lg shrink-0">location_on</span>
                                             <span className="truncate">{donation.pickupLocation || donation.location || "Location not specified"}</span>
-                                        </div>
+                                        </a>
 
                                         <div className="grid grid-cols-2 gap-3 mt-auto">
-                                            {donation.status === 'claimed' ? (
+                                            {['claimed', 'completed'].includes(donation.status) ? (
                                                 <div className="col-span-2 bg-green-500/20 text-green-400 py-3 rounded-xl text-center font-bold border border-green-500/30 flex items-center justify-center gap-2">
-                                                    <span className="material-symbols-outlined">check_circle</span> Claimed
+                                                    <span className="material-symbols-outlined">check_circle</span> {donation.status.charAt(0).toUpperCase() + donation.status.slice(1)}
                                                 </div>
                                             ) : (
                                                 <button
@@ -184,10 +189,11 @@ const Donations = () => {
                                                 </button>
                                             )}
 
-                                            {donation.donor && currentUser && donation.donor._id !== currentUser.id && (
+                                            {donation.donor && currentUser && donation.donor._id !== (currentUser.id || currentUser._id) && 
+                                            (donation.claimedBy === (currentUser.id || currentUser._id) || donation.claimedBy?._id === (currentUser.id || currentUser._id)) && (
                                                 <button
                                                     onClick={() => handleMessage(donation.donor)}
-                                                    className="btn-glass py-3 w-full flex items-center justify-center gap-2 text-sm hover:bg-white/10"
+                                                    className="btn-glass py-3 col-span-2 flex items-center justify-center gap-2 text-sm hover:bg-white/10"
                                                 >
                                                     <span className="material-symbols-outlined text-lg">chat</span>
                                                     Message

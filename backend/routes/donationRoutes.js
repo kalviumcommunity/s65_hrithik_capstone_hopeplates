@@ -29,7 +29,6 @@ router.get("/history", protect, async (req, res) => {
     try {
         const userId = req.user.id;
         const donations = await Donation.find({
-            status: "claimed",
             $or: [
                 { donor: userId },
                 { claimedBy: userId }

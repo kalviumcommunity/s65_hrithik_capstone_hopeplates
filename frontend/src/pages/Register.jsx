@@ -8,6 +8,7 @@ const Register = () => {
         email: "",
         password: "",
         location: "",
+        phoneNumber: "",
         role: "donor",
     })
     const [profilePhoto, setProfilePhoto] = useState(null)
@@ -33,18 +34,8 @@ const Register = () => {
                 return
             }
 
-            // Auto Login to get tokens for uploads
-            // Note: Even if pending, login succeeds now so we can upload photos.
-            const loginRes = await fetch(`${API_BASE}/api/users/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: formData.email, password: formData.password })
-            })
-            const loginData = await loginRes.json()
-            if (!loginRes.ok) throw new Error(loginData.message)
-
-            const token = loginData.token
-            const user = loginData.user
+            const token = data.token
+            const user = data.user
 
             // Upload Photo
             if (profilePhoto) {
@@ -134,9 +125,27 @@ const Register = () => {
                             </div>
                         </div>
 
-                        <div>
-                            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Email</label>
-                            <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500" required placeholder="you@example.com" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Email</label>
+                                <input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500" required placeholder="you@example.com" />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Phone Number</label>
+                                <input 
+                                    type="tel" 
+                                    value={formData.phoneNumber} 
+                                    onChange={e => {
+                                        const val = e.target.value.replace(/\D/g, '');
+                                        if (val.length <= 10) setFormData({ ...formData, phoneNumber: val });
+                                    }}
+                                    pattern="[0-9]{10}"
+                                    title="Phone number must be exactly 10 digits"
+                                    className="w-full glass-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500/50 transition-all placeholder:text-neutral-500" 
+                                    required 
+                                    placeholder="9876543210" 
+                                />
+                            </div>
                         </div>
 
                         <div>

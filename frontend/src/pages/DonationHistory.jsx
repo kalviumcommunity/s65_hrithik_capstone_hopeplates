@@ -119,13 +119,13 @@ const DonationHistory = () => {
                         <h3 className="text-xl font-bold text-white mb-2">No history yet</h3>
                         <p className="text-neutral-400 mb-6">You haven't made or claimed any donations yet.</p>
                         {currentUser?.role === 'donor' && (
-                            <Link to="/make-donation" className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-blue-500 transition-colors">
+                            <Link to="/make-donation" className="inline-flex items-center gap-2 btn-primary rounded-xl">
                                 <span className="material-symbols-outlined">add_circle</span>
                                 Make a Donation
                             </Link>
                         )}
                         {currentUser?.role !== 'donor' && (
-                            <Link to="/donations" className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-blue-500 transition-colors">
+                            <Link to="/donations" className="inline-flex items-center gap-2 btn-primary rounded-xl">
                                 <span className="material-symbols-outlined">volunteer_activism</span>
                                 Browse Donations
                             </Link>
@@ -206,17 +206,22 @@ const DonationHistory = () => {
                                                 </div>
                                             )}
 
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-neutral-400">
+                                            <a 
+                                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(donation.pickupLocation || donation.location || '')}`}
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-3 group hover:opacity-80 transition-opacity cursor-pointer"
+                                            >
+                                                <div className="w-8 h-8 rounded-full bg-zinc-800 group-hover:bg-blue-500/20 flex items-center justify-center text-neutral-400 group-hover:text-blue-400 transition-colors">
                                                     <span className="material-symbols-outlined text-sm">location_on</span>
                                                 </div>
                                                 <div>
                                                     <p className="text-xs text-neutral-500 uppercase font-bold">Pickup</p>
-                                                    <p className="text-sm font-semibold text-white truncate max-w-[150px]" title={donation.pickupLocation}>
+                                                    <p className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors truncate max-w-[150px]" title={donation.pickupLocation}>
                                                         {donation.pickupLocation || "N/A"}
                                                     </p>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
 
                                         {/* Actions */}
@@ -224,7 +229,7 @@ const DonationHistory = () => {
                                             {donation.status === "claimed" && isClaimant && (
                                                 <button
                                                     onClick={() => handleComplete(donation._id)}
-                                                    className="px-4 py-2 bg-green-600 text-white text-sm font-bold rounded-lg hover:bg-green-500 transition-colors shadow-lg shadow-green-900/20"
+                                                    className="btn-primary rounded-lg text-sm px-4 py-2"
                                                 >
                                                     Confirm Receipt
                                                 </button>

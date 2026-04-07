@@ -240,7 +240,7 @@ const Messages = () => {
                             <button
                                 type="submit"
                                 disabled={!newMessage.trim()}
-                                className="p-3 bg-blue-600 rounded-full text-white hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
+                                className="p-3 bg-white rounded-full text-black hover:bg-neutral-200 transition-all shadow-lg shadow-white/20 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
                             >
                                 <span className="material-symbols-outlined filled">send</span>
                             </button>

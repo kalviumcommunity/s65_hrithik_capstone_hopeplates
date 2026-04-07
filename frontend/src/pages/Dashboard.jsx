@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DonorDashboard from './dashboard/DonorDashboard';
 import NGODashboard from './dashboard/NGODashboard';
-import RestaurantDashboard from './dashboard/RestaurantDashboard';
-import ManagerDashboard from './dashboard/ManagerDashboard';
 import AdminDashboard from './AdminDashboard'; // Existing AdminDashboard for 'admin' role
 
 const Dashboard = () => {
@@ -25,13 +23,11 @@ const Dashboard = () => {
     const renderDashboard = () => {
         switch (user.role) {
             case 'donor':
+            case 'event_manager':
+            case 'restaurant':
                 return <DonorDashboard user={user} />;
             case 'ngo':
                 return <NGODashboard user={user} />;
-            case 'restaurant':
-                return <RestaurantDashboard user={user} />;
-            case 'event_manager':
-                return <ManagerDashboard user={user} />;
             case 'admin':
                 return <AdminDashboard />;
             default:

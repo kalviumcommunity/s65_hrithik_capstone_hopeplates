@@ -137,6 +137,9 @@ const DonorProfile = () => {
                             </h1>
                             <div className="flex flex-wrap justify-center md:justify-start gap-4 text-neutral-400 text-sm mb-4">
                                 <span className="flex items-center gap-1"><MapPin size={16} /> {donor.location || "Unknown Location"}</span>
+                                {donor.phoneNumber && (
+                                    <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">call</span> {donor.phoneNumber}</span>
+                                )}
                                 <span className="flex items-center gap-1"><Calendar size={16} /> Joined {new Date(donor.createdAt).toLocaleDateString()}</span>
                                 <span className="flex items-center gap-1 px-3 py-1 bg-white/5 rounded-full text-blue-400 font-bold uppercase text-xs">{donor.role}</span>
                             </div>

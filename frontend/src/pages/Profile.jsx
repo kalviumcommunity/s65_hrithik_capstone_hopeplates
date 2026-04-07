@@ -76,6 +76,7 @@ const Profile = () => {
                 setFormData({
                     name: userProfile.name || '',
                     location: userProfile.location || '',
+                    phoneNumber: userProfile.phoneNumber || '',
                     about: userProfile.about || ''
                 });
 
@@ -253,6 +254,11 @@ const Profile = () => {
                     <p className="text-neutral-400 flex items-center justify-center gap-2">
                         <MapPin size={16} /> {user.location || "Earth"}
                     </p>
+                    {user.phoneNumber && (
+                        <p className="text-neutral-400 flex items-center justify-center gap-2 mt-1">
+                            <span className="material-symbols-outlined text-[16px]">call</span> {user.phoneNumber}
+                        </p>
+                    )}
                     {user.role && (
                         <span className="inline-block mt-3 px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold uppercase tracking-wider border border-blue-500/20">
                             {user.role}
@@ -388,6 +394,21 @@ const Profile = () => {
                                         type="text"
                                         value={formData.location}
                                         onChange={e => setFormData({ ...formData, location: e.target.value })}
+                                        disabled={!editMode}
+                                        className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none transition-colors disabled:opacity-50"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Phone Number</label>
+                                    <input
+                                        type="tel"
+                                        value={formData.phoneNumber}
+                                        onChange={e => {
+                                            const val = e.target.value.replace(/\D/g, '');
+                                            if (val.length <= 10) setFormData({ ...formData, phoneNumber: val });
+                                        }}
+                                        pattern="[0-9]{10}"
+                                        title="Phone number must be exactly 10 digits"
                                         disabled={!editMode}
                                         className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none transition-colors disabled:opacity-50"
                                     />
