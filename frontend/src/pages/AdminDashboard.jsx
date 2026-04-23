@@ -76,8 +76,9 @@ const AdminDashboard = () => {
     const formatDate = (dateStr) => {
         try {
             return new Date(dateStr).toLocaleDateString()
-        } catch (e) {
-            return dateStr
+        } catch (err) {
+            console.error(err);
+            return dateStr;
         }
     }
 

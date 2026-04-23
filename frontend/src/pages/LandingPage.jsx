@@ -172,7 +172,7 @@ const LandingPage = () => {
                             <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-primary/20 -z-0"></div>
                             <div className="relative z-10 flex flex-col items-center text-center">
                                 <div className="size-20 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-black mb-8 shadow-xl shadow-primary/20">1</div>
-                                <h4 class="text-xl font-bold mb-4">Choose a Category</h4>
+                                <h4 className="text-xl font-bold mb-4">Choose a Category</h4>
                                 <p className="text-[#896f61] leading-relaxed">Select what you want to give - whether it's essentials like food and clothes or financial support.</p>
                             </div>
                             <div className="relative z-10 flex flex-col items-center text-center">

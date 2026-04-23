@@ -85,6 +85,7 @@ const PendingVerifications = () => {
     try {
       return new Date(dateStr).toLocaleDateString();
     } catch (e) {
+      console.error(e);
       return dateStr;
     }
   };

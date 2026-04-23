@@ -14,8 +14,8 @@ const Navbar = () => {
                 const userData = JSON.parse(atob(token.split(".")[1]));
                 setRole(userData.role);
                 setUser(userData);
-            } catch (e) {
-                console.error("Invalid token");
+            } catch (err) {
+                console.error("Invalid token", err);
             }
         }
     }, []);

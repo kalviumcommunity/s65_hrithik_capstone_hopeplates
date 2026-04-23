@@ -9,7 +9,6 @@ const Profile = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [donationCount, setDonationCount] = useState(0);
-    const [recentDonations, setRecentDonations] = useState([]);
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({});
     const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -92,8 +91,7 @@ const Profile = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (donationsRes.ok) {
-                    const donationsData = await donationsRes.json();
-                    setRecentDonations(Array.isArray(donationsData) ? donationsData.slice(0, 5) : []);
+                    // Ignored donations fetch since it's not displayed
                 }
 
             } catch (err) {
@@ -169,11 +167,6 @@ const Profile = () => {
     };
 
     const currentBadge = badgeMilestones.find(b => donationCount >= b.min) || null;
-    const nextBadge = [...badgeMilestones].reverse().find(b => donationCount < b.min);
-
-    const currentMin = currentBadge ? currentBadge.min : 0;
-    const nextMin = nextBadge ? nextBadge.min : 10;
-    const progress = Math.min(100, Math.max(0, ((donationCount - currentMin) / (nextMin - currentMin)) * 100));
 
     const defaultAvatar = user ? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random&color=fff&size=200` : "";
 

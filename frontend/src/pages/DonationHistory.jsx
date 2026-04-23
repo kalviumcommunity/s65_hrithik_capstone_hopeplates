@@ -77,6 +77,7 @@ const DonationHistory = () => {
                 )
             );
         } catch (err) {
+            console.error(err);
             alert("Failed to mark as completed");
         }
     };

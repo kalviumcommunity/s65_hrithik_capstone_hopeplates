@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, userRole }) => {
     const isDonor = donation.donor?._id === userId;
@@ -17,7 +18,7 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
                     View on Map
                 </a>
             )}
-            <p>Status: <span className={`status-badge ${donation.status.toLowerCase()}`}>{donation.status}</span></p>
+            <p>Status: <span className={`status-badge ${donation.status?.toLowerCase() || ''}`}>{donation.status}</span></p>
             <p>
                 Donor Name:{" "}
                 {donation.donor?._id ? (
@@ -34,9 +35,9 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
             <p>Type : {donation.donor?.role}</p>
             {donation.images && donation.images.length > 0 && (
                 <div style={{ display: "flex", gap: 10, margin: "10px 0", flexWrap: "wrap" }}>
-                    {donation.images.map((img, idx) => (
+                    {donation.images.map((img) => (
                         <img
-                            key={idx}
+                            key={img}
                             src={`https://s65-hrithik-capstone-hopeplates.onrender.com/${img}`}
                             alt="donation"
                             style={{ width: 60, height: 60, objectFit: "cover", borderRadius: 6, border: "1px solid #ccc" }}
@@ -98,5 +99,31 @@ const DonationCard = ({ donation, onDelete, onUpdate, onStatusChange, userId, us
         </div>
     )
 }
+
+DonationCard.propTypes = {
+    donation: PropTypes.shape({
+        _id: PropTypes.string,
+        type: PropTypes.string,
+        description: PropTypes.string,
+        pickupLocation: PropTypes.string,
+        status: PropTypes.string,
+        images: PropTypes.arrayOf(PropTypes.string),
+        donor: PropTypes.shape({
+            _id: PropTypes.string,
+            name: PropTypes.string,
+            role: PropTypes.string
+        }),
+        claimedBy: PropTypes.shape({
+            _id: PropTypes.string,
+            name: PropTypes.string,
+            role: PropTypes.string
+        })
+    }).isRequired,
+    onDelete: PropTypes.func,
+    onUpdate: PropTypes.func,
+    onStatusChange: PropTypes.func,
+    userId: PropTypes.string,
+    userRole: PropTypes.string
+};
 
 export default DonationCard;

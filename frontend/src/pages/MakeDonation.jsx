@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { Button } from "../components/ui"
 
@@ -32,6 +32,7 @@ const MakeDonation = () => {
                         pickupLocation: data.display_name || `${latitude},${longitude}`
                     }))
                 } catch (err) {
+                    console.error("Location error:", err)
                     setFormData(f => ({
                         ...f,
                         pickupLocation: `${latitude},${longitude}`
@@ -39,6 +40,7 @@ const MakeDonation = () => {
                 }
                 setLocLoading(false)
             }, (err) => {
+                console.error(err);
                 alert("Location access denied or unavailable.")
                 setLocLoading(false)
             })
@@ -206,7 +208,7 @@ const MakeDonation = () => {
                             </label>
                             {/* Preview */}
                             {Array.from(images).map((img, idx) => (
-                                <div key={idx} className="aspect-square rounded-2xl overflow-hidden relative group border border-white/10">
+                                <div key={`${img.name}-${idx}`} className="aspect-square rounded-2xl overflow-hidden relative group border border-white/10">
                                     <img src={URL.createObjectURL(img)} alt="preview" className="w-full h-full object-cover" />
                                 </div>
                             ))}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DonationImage = ({ src, alt, className, images, type, title }) => {
+const DonationImage = ({ src, alt, className, images, title }) => {
     // Basic image component to handle missing images / loading errors gracefully
     const [error, setError] = React.useState(false);
 
