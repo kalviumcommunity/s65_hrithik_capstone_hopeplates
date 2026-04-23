@@ -14,9 +14,6 @@ const Donations = () => {
         return storedUser ? JSON.parse(storedUser) : null;
     });
 
-    if (currentUser && !['ngo', 'admin'].includes(currentUser.role)) {
-        return <Navigate to="/" replace />;
-    }
 
     const [donations, setDonations] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -60,6 +57,10 @@ const Donations = () => {
     };
 
     const [claimedDetails, setClaimedDetails] = useState(null);
+
+    if (currentUser && !['ngo', 'admin'].includes(currentUser.role)) {
+        return <Navigate to="/" replace />;
+    }
 
     const handleClaim = async (donationId) => {
         if (!currentUser) {

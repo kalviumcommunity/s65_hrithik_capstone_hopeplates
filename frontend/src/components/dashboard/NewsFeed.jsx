@@ -5,7 +5,6 @@ const GNEWS_API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
 const NewsFeed = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
 
     useEffect(() => {
         const fetchNews = async () => {

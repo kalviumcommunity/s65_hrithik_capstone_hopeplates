@@ -12,7 +12,6 @@ const DonorDashboard = ({ user }) => {
         points: 0
     });
     const [recentActivity, setRecentActivity] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     // Dynamic API URL handling
     const API_BASE = window.location.hostname === "localhost"
@@ -53,8 +52,6 @@ const DonorDashboard = ({ user }) => {
 
             } catch (error) {
                 console.error("Error fetching dashboard data:", error);
-            } finally {
-                setLoading(false);
             }
         };
 

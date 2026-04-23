@@ -55,8 +55,8 @@ const MainLayout = () => {
                         }
                     })
                     .catch(err => console.error("Error updating user in MainLayout:", err));
-            } catch (e) {
-                console.error("Invalid user data in MainLayout");
+            } catch (err) {
+                console.error("Invalid token parsing", err);
             }
         }
     }, []);

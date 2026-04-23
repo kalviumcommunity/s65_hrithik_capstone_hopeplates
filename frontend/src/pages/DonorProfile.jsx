@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { User, MapPin, Mail, MessageCircle, ArrowLeft, Trophy, Star, Award, Heart, Gift, Sparkles, Calendar } from "lucide-react";
+import { User, MapPin, MessageCircle, ArrowLeft, Trophy, Star, Award, Heart, Gift, Sparkles, Calendar } from "lucide-react";
 
 // Badge milestones matching Profile.jsx for consistency
 const badgeMilestones = [
@@ -36,7 +36,7 @@ const DonorProfile = () => {
                 const user = JSON.parse(atob(token.split(".")[1]));
                 setCurrentUserId(user.id);
             } catch (e) {
-                console.error("Invalid token");
+                console.error("Invalid token", e);
             }
         }
 
@@ -192,7 +192,7 @@ const DonorProfile = () => {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             {donor.images.map((img, idx) => (
                                 <div
-                                    key={idx}
+                                    key={`${img}-${idx}`}
                                     className="aspect-square rounded-xl overflow-hidden cursor-pointer group relative"
                                     onClick={() => {
                                         setCurrentImgIdx(idx);
